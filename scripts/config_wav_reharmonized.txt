@@ -1,0 +1,45 @@
+# Harmony of Dissonance - REharmonized custom .wav music replacement configuration
+# python3 wav_to_harmony_pause_fix.py rom-harmony.gba config_wav_reharmonized.txt rom-output.gba
+# Format:
+#   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO
+#
+# HARMONY_SONG_ID can be decimal or hexadecimal (0x..). WAV_PATH is resolved
+# relative to the current directory; quote it if it contains spaces. TEMPO
+# is either "auto" (auto-pick) or a forced BB tempo byte (decimal or hex,
+# 1-255) - use a forced value if a song's loop point clicks/pops or has a
+# silence gap when tested in agbplay/mGBA.
+#
+# convert .mp3 to .wav
+# ffmpeg -i input.mp3 -ar 11025 -ac 1 -sample_fmt s16 output.wav
+# Example:
+
+3   "../music/03 name entry edit.wav" 80
+4   "../music/04 prologue edit.wav" 100
+5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1
+6   "../music/06 offense and defense - marble corridor edit.wav" 23
+7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
+8   "../music/08 luminous caverns edit.wav" 23
+9   "../music/09 skeleton den - cave of skeletons edit.wav" 22
+10   "../music/10 chapel of dissonance edit.wav" 79
+11   "../music/11 clock tower casualty edit.wav" 47
+12   "../music/12 aqueduct of dragons edit.wav" 75
+13   "../music/13 to the center of the demonic castle - castle treasure edit.wav" 23
+14   "../music/14 dark covenant (Death's theme) edit.wav" 53
+15   "../music/15 16 17 decisive battle edit.wav" 43
+16   "../music/15 16 17 decisive battle edit.wav" 43
+17   "../music/15 16 17 decisive battle edit.wav" 43
+18   "../music/18 epilogue 1 edit.wav" 13
+20   "../music/20 incarnation of darkness (Dracula's theme) edit.wav" 37
+21   "../music/21 old enemy edit.wav" 29
+22   "../music/22 beloved person (Lydie Erlanger's theme) edit.wav" 22
+23   "../music/23 successor of fate (Juste Belmont's theme) - variation edit.wav" 21
+25   "../music/25 knight head edit.wav" 50
+28   "../music/28 I'll sell at my place (Mechant's theme) edit.wav" 90
+29   "../music/29 Maxim Kischine's theme edit.wav" 18
+30   "../music/30 epilogue 2 edit.wav" 43
+31   "../music/31 the item collection room edit.wav" 54
+
+# Add more lines whenever you want:
+# 15         "castle theme.wav"      auto
+# 0x1F       boss.wav                 100
+

@@ -1,0 +1,22 @@
+# Harmony of Dissonance - music replacement configuration
+#
+# Format:
+#   SOURCE   HARMONY_SONG   SOURCE_SONG
+#
+# SOURCE is:
+#   aria
+#   circle
+#
+# Song IDs can be decimal:
+#   circle 1 4
+#
+# or hexadecimal:
+#   aria 0x0F 0x12
+#
+# Example replacements below:
+# Harmony 0001 <- Circle 0004
+aria 1 4
+
+# Add more lines whenever you want:
+# aria   15  22
+# circle 31  8

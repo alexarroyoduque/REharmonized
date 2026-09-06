@@ -1,0 +1,21 @@
+**/*.gba
+**/*.sav
+**/*.ss[0-9]
+
+ariastreamed-ver2.0.1/**
+
+# Audacity project files (huge, not needed to reproduce the patch)
+music/*.aup4
+music/*.aup4-lock
+music/*_data/
+
+# Extracted vanilla ROM audio (copyrighted, not community covers)
+music/original/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

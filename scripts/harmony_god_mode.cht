@@ -1,0 +1,26 @@
+# Castlevania: Harmony of Dissonance (Europe) - QA God Mode
+#
+# Mantiene HP alto y fuerza alta para recorrer el juego rápidamente.
+# No da invulnerabilidad: aún puedes recibir daño.
+#
+# HP  = 500
+# STR = 999
+#
+
+# HP actual 5
+8201854E 0005
+
+# HP máximo 5
+82018786 0005
+
+# HP actual 500
+# 8201854E 01F4
+
+# HP máximo 500
+# 82018786 01F4
+
+# STR base
+8201878C 03E7
+
+# STR efectiva
+82018552 03E7
