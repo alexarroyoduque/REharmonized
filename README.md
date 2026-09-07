@@ -3,6 +3,8 @@ Harmony of Dissonance features excellent musical compositions, but its sound eng
 
 Using techniques developed by the romhacking community, this patch brings high-quality community arrangements of the original soundtrack into the game, taking advantage of Aria of Sorrow's improved sound.
 
+[Demo.](https://youtube.com/shorts/Amr3_8iADS0)
+
 ## How to use
 [Download patch](./REharmonized.bps). 
 
