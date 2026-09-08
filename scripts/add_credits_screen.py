@@ -40,6 +40,11 @@ GBA_ROM_BASE = 0x08000000
 SCREEN_W, SCREEN_H = 240, 160
 MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
 
+# Single source of truth for the version shown on the credits screen - bump
+# this here only, variant scripts (e.g. add_credits_screen_visual_improvement.py)
+# import and reuse it.
+VERSION = "1.0.1"
+
 FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
 MUSIC_CREDITS = (
@@ -76,7 +81,7 @@ def render_credits_image() -> Image.Image:
 
     y = 6
     title_text = "REharmonized"
-    version_text = "1.0.0"
+    version_text = VERSION
     title_w = draw.textlength(title_text, font=title_font)
     version_w = draw.textlength(version_text, font=body_font)
     gap = 4
@@ -190,7 +195,7 @@ wait_press:
     return bin_path.read_bytes()
 
 
-def main() -> None:
+def main(render_fn=render_credits_image) -> None:
     if len(sys.argv) != 3:
         raise SystemExit(f"Usage: {sys.argv[0]} input.gba output.gba")
 
@@ -207,7 +212,7 @@ def main() -> None:
     original_target = decode_entry_branch(bytes(rom))
     print(f"Original entry target: 0x{original_target:08X}")
 
-    img = render_credits_image()
+    img = render_fn()
     bitmap = image_to_mode3_bitmap(img)
 
     # Append offset must be 4-byte aligned for the ARM stub.

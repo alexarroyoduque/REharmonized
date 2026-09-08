@@ -6,9 +6,8 @@ Using techniques developed by the romhacking community, this patch brings high-q
 [Demo.](https://youtube.com/shorts/Amr3_8iADS0)
 
 ## How to use
-[Download patch](./REharmonized.bps). 
 
-Get a Castlevania: Harmony of Dissonance ROM (Europe) and apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js/).
+Get a Castlevania: Harmony of Dissonance ROM (Europe).
 
 ```
 Database match: Castlevania - Harmony of Dissonance (Europe)
@@ -16,6 +15,21 @@ Database: No-Intro: Game Boy Advance (v. 20210227-023848)
 File/ROM SHA-1: 58034ADF2CF788ED308286090987CA73F807A54F
 File/ROM CRC32: 521B3091
 ```
+
+### Only patch music
+[Download patch](./REharmonized.bps). 
+
+Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js/).
+
+### With Visual Improvement
+[Download visual improvement patch](https://www.romhacking.net/hacks/9086/) by Pemburu Vampir. 
+
+[Download REharmonized+visual-improvement-1.2.7](./REharmonized+visual-improvement-1.2.7.bps). 
+
+
+- Step 1: apply "CV HOD Visual Improvement V1.2.7" patch to a Castlevania: Harmony of Dissonance (Europe) ROM.
+
+- Step 2: apply "REharmonized+visual-improvement-1.2.7" to a result ROM from step 1.
 
 ## Patch changes
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
@@ -78,6 +92,9 @@ AlexArroyoDuque
 ### Using Streamed Audio in Castlevania: Aria of Sorrow
 Rexius55 https://www.romhacking.net/documents/927
 This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
+
+### Visual improvement
+[Pemburu Vampir](https://www.romhacking.net/hacks/9086/)
 
 ### Remastered songs
 Jorge Fuentes
