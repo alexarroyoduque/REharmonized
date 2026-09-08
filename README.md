@@ -1,9 +1,15 @@
 # Castlevania: Harmony of Dissonance - REharmonized (Patch)
-Harmony of Dissonance features excellent musical compositions, but its sound engine doesn't do them justice. REharmonized aims to fix that.
 
-Using techniques developed by the romhacking community, this patch brings high-quality community arrangements of the original soundtrack into the game, taking advantage of Aria of Sorrow's improved sound.
+<div style="display: flex; align-items: flex-start; gap: 20px;">
+  <div style="flex: 1;">
+    Harmony of Dissonance features excellent musical compositions, but its sound engine doesn't do them justice. REharmonized aims to fix that.
 
-[Demo.](https://youtube.com/shorts/Amr3_8iADS0)
+    Using techniques developed by the romhacking community, this patch brings high-quality community arrangements of the original soundtrack into the game, taking advantage of Aria of Sorrow's improved sound.
+
+    [Demo.](https://youtu.be/MyGVkGNWQx0)
+  </div>
+  <img src="./REharmonized.jpg" alt="REharmonized" width="250">
+</div>
 
 ## How to use
 
@@ -17,14 +23,14 @@ File/ROM CRC32: 521B3091
 ```
 
 ### Only patch music
-[Download patch](./REharmonized.bps). 
+[Download REharmonized patch](./REharmonized.bps). 
 
 Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js/).
 
 ### With Visual Improvement
 [Download visual improvement patch](https://www.romhacking.net/hacks/9086/) by Pemburu Vampir. 
 
-[Download REharmonized+visual-improvement-1.2.7](./REharmonized+visual-improvement-1.2.7.bps). 
+[Download REharmonized+visual-improvement-1.2.7 patch](./REharmonized+visual-improvement-1.2.7.bps). 
 
 
 - Step 1: apply "CV HOD Visual Improvement V1.2.7" patch to a Castlevania: Harmony of Dissonance (Europe) ROM.
