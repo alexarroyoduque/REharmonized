@@ -6,7 +6,7 @@ Using techniques developed by the romhacking community, this patch brings high-q
 
 [Demo.](https://youtu.be/MyGVkGNWQx0)
 
-<img src="./REharmonized.jpg" alt="REharmonized" width="250">
+<img src="./images/REharmonized_16-9.jpg" alt="REharmonized" width="250">
 
 ## How to use
 
@@ -19,20 +19,17 @@ File/ROM SHA-1: 58034ADF2CF788ED308286090987CA73F807A54F
 File/ROM CRC32: 521B3091
 ```
 
-### Only patch music
 [Download REharmonized patch](./REharmonized.bps). 
 
 Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js/).
 
-### With Visual Improvement
-[Download visual improvement patch](https://www.romhacking.net/hacks/9086/) by Pemburu Vampir. 
+### Add Visual Improvement
+[Download Visual Improvement patch](https://www.romhacking.net/hacks/9086/) by Pemburu Vampir. 
 
-[Download REharmonized+visual-improvement-1.2.7 patch](./REharmonized+visual-improvement-1.2.7.bps). 
+- STEP 1: Apply REharmonized patch first.
+- STEP 2: Apply "Visual Improvement" (Pemburu Vampir) to the result of STEP 1.
 
-
-- Step 1: apply "CV HOD Visual Improvement V1.2.7" patch to a Castlevania: Harmony of Dissonance (Europe) ROM.
-
-- Step 2: apply "REharmonized+visual-improvement-1.2.7" to a result ROM from step 1.
+- Applying REharmonized first allows other patches to be applied afterwards, but sometimes it won't work 100%. **I'll keep an eye on community feedback.**
 
 ## Patch changes
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
@@ -71,9 +68,9 @@ Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js
 | 12 | aqueduct of dragons | Jorge Fuentes |
 | 13 | to the center of the demonic castle - castle treasure | Jorge Fuentes |
 | 14 | dark covenant (Death's theme) | Jorge Fuentes |
-| 15 | desicive battle (loop pattern A) | Jorge Fuentes |
-| 16 | desicive battle (loop pattern B) | Jorge Fuentes |
-| 17 | desicive battle (loop pattern C) | Jorge Fuentes |
+| 15 | desicive battle (loop pattern A) | Good Knight Productions |
+| 16 | desicive battle (loop pattern B) | Good Knight Productions |
+| 17 | desicive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
 | 19 | ~~game over~~ | - |
 | 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
@@ -131,3 +128,6 @@ https://youtu.be/gi74xmfdlcs?si=mFowT4Pje0LHyO8e
 
 TristanMachinima
 https://youtu.be/RrCIrBIs90Y?si=CMK_Xs0LNy22pHc1
+
+Good Knight Productions
+https://youtu.be/jVrqvykS5HY?si=VNCFAH1rqFuW0lt2

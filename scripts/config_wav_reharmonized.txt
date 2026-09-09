@@ -9,12 +9,21 @@
 # 1-255) - use a forced value if a song's loop point clicks/pops or has a
 # silence gap when tested in agbplay/mGBA.
 #
+# Optional 4th field:
+#   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO   auto|off|TARGET_RMS
+#     auto        -> current default behavior (RMS target 0.45)
+#     off         -> no gain applied, use the .wav at its own volume
+#     TARGET_RMS  -> a number 0-1 (e.g. 0.30) to force a quieter/less
+#                    saturated result than the default, or a value above
+#                    0.45 for a louder/more saturated one
+# Example: 4   "../music/04 prologue edit.wav" 100   0.30
+#
 # convert .mp3 to .wav
 # ffmpeg -i input.mp3 -ar 11025 -ac 1 -sample_fmt s16 output.wav
 # Example:
 
 3   "../music/03 name entry edit.wav" 80
-4   "../music/04 prologue edit.wav" 100
+4   "../music/04 prologue edit.wav" 100 0.2
 5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1
 6   "../music/06 offense and defense - marble corridor edit.wav" 23
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11

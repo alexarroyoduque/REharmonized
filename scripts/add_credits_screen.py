@@ -22,7 +22,10 @@ How it works:
      Nintendo logo at 0x04-0x9F) to jump to the new stub instead.
 
 Usage:
-    python3 add_credits_screen.py rom-reharmonized-testN.gba rom-final.gba
+    python3 add_credits_screen.py rom-reharmonized-testN.gba [rom-final.gba]
+
+If the output path is omitted, it defaults to the input filename with
+"-credits" appended before the extension (e.g. rom-testN.gba -> rom-testN-credits.gba).
 """
 
 from __future__ import annotations
@@ -43,14 +46,14 @@ MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
 # Single source of truth for the version shown on the credits screen - bump
 # this here only, variant scripts (e.g. add_credits_screen_visual_improvement.py)
 # import and reuse it.
-VERSION = "1.0.1"
+VERSION = "1.2.0"
 
 FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
 MUSIC_CREDITS = (
     "Jorge Fuentes, The Noble Demon, Tobbeh99 Music, Erik Hose, "
-    "Dracula9AntiChapel, Francisco Relano Pena, TheWanderingNight, "
-    "Nostalgames_XP, WSPursuer, TristanMachinima"
+    "Dracula9AntiChapel, Francisco Relano, TheWanderingNight, "
+    "Nostalgames_XP, WSPursuer, TristanMachinima, Good Knight Productions"
 )
 
 
@@ -196,8 +199,8 @@ wait_press:
 
 
 def main(render_fn=render_credits_image) -> None:
-    if len(sys.argv) != 3:
-        raise SystemExit(f"Usage: {sys.argv[0]} input.gba output.gba")
+    if len(sys.argv) not in (2, 3):
+        raise SystemExit(f"Usage: {sys.argv[0]} input.gba [output.gba]")
 
     if shutil.which("arm-none-eabi-as") is None or shutil.which("arm-none-eabi-objcopy") is None:
         raise SystemExit(
@@ -206,7 +209,10 @@ def main(render_fn=render_credits_image) -> None:
         )
 
     input_path = Path(sys.argv[1])
-    output_path = Path(sys.argv[2])
+    if len(sys.argv) == 3:
+        output_path = Path(sys.argv[2])
+    else:
+        output_path = input_path.with_name(f"{input_path.stem}-credits{input_path.suffix}")
     rom = bytearray(input_path.read_bytes())
 
     original_target = decode_entry_branch(bytes(rom))
