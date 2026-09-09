@@ -12,7 +12,7 @@
 ### Music
 - Old enemy: WSPursuer's version, cleaner melody.
 - Boss battle: Good Knight Productions' version, cleaner melody.
-- Prologue 2: some parts of the song sounded a bit saturated. I've made adjustments to the script to manually control volume normalization when needed, and I did so in this case.
+- Prologue: some parts of the song sounded a bit saturated. I've made adjustments to the script to manually control volume normalization when needed, and I did so in this case.
 
 ## 1.0.1 (2026, september 8)
 - Second patch REharmonized + Visual Improvement by Pemburu Vampir
