@@ -124,10 +124,10 @@ Tras varias pruebas con el parche aplicado, he conseguido que no contenga errore
 A petición de la comunidad REharmonized se hace compatible con "Visual Improvement 1.2.7" de Pemburu Vampir con un parche extra.
 Primero se aplica "Visual Improvement" y después REharmonized. 
 
-### 13. Compatibilidad con "Visual Improvement" (1.2.0)
+### 13. Compatibilidad con "Visual Improvement" (1.1.0)
 Al hacer algunas pruebas detecto que si se aplica primero el parche estándar de REharmonized y después "Visual Improvement" el juego funciona correctamente por lo que se elimina el parche secundario de la 1.0.1.
 
-### 14. Normalizado manual de música (1.2.0)
+### 14. Normalizado manual de música (1.1.0)
 Algunas composiciones suenan un poco saturadas con la normalización automática del audio modificado por lo que se agrega la posibilidad en el archivo config de controlar dicho aumento del volumen.
 
 ```

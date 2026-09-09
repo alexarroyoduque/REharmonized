@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 (2026, september 9)
+## 1.1.0 (2026, september 9)
 
 ### Compatibility with other patchs
 - In version 1.0.1 I made an extra patch to ensure compatibility with "Visual Improvement". I've been testing without the extra patch and the game seems to work fine, so for now I won't be making the secondary patch. To use REharmonized + Visual Improvement, follow these steps:

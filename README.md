@@ -74,7 +74,7 @@ Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js
 | 18 | epilogue 1 | TheWanderingNight |
 | 19 | ~~game over~~ | - |
 | 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
-| 21 | old enemy | Dracula9AntiChapel |
+| 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Jorge Fuentes |
 | 23 | successor of fate (Juste Belmont's theme) - variation | TristanMachinima |
 | 24 | ~~pitch-dark door~~ | - |
