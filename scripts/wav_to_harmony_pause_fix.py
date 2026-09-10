@@ -14,7 +14,7 @@ Usage:
 Config format (4th field optional, fully backward compatible with 3-field lines):
     HARMONY_SONG_ID   WAV_PATH   auto|TEMPO   [auto|off|TARGET_RMS]
 
-    (missing) / auto  -> RMS-normalize to 0.45 (default)
+    (missing) / auto  -> RMS-normalize to 0.40 (default)
     off               -> no gain applied at all, use the .wav at its own
                          recorded amplitude (still passed through soft_limit
                          as a safety net against genuine >0dB peaks, so it
@@ -59,8 +59,8 @@ ORIGINAL_PATCH_BYTES = bytes.fromhex("286800f043fb")
 PATCH_BYTES = bytes.fromhex("0af06cfc0000")
 CAVE_BYTES = bytes.fromhex("042c04d000b52868f5f7d2fe00bd7047")
 
-# Matches base.normalize_loudness's own default target_rms.
-DEFAULT_TARGET_RMS = 0.45
+# Overrides base.normalize_loudness's own default target_rms (0.45).
+DEFAULT_TARGET_RMS = 0.4
 
 _BASE_PATH = Path(__file__).parent / "wav_to_harmony_pause-not-resume-music.py"
 _spec = importlib.util.spec_from_file_location("wav_to_harmony_base", _BASE_PATH)
@@ -173,7 +173,24 @@ def main() -> None:
         action="store_true",
         help="Only run the song injection, do not apply the pause/resume engine patch",
     )
+    parser.add_argument(
+        "--suggest-gaps",
+        default=None,
+        help="Comma-separated target loop gaps (seconds) to print a tempo suggestion "
+        "for each song, one each, e.g. -0.3,-0.6,-0.9 (default: "
+        f"{','.join(str(g) for g in base.DEFAULT_SUGGEST_GAPS)}; pass '' to disable)",
+    )
     args = parser.parse_args()
+
+    if args.suggest_gaps is None:
+        suggest_gaps = list(base.DEFAULT_SUGGEST_GAPS)
+    elif args.suggest_gaps.strip() == "":
+        suggest_gaps = []
+    else:
+        try:
+            suggest_gaps = [float(g) for g in args.suggest_gaps.split(",")]
+        except ValueError as exc:
+            raise SystemExit(f"--suggest-gaps: invalid value {args.suggest_gaps!r}: {exc}") from exc
 
     rom_path = args.rom
     if not rom_path.is_file():
@@ -264,6 +281,13 @@ def main() -> None:
         if gain != 1.0:
             print(f"    normalized: RMS gain x{gain:.2f}", end="")
             print(f", {limited_pct:.1f}% samples soft-limited" if limited_pct > 0 else "")
+        if suggest_gaps:
+            print("    Suggestions (one closest match per target gap):")
+            for sug_target, sug_tempo, sug_holds, sug_actual, sug_gap in base.suggest_tempos(duration_s, suggest_gaps):
+                print(
+                    f"      target={sug_target:+.2f}s  tempo=0x{sug_tempo:02X} ({sug_tempo:3d})  "
+                    f"holds={sug_holds}  gap={sug_gap:+.3f}s"
+                )
 
     if len(out) > base.MAX_GBA_ROM_SIZE:
         raise SystemExit(f"Output ROM would exceed {base.MAX_GBA_ROM_SIZE} bytes ({len(out)} bytes)")

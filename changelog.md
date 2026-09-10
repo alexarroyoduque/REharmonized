@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2026, september 10)
+
+- General music normalization reduced from 0.45 to 0.4.
+- "Successor of Fate - Variation" (credits) track: removed, the community thinks the original version of the song fits better
+- "Old Enemy" track: less saturated
+- "Knight Head" track: less saturated
+- "VK2K2 - Vampire Killer 2002" track: added
+
 ## 1.1.0 (2026, september 9)
 
 ### Compatibility with other patchs

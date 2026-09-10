@@ -39,10 +39,10 @@
 17   "../music/15 16 17 decisive battle edit.wav" 43
 18   "../music/18 epilogue 1 edit.wav" 13
 20   "../music/20 incarnation of darkness (Dracula's theme) edit.wav" 37
-21   "../music/21 old enemy edit.wav" 29
+21   "../music/21 old enemy edit.wav" 29 0.25
 22   "../music/22 beloved person (Lydie Erlanger's theme) edit.wav" 22
-23   "../music/23 successor of fate (Juste Belmont's theme) - variation edit.wav" 21
-25   "../music/25 knight head edit.wav" 50
+25   "../music/25 knight head edit.wav" 50 0.25
+26   "../music/26 VK2K2 - Vampire Killer 2002 edit.wav" 31
 28   "../music/28 I'll sell at my place (Mechant's theme) edit.wav" 90
 29   "../music/29 Maxim Kischine's theme edit.wav" 18
 30   "../music/30 epilogue 2 edit.wav" 43

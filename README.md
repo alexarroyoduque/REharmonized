@@ -39,7 +39,7 @@ Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js
   02. title screen part 2
   19. game over
   24. pitch-dark door
-  26. VK2K2 - Vampire Killer 2002
+  23. successor of fate (Juste Belmont's theme) - variation: comunity feedback
   27. game over Simon
 
 - In the original game, pausing mutes the music. Due to technical limitations, the music has been kept playing while the game is paused.
@@ -79,7 +79,7 @@ Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js
 | 23 | successor of fate (Juste Belmont's theme) - variation | TristanMachinima |
 | 24 | ~~pitch-dark door~~ | - |
 | 25 | knight head | Francisco Relaño Peña |
-| 26 | ~~VK2K2 - Vampire Killer 2002~~ | ~~Jorge Fuentes~~ |
+| 26 | VK2K2 - Vampire Killer 2002 | Jorge Fuentes |
 | 27 | ~~game over Simon~~ | - |
 | 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
 | 29 | Maxim Kischine's theme | Jorge Fuentes |
