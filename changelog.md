@@ -2,8 +2,8 @@
 
 ## 1.2.1 (2026, september 11)
 
-- REharmonized-europe.bps: USA ROM compatibility
-- REharmonized-usa.bps: Europe ROM compatibility
+- REharmonized-europe.bps: Europe ROM compatibility
+- REharmonized-usa.bps: USA ROM compatibility
 
 ## 1.2.0 (2026, september 10)
 
