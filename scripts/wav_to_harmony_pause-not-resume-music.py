@@ -62,7 +62,12 @@ GBA_ROM_BASE = 0x08000000
 SOURCE_ROM_SIZE = 0x00800000  # 8 MiB
 MAX_GBA_ROM_SIZE = 0x02000000  # 32 MiB
 
-HOD_GAME_CODE = b"ACHP"
+HOD_GAME_CODES = (b"ACHP", b"ACHE")  # Europe, USA - verified byte-identical
+                                     # aside from the header/region-lock area
+                                     # and a single unrelated cluster at
+                                     # 0x163984-0x163bb1; the song table and
+                                     # the pause-patch site/cave are at the
+                                     # same addresses in both.
 HOD_SONG_TABLE = 0x001A6B5C
 
 DEFAULT_SAMPLE_RATE = 11025
@@ -108,9 +113,9 @@ def validate_harmony(path: Path) -> bytes:
         )
 
     code = game_code(rom)
-    if code != HOD_GAME_CODE:
+    if code not in HOD_GAME_CODES:
         raise SystemExit(
-            f"Unexpected Harmony game code: {code!r}; expected {HOD_GAME_CODE!r}"
+            f"Unexpected Harmony game code: {code!r}; expected one of {HOD_GAME_CODES!r}"
         )
 
     return rom

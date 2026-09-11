@@ -1,5 +1,5 @@
 # Harmony of Dissonance - REharmonized custom .wav music replacement configuration
-# python3 wav_to_harmony_pause_fix.py rom-harmony.gba config_wav_reharmonized.txt rom-output.gba
+# python3 wav_to_harmony_pause_fix.py rom-harmony-europe.gba config_wav_reharmonized.txt rom-output-test-europe.gba
 # Format:
 #   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO
 #
