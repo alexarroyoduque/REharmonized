@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (2026, september 11)
+
+- "offense and defense - marble corridor" track: initial loop removed. Replaced by the Linqued version.
+- "clock tower casualty" track: replaced by the Linqued version
+
 ## 1.2.1 (2026, september 11)
 
 - REharmonized-europe.bps: Europe ROM compatibility

@@ -25,12 +25,12 @@
 3   "../music/03 name entry edit.wav" 80
 4   "../music/04 prologue edit.wav" 100 0.2
 5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1
-6   "../music/06 offense and defense - marble corridor edit.wav" 23
+6  "../music/06 offense and defense - marble corridor edit.wav" 25
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
 8   "../music/08 luminous caverns edit.wav" 23
 9   "../music/09 skeleton den - cave of skeletons edit.wav" 22
 10   "../music/10 chapel of dissonance edit.wav" 79
-11   "../music/11 clock tower casualty edit.wav" 47
+11  "../music/11 clock tower casualty edit.wav" 8
 12   "../music/12 aqueduct of dragons edit.wav" 75
 13   "../music/13 to the center of the demonic castle - castle treasure edit.wav" 23
 14   "../music/14 dark covenant (Death's theme) edit.wav" 53

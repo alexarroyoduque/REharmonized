@@ -16,7 +16,7 @@ Europe version: [download REharmonized-europe](./REharmonized-europe.bps)
 
 USA version: [download REharmonized-usa](./REharmonized-usa.bps). 
 
-Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js/).
+Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js).
 
 ```
 Database match: Castlevania - Harmony of Dissonance (Europe)
@@ -68,12 +68,12 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 03 | name entry | The Noble Demon |
 | 04 | prologue (Maxim Kischine's theme, variation) | Tobbeh99 Music |
 | 05 | successor of fate (Juste Belmont's theme) | Jorge Fuentes |
-| 06 | offense and defense - marble corridor | Jorge Fuentes |
+| 06 | offense and defense - marble corridor | Linqued |
 | 07 | approach to despair - shrine of the apostates | Jorge Fuentes |
 | 08 | luminous caverns | Jorge Fuentes |
 | 09 | skeleton den - cave of skeletons | Jorge Fuentes |
 | 10 | chapel of dissonance | Jorge Fuentes |
-| 11 | clock tower casualty | Jorge Fuentes |
+| 11 | clock tower casualty | Linqued |
 | 12 | aqueduct of dragons | Jorge Fuentes |
 | 13 | to the center of the demonic castle - castle treasure | Jorge Fuentes |
 | 14 | dark covenant (Death's theme) | Jorge Fuentes |
@@ -101,9 +101,6 @@ AlexArroyoDuque
 ### Using Streamed Audio in Castlevania: Aria of Sorrow
 Rexius55 https://www.romhacking.net/documents/927
 This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
-
-### Visual improvement
-[Pemburu Vampir](https://www.romhacking.net/hacks/9086/)
 
 ### Remastered songs
 Jorge Fuentes
@@ -140,3 +137,6 @@ https://youtu.be/RrCIrBIs90Y?si=CMK_Xs0LNy22pHc1
 
 Good Knight Productions
 https://youtu.be/jVrqvykS5HY?si=VNCFAH1rqFuW0lt2
+
+Linqued Music
+https://youtu.be/mh4EBsRaORM?si=95WEfZRRHZe5SP9I
