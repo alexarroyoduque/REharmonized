@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.3.1 (2026, september 25)
+## 1.3.1 (2026, september 27)
 
 - "chapel of dissonance" track: volume up to 0.45
-- "epilogue 2" track: volumen down down to 0.3
+- "epilogue 2" track: volumen down to 0.3
 
 ## 1.3.0 (2026, september 14)
 
