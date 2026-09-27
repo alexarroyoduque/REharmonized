@@ -1,5 +1,7 @@
 # Harmony of Dissonance - REharmonized custom .wav music replacement configuration
-# python3 wav_to_harmony_pause_fix.py rom-harmony-europe.gba config_wav_reharmonized.txt rom-output-test-europe.gba
+#
+# python3 wav_to_harmony.py harmony.gba config_wav_reharmonized.txt [output.gba]
+#
 # Format:
 #   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO
 #
@@ -11,16 +13,12 @@
 #
 # Optional 4th field:
 #   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO   auto|off|TARGET_RMS
-#     auto        -> current default behavior (RMS target 0.45)
+#     auto        -> current default behavior (default audio normalization 0.4 RMS)
 #     off         -> no gain applied, use the .wav at its own volume
 #     TARGET_RMS  -> a number 0-1 (e.g. 0.30) to force a quieter/less
 #                    saturated result than the default, or a value above
-#                    0.45 for a louder/more saturated one
+#                    0.4 for a louder/more saturated one
 # Example: 4   "../music/04 prologue edit.wav" 100   0.30
-#
-# convert .mp3 to .wav
-# ffmpeg -i input.mp3 -ar 11025 -ac 1 -sample_fmt s16 output.wav
-# Example:
 
 3   "../music/03 name entry edit.wav" 80
 4   "../music/04 prologue edit.wav" 100 0.2
@@ -29,7 +27,7 @@
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
 8   "../music/08 luminous caverns edit.wav" 23
 9   "../music/09 skeleton den - cave of skeletons edit.wav" 22
-10   "../music/10 chapel of dissonance edit.wav" 79
+10   "../music/10 chapel of dissonance edit.wav" 79 0.45
 11  "../music/11 clock tower casualty edit.wav" 8
 12   "../music/12 aqueduct of dragons edit.wav" 75
 13   "../music/13 to the center of the demonic castle - castle treasure edit.wav" 23
@@ -45,10 +43,6 @@
 26   "../music/26 VK2K2 - Vampire Killer 2002 edit.wav" 31
 28   "../music/28 I'll sell at my place (Mechant's theme) edit.wav" 90
 29   "../music/29 Maxim Kischine's theme edit.wav" 18
-30   "../music/30 epilogue 2 edit.wav" 43
+30   "../music/30 epilogue 2 edit.wav" 43 0.3
 31   "../music/31 the item collection room edit.wav" 54
-
-# Add more lines whenever you want:
-# 15         "castle theme.wav"      auto
-# 0x1F       boss.wav                 100
 

@@ -28,7 +28,10 @@ Al principio pensé en utilizar las canciones de Aria of Sorrow y de Circle of t
 
 Esto resultó ser un éxito porque los tres juegos de Castlevania en GBA comparten el mismo sistema de audio MP2K (también conocido como M4A / "Sappy"). 
 Para conseguirlo primero necesitaba cómo se identificaban en memoria las pistas musicales de cada juego. Para identificar las canciones utilicé agbplay.
+```bash
+brew install libsndfile
 ./build/src/agbplay-gui/agbplay-gui
+```
 
 Después fue necesario crear un script que sustituyera las canciones de Harmony por las canciones de Aria o Circle.
 

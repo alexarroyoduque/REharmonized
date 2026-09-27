@@ -6,8 +6,6 @@ Using techniques developed by the romhacking community, this patch brings high-q
 
 [Demo.](https://youtu.be/MyGVkGNWQx0)
 
-<img src="./images/REharmonized_16-9.jpg" alt="REharmonized" width="250">
-
 ## How to use
 
 Get Castlevania: Harmony of Dissonance ROM.
@@ -38,7 +36,7 @@ File/ROM CRC32: 88C1B562
 - STEP 2: Apply your secondary patch to the result of STEP 1. For example
 [Visual Improvement patch](https://www.romhacking.net/hacks/9086/) (Pemburu Vampir). 
 
-The REharmonized patch doesn't change text or graphics, so applying it first allows you to apply other patches later, but sometimes it won't work 100%. **I'll keep an eye on community feedback.**
+The REharmonized patch doesn't change text or graphics, so applying it first allows you to apply other patches later, but sometimes it won't work 100%.
 
 ## Patch changes
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
@@ -63,8 +61,6 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 ## Music list / ROM replacements
 | ID | Song | Author |
 |----|------|--------|
-| 01 | ~~title screen part 1~~ | ~~Erik Hose~~ |
-| 02 | ~~title screen part 2~~ | ~~Erik Hose~~ |
 | 03 | name entry | The Noble Demon |
 | 04 | prologue (Maxim Kischine's theme, variation) | Tobbeh99 Music |
 | 05 | successor of fate (Juste Belmont's theme) | Jorge Fuentes |
@@ -81,15 +77,11 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 16 | desicive battle (loop pattern B) | Good Knight Productions |
 | 17 | desicive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
-| 19 | ~~game over~~ | - |
 | 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
 | 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Jorge Fuentes |
-| 23 | successor of fate (Juste Belmont's theme) - variation | TristanMachinima |
-| 24 | ~~pitch-dark door~~ | - |
 | 25 | knight head | Francisco Relaño Peña |
 | 26 | VK2K2 - Vampire Killer 2002 | Jorge Fuentes |
-| 27 | ~~game over Simon~~ | - |
 | 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
 | 29 | Maxim Kischine's theme | Jorge Fuentes |
 | 30 | epilogue 2 (Lydie Erlanger's theme, variation) | TheWanderingNight |
@@ -101,6 +93,9 @@ AlexArroyoDuque
 ### Using Streamed Audio in Castlevania: Aria of Sorrow
 Rexius55 https://www.romhacking.net/documents/927
 This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
+
+### Rom Patcher
+[March Robledo](https://github.com/marcrobledo/RomPatcher.js)
 
 ### Remastered songs
 Jorge Fuentes
@@ -115,9 +110,6 @@ https://youtu.be/Pibo2miNLyw?si=cDKW8jx8cDRN9EXl
 Erik Hose
 https://youtu.be/gMZP08rAFOg?si=j3cbffkrVL_Guqok
 
-Dracula9AntiChapel
-https://youtu.be/iPJRqpGrLeg?si=6ouZC0z5lgLtoHmE
-
 Francisco Relaño Peña
 https://youtu.be/Sht2rVI7F_w?si=PN12uiUF2yt1S9La
 
@@ -131,9 +123,6 @@ https://youtu.be/LVbmQXmpP8c?si=lJXYdGTGUCFtw2GP
 
 WSPursuer
 https://youtu.be/gi74xmfdlcs?si=mFowT4Pje0LHyO8e
-
-TristanMachinima
-https://youtu.be/RrCIrBIs90Y?si=CMK_Xs0LNy22pHc1
 
 Good Knight Productions
 https://youtu.be/jVrqvykS5HY?si=VNCFAH1rqFuW0lt2

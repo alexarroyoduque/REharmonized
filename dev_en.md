@@ -28,7 +28,8 @@ At first I thought about using songs from Aria of Sorrow and Circle of the Moon 
 
 This turned out to be a success because all three GBA Castlevania games share the same MP2K audio engine (also known as M4A / "Sappy").
 To pull this off, I first needed to know how each game's music tracks were identified in memory. To identify the songs I used agbplay:
-```sh
+```bash
+brew install libsndfile
 ./build/src/agbplay-gui/agbplay-gui
 ```
 

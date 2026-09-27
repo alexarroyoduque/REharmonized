@@ -605,16 +605,6 @@ def main() -> None:
                     f"holds={sug_holds}  gap={sug_gap:+.3f}s"
                 )
 
-    # Plain-text credits, appended after all song data. Not referenced by any
-    # pointer - purely informational (readable via `strings`/a hex editor),
-    # no effect on gameplay or the game's own text/font system.
-    credits_text = (
-        "\n"
-        "================================================\n"
-        "REHARMONIZED AlexArroyoDuque\n"
-        "================================================\n"
-    )
-    out += credits_text.encode("ascii")
     out += b"\x00"  # trailing pad byte (agbplay rejects data ending exactly at ROM end)
 
     if len(out) > MAX_GBA_ROM_SIZE:

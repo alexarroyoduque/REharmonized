@@ -44,16 +44,15 @@ SCREEN_W, SCREEN_H = 240, 160
 MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
 
 # Single source of truth for the version shown on the credits screen - bump
-# this here only, variant scripts (e.g. add_credits_screen_visual_improvement.py)
 # import and reuse it.
-VERSION = "1.3.0"
+VERSION = "1.3.1"
 
 FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
 MUSIC_CREDITS = (
     "Jorge Fuentes, The Noble Demon, Tobbeh99 Music, Erik Hose, "
     "Francisco Relano, TheWanderingNight, Nostalgames_XP, "
-    "WSPursuer, TristanMachinima, Good Knight Productions, Linqued"
+    "WSPursuer, Good Knight Productions, Linqued"
 )
 
 

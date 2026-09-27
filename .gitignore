@@ -4,6 +4,8 @@
 
 ariastreamed-ver2.0.1/**
 
+scripts/RomPatcher.js
+
 # Audacity project files (huge, not needed to reproduce the patch)
 music/*.aup4
 music/*.aup4-lock
