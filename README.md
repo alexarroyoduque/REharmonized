@@ -32,8 +32,8 @@ File/ROM CRC32: 88C1B562
 
 ### Compatibility with other patchs
 
-- STEP 1: Apply REharmonized patch first.
-- STEP 2: Apply your secondary patch to the result of STEP 1. For example
+1. Apply REharmonized patch first.
+2. Apply your secondary patch to the result of STEP 1. For example
 [Visual Improvement patch](https://www.romhacking.net/hacks/9086/) (Pemburu Vampir). 
 
 The REharmonized patch doesn't change text or graphics, so applying it first allows you to apply other patches later, but sometimes it won't work 100%.
@@ -42,12 +42,12 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
 
 - A GBA ROM can only hold 32MB, so a handful of original compositions were kept untouched to save space. If memory management improves in the future, some of these songs may eventually be replaced too. The choice of which songs to keep was based on how much they affect the core gameplay experience. The songs that have NOT been modified are:
-  - 01. title screen part 1
-  - 02. title screen part 2
-  - 19. game over
-  - 24. pitch-dark door
-  - 23. successor of fate (Juste Belmont's theme) - variation: comunity feedback
-  - 27. game over Simon
+  - `01` title screen part 1
+  - `02` title screen part 2
+  - `19` game over
+  - `24` pitch-dark door
+  - `23` successor of fate (Juste Belmont's theme) - variation: comunity feedback
+  - `27` game over Simon
 
 - In the original game, pausing mutes the music. Due to technical limitations, the music has been kept playing while the game is paused.
 
