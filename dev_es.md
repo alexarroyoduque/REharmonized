@@ -150,3 +150,5 @@ Sin embargo encontré varios problemas:
 
 Conseguí restaurar el audio y poder hacer pruebas en emulador e incluso llegúe a inyectar REharmonized con éxito y jugar en mGBA. Para restaurar el audio seguí esta [guía](https://github-wiki-see.page/m/farmerbb/RED-Project/wiki/Castlevania-Advance-Collection).
 Sin embargo al llevar la ROM a Advance Collection seguía fallando. Probé quitando la pantalla de créditos inicial de REharmonized, quitando los ajustes para la rutina de pausa pero no hubo manera. Y por último hice un parche que no tocara nada simplementa ampliara el espacio de la ROM de Advance Collection con 0x00 (espacio vacío) hasta los ~30mb para probar si era alguna restricción del emulador de Konami en el recopilatorio. Pues con el tamaño expandido que no alteraba nada de la ROM el juego seguía fallando por lo que finalmente la idea de que REharmonized funcione en Advance Collection fue descartada ya que el tamaño de la ROM aumenta considerablemente al inyectar el parche.
+
+Hize una prueba más y hasta los 16mb rellenados con espacio vacío el emulador de Konami era capaz de ejecutar el juego pero con 20mb ya no era posible.
