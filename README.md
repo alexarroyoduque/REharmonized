@@ -56,8 +56,6 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 
 [Developer notes (Spanish)](./dev_es.md)
 
-[Developer notes (English)](./dev_en.md)
-
 ## Music list / ROM replacements
 | ID | Song | Author |
 |----|------|--------|

@@ -1,4 +1,4 @@
-# Notas de desarrollo
+# Diario desarrollo
 
 ## Herramientas
 - python 3: scripting
@@ -136,3 +136,17 @@ Algunas composiciones suenan un poco saturadas con la normalización automática
 ```
 4   "../music/04 prologue edit.wav" 100 0.2
 ```
+
+### 15. Advance Collection
+Varias peticiones de jugadores solicitaban que el parche funcionara en Advance Collection.
+Es posible extrar las roms, aplicar parches y volver a empaquetar el recopilatorio.
+
+Para ello se usa la herramienta [MArchiveBatchTool-win-x64](https://github.com/farmerbb/RED-Project/wiki/Castlevania-Anniversary-Collection) y siguiendo este [tutorial](https://youtu.be/azQY-fIwizY?si=nHDGM3LZE-iEVkGg) es sencillo hacerlo.
+
+Sin embargo encontré varios problemas:
+- Las roms extraídas no tienen audio en el emulador por lo que hacer pruebas sin tener que hacer todo el proceso es reempaquetado es tedioso.
+- La rutina de pausa está ubicada en otra posición de memoria, aunque no es un impedimento a priori.
+- Tras aplicar REharmonized a la ROM, Harmony no funciona en Advance Collection.
+
+Conseguí restaurar el audio y poder hacer pruebas en emulador e incluso llegúe a inyectar REharmonized con éxito y jugar en mGBA. Para restaurar el audio seguí esta [guía](https://github-wiki-see.page/m/farmerbb/RED-Project/wiki/Castlevania-Advance-Collection).
+Sin embargo al llevar la ROM a Advance Collection seguía fallando. Probé quitando la pantalla de créditos inicial de REharmonized, quitando los ajustes para la rutina de pausa pero no hubo manera. Y por último hice un parche que no tocara nada simplementa ampliara el espacio de la ROM de Advance Collection con 0x00 (espacio vacío) hasta los ~30mb para probar si era alguna restricción del emulador de Konami en el recopilatorio. Pues con el tamaño expandido que no alteraba nada de la ROM el juego seguía fallando por lo que finalmente la idea de que REharmonized funcione en Advance Collection fue descartada ya que el tamaño de la ROM aumenta considerablemente al inyectar el parche.
