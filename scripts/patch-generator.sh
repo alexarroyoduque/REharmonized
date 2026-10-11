@@ -13,9 +13,9 @@
 # SOURCES
 ROM_ORIGINAL_USA="rom-harmony-usa.gba"
 ROM_ORIGINAL_EUROPE="rom-harmony-europe.gba"
-VERSION="1.3.1"
-ROM_REHARMONIZED_USA="rom-harmony-usa-reharmonized-$VERSION"
-ROM_REHARMONIZED_EUROPE="rom-harmony-europe-reharmonized-$VERSION"
+VERSION="1.3.2"
+ROM_REHARMONIZED_USA="rom-harmony-usa-$VERSION"
+ROM_REHARMONIZED_EUROPE="rom-harmony-europe-$VERSION"
 
 # RESULTS
 PATCH_USA="REharmonized-usa.bps"

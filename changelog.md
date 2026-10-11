@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 (2026, october 11)
+
+- "I'll sell at my place (Mechant's theme)" track: volume down to 0.3
+
 ## 1.3.1 (2026, september 27)
 
 - "chapel of dissonance" track: volume up to 0.45
