@@ -45,7 +45,7 @@ MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
 
 # Single source of truth for the version shown on the credits screen - bump
 # import and reuse it.
-VERSION = "1.3.2"
+VERSION = "1.3.3"
 
 FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 

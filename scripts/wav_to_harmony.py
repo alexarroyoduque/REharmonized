@@ -9,7 +9,7 @@ output/input through a temp file. Neither script is modified or duplicated -
 this just saves you from running them one after another by hand.
 
 Usage:
-  python3 wav_to_harmony.py harmony.gba config_wav_reharmonized.txt [output.gba]
+  python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt [output.gba]
 
 If output.gba is omitted, it defaults to "<harmony-stem>-<VERSION><suffix>"
 in the current directory (VERSION comes from add_credits_screen.VERSION),

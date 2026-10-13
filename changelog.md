@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.3 (2026, october 13)
+
+- "luminous caverns" track: volume changed to 0.35
+- "chapel of dissonance" track: volume changed to default 0.4
+- "dark covenant (Death's theme)" track: volume changed to 0.35
+- "old enemy" track: volume changed to 0.3
+- "Maxim Kischine's theme" track: volume changed to 0.35
+- "epilogue 2" track: volume changed to 0.25
+
 ## 1.3.2 (2026, october 11)
 
 - "I'll sell at my place (Mechant's theme)" track: volume down to 0.3
