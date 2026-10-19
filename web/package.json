@@ -1,0 +1,18 @@
+{
+  "name": "reharmonized-web",
+  "version": "0.1.0",
+  "description": "Web tool to inject custom songs into Castlevania: Harmony of Dissonance",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "^13.0.0",
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
