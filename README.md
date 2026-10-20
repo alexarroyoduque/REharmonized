@@ -1,4 +1,4 @@
-REharmonized
+# REharmonized
 
 Castlevania: Harmony of Dissonance features excellent musical compositions, but its sound engine doesn't do them justice. REharmonized aims to fix that.
 
