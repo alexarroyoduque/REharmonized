@@ -1,8 +1,8 @@
 # REharmonized
 
-Castlevania: Harmony of Dissonance features excellent musical compositions, but its sound engine doesn't do them justice. REharmonized aims to fix that.
+**Castlevania: Harmony of Dissonance** features excellent musical compositions, but its sound engine doesn't do them justice. REharmonized aims to fix that.
 
-Using techniques developed by the romhacking community, this patch brings high-quality community arrangements of the original soundtrack into the game, taking advantage of Aria of Sorrow's improved sound.
+Using techniques developed by the romhacking community, **this patch brings high-quality community arrangements of the original soundtrack** into the game, taking advantage of Aria of Sorrow's improved sound.
 
 [Demo.](https://youtu.be/MyGVkGNWQx0)
 
