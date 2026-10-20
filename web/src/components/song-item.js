@@ -283,14 +283,13 @@ class SongItem extends LitElement {
     .suggestions-title {
       color: var(--accent);
       font-weight: 600;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.2rem;
       font-size: 0.95rem;
     }
 
     .suggestion-item {
       color: var(--text-secondary);
       font-size: 0.9rem;
-      margin: 0.5rem 0;
       font-family: monospace;
     }
 
