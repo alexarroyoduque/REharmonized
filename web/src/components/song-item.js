@@ -30,7 +30,7 @@ class SongItem extends LitElement {
 
     .song-item:hover {
       border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(194, 31, 58, 0.2);
+      box-shadow: 0 0 10px var(--glow-accent-subtle);
     }
 
     .song-header {
@@ -149,7 +149,7 @@ class SongItem extends LitElement {
     input[type='number']:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(194, 31, 58, 0.3);
+      box-shadow: 0 0 10px var(--glow-accent-medium);
     }
 
     input[type='file']::file-selector-button {
@@ -197,7 +197,7 @@ class SongItem extends LitElement {
     button.suggest-btn:hover {
       background-color: var(--accent);
       color: var(--bg-primary);
-      box-shadow: 0 0 15px rgba(194, 31, 58, 0.3);
+      box-shadow: 0 0 15px var(--glow-accent-medium);
     }
 
     button.suggest-btn:active {
@@ -248,8 +248,8 @@ class SongItem extends LitElement {
       padding: 0.85rem 1rem;
       border: 1px solid var(--accent);
       border-radius: 4px;
-      background: #28131a;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      background: var(--tooltip-surface);
+      box-shadow: 0 8px 24px var(--shadow-tooltip);
       color: var(--text-primary);
       font-size: 0.9rem;
       line-height: 1.5;
@@ -260,7 +260,7 @@ class SongItem extends LitElement {
       width: 16px;
       height: 16px;
       border: 2px solid currentColor;
-      border-top-color: transparent;
+      border-top-color: var(--transparent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin-right: 0.5rem;
@@ -275,7 +275,7 @@ class SongItem extends LitElement {
     .suggestions {
       margin-top: 1rem;
       padding: 1rem;
-      background-color: rgba(194, 31, 58, 0.1);
+      background-color: var(--status-accent);
       border-left: 3px solid var(--accent);
       border-radius: 4px;
     }
@@ -423,7 +423,7 @@ class SongItem extends LitElement {
 
                 <div class="suggest-actions">
                   <button class="suggest-btn" @click=${this._suggestTempos} ?disabled=${!this.customWav || this.suggestionsLoading}>
-                    ${this.suggestionsLoading ? html`<span class="spinner"></span>` : ''} Suggest Tempos
+                    ${this.suggestionsLoading ? html`<span class="spinner"></span>` : ''} SUGGEST TEMPOS
                   </button>
                   <div class="tempo-info">
                     <button

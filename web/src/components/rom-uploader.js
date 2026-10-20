@@ -24,12 +24,12 @@ class RomUploader extends LitElement {
 
     .upload-section:hover {
       border-color: var(--accent);
-      background-color: rgba(194, 31, 58, 0.05);
+      background-color: var(--status-accent-subtle);
     }
 
     .upload-section.dragging {
       border-color: var(--accent);
-      background-color: rgba(194, 31, 58, 0.1);
+      background-color: var(--status-accent);
     }
 
     .upload-icon {
@@ -75,7 +75,7 @@ class RomUploader extends LitElement {
 
     .file-button:hover {
       background-color: var(--accent-light);
-      box-shadow: 0 0 15px rgba(194, 31, 58, 0.4);
+      box-shadow: 0 0 15px var(--glow-accent-strong);
     }
 
     .file-button:active {
@@ -92,18 +92,18 @@ class RomUploader extends LitElement {
     }
 
     .validation-message.loading {
-      background-color: rgba(194, 31, 58, 0.1);
+      background-color: var(--status-accent);
       color: var(--accent);
     }
 
     .validation-message.error {
-      background-color: rgba(220, 53, 69, 0.1);
+      background-color: var(--status-error);
       color: var(--error);
       border: 1px solid var(--error);
     }
 
     .validation-message.success {
-      background-color: rgba(40, 167, 69, 0.1);
+      background-color: var(--status-success);
       color: var(--success);
       border: 1px solid var(--success);
     }
@@ -113,7 +113,7 @@ class RomUploader extends LitElement {
       width: 18px;
       height: 18px;
       border: 3px solid currentColor;
-      border-top-color: transparent;
+      border-top-color: var(--transparent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -149,7 +149,7 @@ class RomUploader extends LitElement {
         <span class="upload-icon"></span>
         <div class="upload-text">
           <h3>Upload Harmony of Dissonance ROM</h3>
-          <p>Select your ROM file (.gba) to get started</p>
+          <p>You can use the USA or EUR version</p>
         </div>
 
         <div class="file-input-wrapper">
@@ -162,7 +162,7 @@ class RomUploader extends LitElement {
             @dragleave=${this._handleDragLeave}
             @drop=${this._handleDrop}
           />
-          <label for="rom-input" class="file-button">Choose ROM File</label>
+          <label for="rom-input" class="file-button">SELECT ROM FILE</label>
         </div>
 
         ${this.validationState !== 'idle'

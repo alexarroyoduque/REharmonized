@@ -1,0 +1,36 @@
+:root {
+  --bg-primary: #10090c;
+  --bg-secondary: #1b1115;
+  --text-primary: #f1e6e8;
+  --text-secondary: #b9a7ab;
+  --text-highlight: #fff0f1;
+  --accent: #c21f3a;
+  --accent-dark: #6d1728;
+  --accent-light: #e34b5d;
+  --error: #ff6675;
+  --error-text: #ffb4ab;
+  --error-surface: #321b1b;
+  --error-border: #f28b82;
+  --success: #75b88a;
+  --tooltip-surface: #28131a;
+  --transparent: transparent;
+
+  --pattern-color: rgba(106, 18, 38, 0.045);
+  --header-overlay-light: rgba(16, 9, 12, 0.24);
+  --header-overlay-dark: rgba(16, 9, 12, 0.76);
+  --footer-surface: rgba(16, 9, 12, 0.88);
+  --status-accent-subtle: rgba(194, 31, 58, 0.05);
+  --status-accent: rgba(194, 31, 58, 0.1);
+  --status-accent-strong: rgba(194, 31, 58, 0.12);
+  --status-error: rgba(220, 53, 69, 0.1);
+  --status-success: rgba(40, 167, 69, 0.1);
+  --overlay: rgba(0, 0, 0, 0.8);
+  --shadow-tooltip: rgba(0, 0, 0, 0.55);
+  --glow-accent-subtle: rgba(194, 31, 58, 0.2);
+  --glow-accent-soft: rgba(194, 31, 58, 0.28);
+  --glow-accent-medium: rgba(194, 31, 58, 0.3);
+  --glow-accent: rgba(194, 31, 58, 0.38);
+  --glow-accent-strong: rgba(194, 31, 58, 0.4);
+  --glow-accent-intense: rgba(194, 31, 58, 0.42);
+  --glow-accent-text: rgba(194, 31, 58, 0.75);
+}

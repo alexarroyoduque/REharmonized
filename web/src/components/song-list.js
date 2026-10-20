@@ -93,7 +93,7 @@ class SongList extends LitElement {
     return html`
       <div class="songs-header">
         <h3>♫ Customize Harmony of Dissonance Soundtrack</h3>
-        <p>Select an option for each track below: keep original, use REharmonized preset, or upload a custom .wav file.</p>
+        <p>⚠ Remember that the maximum size for a GBA ROM is 32MB</p>
         <div class="bulk-options" role="radiogroup" aria-label="Apply mode to all tracks">
           <label class="bulk-option">
             <input
@@ -103,7 +103,7 @@ class SongList extends LitElement {
               .checked=${this.bulkMode === 'none'}
               @change=${this._handleBulkModeChange}
             />
-            <span>Set all to No modification</span>
+            <span>Set all to "No modification"</span>
           </label>
           <label class="bulk-option">
             <input
@@ -113,7 +113,7 @@ class SongList extends LitElement {
               .checked=${this.bulkMode === 'reharmonized'}
               @change=${this._handleBulkModeChange}
             />
-            <span>Set all to REharmonized preset</span>
+            <span>Set all to "REharmonized preset"</span>
           </label>
         </div>
       </div>

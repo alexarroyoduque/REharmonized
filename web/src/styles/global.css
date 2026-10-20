@@ -1,17 +1,5 @@
 /* Global styles for REharmonized web */
 
-:root {
-  --bg-primary: #10090c;
-  --bg-secondary: #1b1115;
-  --text-primary: #f1e6e8;
-  --text-secondary: #b9a7ab;
-  --accent: #c21f3a;
-  --accent-dark: #6d1728;
-  --accent-light: #e34b5d;
-  --error: #ff6675;
-  --success: #75b88a;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -25,10 +13,10 @@ body {
   background-color: var(--bg-primary);
   background-image: repeating-linear-gradient(
     135deg,
-    rgba(106, 18, 38, 0.045) 0,
-    rgba(106, 18, 38, 0.045) 1px,
-    transparent 1px,
-    transparent 7px
+    var(--pattern-color) 0,
+    var(--pattern-color) 1px,
+    var(--transparent) 1px,
+    var(--transparent) 7px
   );
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -115,7 +103,7 @@ button {
 
 button:hover {
   background-color: var(--accent-light);
-  box-shadow: 0 0 10px rgba(194, 31, 58, 0.38);
+  box-shadow: 0 0 10px var(--glow-accent);
 }
 
 button:active {
@@ -153,7 +141,7 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(194, 31, 58, 0.28);
+  box-shadow: 0 0 10px var(--glow-accent-soft);
 }
 
 /* Radio buttons */

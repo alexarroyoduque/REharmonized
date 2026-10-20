@@ -3,7 +3,7 @@ import './firebase.js';
 import './components/rom-uploader.js';
 import './components/song-list.js';
 import { injectSongsToRom, downloadRom } from './utils/rom-injector.js';
-import headerArtwork from '../../images/REharmonized-no-logo.jpg';
+import headerArtwork from '../../images/REharmonized_Juste.jpg';
 
 class AppRoot extends LitElement {
   static properties = {
@@ -17,16 +17,6 @@ class AppRoot extends LitElement {
   };
 
   static styles = css`
-    :host {
-      --bg-primary: #10090c;
-      --bg-secondary: #1b1115;
-      --text-primary: #f1e6e8;
-      --text-secondary: #b9a7ab;
-      --accent: #c21f3a;
-      --accent-dark: #6d1728;
-      --accent-light: #e34b5d;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -39,10 +29,10 @@ class AppRoot extends LitElement {
       background-color: var(--bg-primary);
       background-image: repeating-linear-gradient(
         135deg,
-        rgba(106, 18, 38, 0.045) 0,
-        rgba(106, 18, 38, 0.045) 1px,
-        transparent 1px,
-        transparent 7px
+        var(--pattern-color) 0,
+        var(--pattern-color) 1px,
+        var(--transparent) 1px,
+        var(--transparent) 7px
       );
       color: var(--text-primary);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -51,7 +41,7 @@ class AppRoot extends LitElement {
 
     header {
       background-color: var(--bg-secondary);
-      background-image: linear-gradient(90deg, rgba(16, 9, 12, 0.24), rgba(16, 9, 12, 0.76)), url(${unsafeCSS(headerArtwork)});
+      background-image: linear-gradient(90deg, var(--header-overlay-light), var(--header-overlay-dark)), url(${unsafeCSS(headerArtwork)});
       background-position: center 15%;
       background-size: cover;
       background-repeat: no-repeat;
@@ -64,14 +54,17 @@ class AppRoot extends LitElement {
     header h1 {
       font-size: 2.5rem;
       font-weight: bold;
-      color: #fff0f1;
-      text-shadow: 0 2px 4px #10090c, 0 0 22px rgba(194, 31, 58, 0.75);
+      color: var(--text-highlight);
+      text-shadow: 0 2px 4px var(--bg-primary), 0 0 22px var(--glow-accent-text);
       margin-bottom: 0.5rem;
+    }
+    header .version {
+      font-size: 1.8rem;
     }
 
     header p {
-      color: #f1e6e8;
-      text-shadow: 0 1px 4px #10090c;
+      color: var(--text-primary);
+      text-shadow: 0 1px 4px var(--bg-primary);
       font-size: 1rem;
     }
 
@@ -91,7 +84,7 @@ class AppRoot extends LitElement {
       gap: 0.5rem 1.25rem;
       padding: 1.1rem 1.5rem;
       border-top: 1px solid var(--accent-dark);
-      background: rgba(16, 9, 12, 0.88);
+      background: var(--footer-surface);
       color: var(--text-secondary);
       font-size: 0.9rem;
       text-align: center;
@@ -103,7 +96,7 @@ class AppRoot extends LitElement {
 
     .site-footer a:hover,
     .site-footer a:focus-visible {
-      color: #fff0f1;
+      color: var(--text-highlight);
       text-decoration: underline;
     }
 
@@ -127,15 +120,15 @@ class AppRoot extends LitElement {
       font-size: 1.1rem;
       margin-bottom: 1rem;
       padding: 1rem;
-      background-color: rgba(194, 31, 58, 0.12);
+      background-color: var(--status-accent-strong);
       border-left: 4px solid var(--accent);
       border-radius: 4px;
     }
 
     .error-message {
-      color: #ffb4ab;
-      background-color: #321b1b;
-      border-left: 4px solid #f28b82;
+      color: var(--error-text);
+      background-color: var(--error-surface);
+      border-left: 4px solid var(--error-border);
       padding: 1rem;
       margin-top: 1rem;
       overflow-wrap: anywhere;
@@ -157,7 +150,7 @@ class AppRoot extends LitElement {
 
     .apply-button:hover:not(:disabled) {
       background-color: var(--accent-light);
-      box-shadow: 0 0 20px rgba(194, 31, 58, 0.42);
+      box-shadow: 0 0 20px var(--glow-accent-intense);
       transform: scale(1.02);
     }
 
@@ -173,7 +166,7 @@ class AppRoot extends LitElement {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: var(--overlay);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -187,7 +180,7 @@ class AppRoot extends LitElement {
       border-radius: 8px;
       max-width: 400px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(194, 31, 58, 0.3);
+      box-shadow: 0 0 30px var(--glow-accent-medium);
     }
 
     .progress-content h3 {
@@ -276,7 +269,7 @@ class AppRoot extends LitElement {
   render() {
     return html`
       <header>
-        <h1>REharmonized</h1>
+        <h1>REharmonized <span class="version">1.3.3</span></h1>
         <p>Inject custom songs into Castlevania: Harmony of Dissonance</p>
       </header>
 
@@ -297,14 +290,15 @@ class AppRoot extends LitElement {
                 <button class="apply-button" @click=${this._applyREharmonized} ?disabled=${this.injectionInProgress}>
                   ${this.injectionInProgress
                     ? html`Injecting...`
-                    : html`Apply REharmonized`}
+                    : html`APPLY REHARMONIZED`}
                 </button>
               `}
         </section>
       </main>
 
       <footer class="site-footer">
-        <span>Patch by AlexArroyoDuque</span>
+        <span>Developed by AlexArroyoDuque</span>
+        <a href="https://www.romhacking.net/hacks/9975" target="_blank" rel="noopener noreferrer">Patch</a>
         <a href="https://github.com/alexarroyoduque/REharmonized" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://www.patreon.com/cw/AlexArroyoDuque" target="_blank" rel="noopener noreferrer">Patreon</a>
       </footer>
