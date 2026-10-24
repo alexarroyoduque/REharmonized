@@ -91,6 +91,12 @@ class SongItem extends LitElement {
       margin: 0;
     }
 
+    .radio-option input:disabled,
+    .radio-option input:disabled + label {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
     .radio-option input[type='radio']:checked + label {
       color: var(--accent);
       font-weight: 600;
@@ -352,6 +358,7 @@ class SongItem extends LitElement {
                     id="mode-reharmonized-${this.song.id}"
                     name="mode-${this.song.id}"
                     value="reharmonized"
+                    disabled
                     .checked=${this.mode === 'reharmonized'}
                     @change=${this._handleModeChange}
                   />
@@ -409,14 +416,14 @@ class SongItem extends LitElement {
                     <input
                       type="number"
                       id="volume-${this.song.id}"
-                      min="0"
+                      min="0.01"
                       max="1"
                       step="0.01"
                       placeholder="0.4"
                       .value=${this.customVolume}
                       @change=${this._handleVolumeChange}
                     />
-                    <div class="file-name">Default: 0.4 (range: 0–1)</div>
+                    <div class="file-name">Default: 0.4 (range: 0.01–1)</div>
                   </div>
                 </div>
 
@@ -518,8 +525,8 @@ class SongItem extends LitElement {
     }
 
     const volume = Number(value);
-    if (!Number.isFinite(volume) || volume < 0 || volume > 1) {
-      input.setCustomValidity('Volume must be between 0 and 1.');
+    if (!Number.isFinite(volume) || volume < 0.01 || volume > 1) {
+      input.setCustomValidity('Volume must be between 0.01 and 1.');
       input.reportValidity();
       input.value = this.customVolume;
       return;

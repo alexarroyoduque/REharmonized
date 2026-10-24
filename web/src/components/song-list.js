@@ -70,6 +70,15 @@ class SongList extends LitElement {
       cursor: pointer;
     }
 
+    .bulk-option:has(input:disabled) {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .bulk-option input:disabled {
+      cursor: not-allowed;
+    }
+
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -93,6 +102,7 @@ class SongList extends LitElement {
     return html`
       <div class="songs-header">
         <h3>♫ Customize Harmony of Dissonance Soundtrack</h3>
+        <p>⚠ "REharmonized preset" is currently unavailable, problems with the host due to excessive traffic</p>
         <p>⚠ Remember that the maximum size for a GBA ROM is 32MB</p>
         <div class="bulk-options" role="radiogroup" aria-label="Apply mode to all tracks">
           <label class="bulk-option">
@@ -110,6 +120,7 @@ class SongList extends LitElement {
               type="radio"
               name="bulk-mode"
               value="reharmonized"
+              disabled
               .checked=${this.bulkMode === 'reharmonized'}
               @change=${this._handleBulkModeChange}
             />
