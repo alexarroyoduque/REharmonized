@@ -45,7 +45,7 @@ To test the production build locally:
 npm run preview -- --host 127.0.0.1
 ```
 
-## macOS Desktop App
+## Desktop App
 
 The Electron build reuses the web interface and original Python scripts. It includes the selected preset WAVs, Pyodide 0.24.0, its Python standard library, and Pillow. ROM injection and tempo analysis work offline; end users do not need Python, Node.js, or the build tools installed. Analytics is not initialized in the desktop build, and HTTP(S) requests from the application are blocked. Footer links open in the external browser only when clicked.
 
@@ -62,7 +62,7 @@ The first build downloads Electron and the offline Pyodide assets. Later builds 
 
 The application's release version and installer filenames are read from `VERSION` in `../scripts/add_credits_screen.py` via the generated credits assets, not from the npm package version. Update that Python constant and rebuild to release a new version. The ROM credits retain their `-custom` suffix; the application version does not include that suffix.
 
-Outputs are in `app/`: a `.app` under `mac-arm64/` on Apple Silicon (or `mac/` on Intel), plus a DMG installer and ZIP archive. The application icon is generated from `favicon.ico` as an ICNS file for macOS. The target architecture defaults to the build Mac's architecture; this does not generate a universal binary. `dist-desktop/` and `desktop/runtime/` are separate from the Firebase `dist/` output and are not deployed to Hosting. Intermediate runtime assets and `dist-desktop/` are ignored by Git; `app/` is not ignored. Generated installers exceed GitHub's 100 MiB regular Git file limit, so use Git LFS to commit them or distribute them through GitHub Releases instead. This setup does not configure LFS or upload artifacts.
+Outputs are in `app/`: a `.app` under `mac-arm64/` on Apple Silicon (or `mac/` on Intel), plus a DMG installer and ZIP archive. The application icon is generated from `favicon.ico` as an ICNS file for macOS and ICO/PNG files for Windows. The macOS target architecture defaults to the build Mac's architecture; this does not generate a universal binary. `dist-desktop/` and `desktop/runtime/` are separate from the Firebase `dist/` output and are not deployed to Hosting. Runtime assets, `dist-desktop/`, and the entire `app/` output are ignored by Git. Distribute generated files manually, for example through GitHub Releases; no upload is performed by these commands.
 
 For local development without packaging:
 
@@ -83,7 +83,19 @@ It uses a synthetic ROM, selects a real bundled preset, runs Python and Pillow l
 DESKTOP_EXECUTABLE="$PWD/app/mac-arm64/REharmonized.app/Contents/MacOS/REharmonized" npm run desktop:test
 ```
 
-Builds are not Developer ID signed or notarized. macOS Gatekeeper may warn or block downloaded copies; only open builds from a trusted source using macOS's normal security approval flow. No Apple developer account is needed for local packaging. These commands do not generate or validate a Windows executable.
+Builds are not Developer ID signed or notarized. macOS Gatekeeper may warn or block downloaded copies; only open builds from a trusted source using macOS's normal security approval flow. No Apple developer account is needed for local packaging.
+
+### Windows Portable Executable
+
+Cross-build a Windows x64 portable executable from macOS:
+
+```sh
+npm run desktop:win
+```
+
+The distributable is `app/REharmonized-<version>-windows-x64.exe`. Share that single file, not the intermediate `app/win-unpacked/` folder or its inner executable alone. The portable launcher extracts the bundled application into a temporary folder when opened; it does not require installation, Node.js, Python, or network access for ROM processing. Presets are enabled just as in the macOS desktop build. ROMs are saved to the Windows user's Downloads folder with the same naming and collision handling described above.
+
+The build does not require Wine or GitHub Actions. Editing/signing the inner Electron executable's native resources is disabled for cross-building; the application version still comes from the credits script via the packaged metadata. Builds are unsigned, and Windows SmartScreen may warn about an unknown publisher. Package inspection and the shared macOS smoke test do not replace testing the executable on Windows; no Windows runtime test is performed on the build Mac.
 
 ## Deploy to Firebase Hosting
 

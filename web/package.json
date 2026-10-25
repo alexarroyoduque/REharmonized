@@ -13,7 +13,8 @@
     "desktop:build": "npm run desktop:prepare && vite build --mode desktop --minify esbuild",
     "desktop:start": "electron .",
     "desktop:test": "node tools/test-desktop.mjs",
-    "desktop:mac": "npm run desktop:build && electron-builder --mac --config desktop/builder.cjs"
+    "desktop:mac": "npm run desktop:build && electron-builder --mac --config desktop/builder.cjs",
+    "desktop:win": "npm run desktop:build && electron-builder --win --x64 --config desktop/builder.cjs"
   },
   "build": {
     "appId": "io.github.alexarroyoduque.reharmonized",
@@ -28,6 +29,14 @@
       "!node_modules/**/*"
     ],
     "npmRebuild": false,
+    "win": {
+      "icon": "desktop/runtime/icon.ico",
+      "target": ["portable"],
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-windows-${arch}.${ext}"
+    },
     "mac": {
       "icon": "desktop/runtime/icon.icns",
       "category": "public.app-category.utilities",

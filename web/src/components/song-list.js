@@ -103,7 +103,7 @@ class SongList extends LitElement {
       <div class="songs-header">
         <h3>♫ Customize Harmony of Dissonance Soundtrack</h3>
         ${!import.meta.env.VITE_DESKTOP
-          ? html`<p>⚠ "REharmonized preset" is unavailable in web, problems with the host due to excessive traffic. You can download the desktop app</p>`
+          ? html`<p>⚠ The “REharmonized preset” is unavailable in the web app due to hosting traffic limits. <a href="https://github.com/alexarroyoduque/REharmonized/releases" target="_blank" rel="noopener">Download the desktop app to use it</a></p>`
           : ''}
         <p>⚠ Remember that the maximum size for a GBA ROM is 32MB</p>
         <div class="bulk-options" role="radiogroup" aria-label="Apply mode to all tracks">

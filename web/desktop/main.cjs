@@ -17,6 +17,7 @@ function openExternal(url) {
 function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'REharmonized',
+    icon: path.join(app.getAppPath(), 'dist-desktop/icon.png'),
     width: 1200,
     height: 850,
     minWidth: 640,
