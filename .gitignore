@@ -28,3 +28,8 @@ __pycache__/
 
 # OS
 .DS_Store
+
+# Desktop packaging
+web/desktop/runtime/
+web/dist-desktop/
+web/app/

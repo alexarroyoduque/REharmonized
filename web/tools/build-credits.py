@@ -12,6 +12,7 @@ def main():
     spec = importlib.util.spec_from_file_location("credits", script)
     credits = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(credits)
+    version = credits.VERSION
     credits.VERSION = f"{credits.VERSION}-custom"
 
     bitmap_addr = 0x08123400
@@ -36,6 +37,7 @@ def main():
     image = io.BytesIO()
     credits.render_credits_image().save(image, format="PNG")
     print(json.dumps({
+        "version": version,
         "source": script.read_text(),
         "image": base64.b64encode(image.getvalue()).decode("ascii"),
         "stub": base64.b64encode(stub).decode("ascii"),

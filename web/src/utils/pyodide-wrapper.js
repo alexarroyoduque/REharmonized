@@ -12,6 +12,9 @@ import baseModuleCode from '../../../scripts/wav_to_harmony_pause-not-resume-mus
 
 let pyodideInstance = null;
 let pyodideLoading = false;
+const pyodideURL = import.meta.env.VITE_DESKTOP
+  ? new URL(`${import.meta.env.BASE_URL}pyodide/`, window.location.href).href
+  : 'https://cdn.jsdelivr.net/pyodide/v0.24.0/full/';
 
 /**
  * Load Pyodide (happens once per session, cached thereafter)
@@ -33,7 +36,7 @@ export async function loadPyodideRuntime() {
 
     // Load Pyodide as a global script
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.0/full/pyodide.js";
+    script.src = `${pyodideURL}pyodide.js`;
     await new Promise((resolve, reject) => {
       script.onload = resolve;
       script.onerror = reject;
@@ -46,7 +49,7 @@ export async function loadPyodideRuntime() {
     }
 
     pyodideInstance = await window.loadPyodide({
-      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.0/full/",
+      indexURL: pyodideURL,
     });
 
     console.log("[Pyodide] Runtime loaded");

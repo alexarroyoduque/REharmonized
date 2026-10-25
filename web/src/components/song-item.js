@@ -358,7 +358,7 @@ class SongItem extends LitElement {
                     id="mode-reharmonized-${this.song.id}"
                     name="mode-${this.song.id}"
                     value="reharmonized"
-                    disabled
+                    ?disabled=${!import.meta.env.VITE_DESKTOP}
                     .checked=${this.mode === 'reharmonized'}
                     @change=${this._handleModeChange}
                   />

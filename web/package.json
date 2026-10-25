@@ -3,16 +3,49 @@
   "version": "0.1.0",
   "description": "Web tool to inject custom songs into Castlevania: Harmony of Dissonance",
   "type": "module",
+  "main": "desktop/main.cjs",
+  "engines": { "node": ">=24.12.0" },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "desktop:prepare": "node tools/prepare-desktop.mjs",
+    "desktop:build": "npm run desktop:prepare && vite build --mode desktop --minify esbuild",
+    "desktop:start": "electron .",
+    "desktop:test": "node tools/test-desktop.mjs",
+    "desktop:mac": "npm run desktop:build && electron-builder --mac --config desktop/builder.cjs"
+  },
+  "build": {
+    "appId": "io.github.alexarroyoduque.reharmonized",
+    "productName": "REharmonized",
+    "directories": {
+      "output": "app"
+    },
+    "files": [
+      "desktop/main.cjs",
+      "dist-desktop/**/*",
+      "package.json",
+      "!node_modules/**/*"
+    ],
+    "npmRebuild": false,
+    "mac": {
+      "icon": "desktop/runtime/icon.icns",
+      "category": "public.app-category.utilities",
+      "identity": null,
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    }
   },
   "dependencies": {
     "firebase": "^13.0.0",
     "lit": "^3.0.0"
   },
   "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.18.0",
+    "playwright": "^1.64.1",
     "vite": "^5.0.0"
   }
 }

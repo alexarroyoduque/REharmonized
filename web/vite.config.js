@@ -79,14 +79,18 @@ function creditsAssets() {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  define: {
+    'import.meta.env.VITE_DESKTOP': JSON.stringify(mode === 'desktop'),
+  },
+  publicDir: mode === 'desktop' ? 'desktop/runtime' : 'public',
   plugins: [creditsAssets(), presetAssets()],
   server: {
     port: 5173,
     open: true,
   },
   build: {
-    outDir: 'dist',
+    outDir: mode === 'desktop' ? 'dist-desktop' : 'dist',
     minify: 'terser',
   },
-});
+}));

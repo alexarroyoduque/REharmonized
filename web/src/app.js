@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import './firebase.js';
+if (!import.meta.env.VITE_DESKTOP) import('./firebase.js');
 import './components/rom-uploader.js';
 import './components/song-list.js';
 import { injectSongsToRom, downloadRom } from './utils/rom-injector.js';
