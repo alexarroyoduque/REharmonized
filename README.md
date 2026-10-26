@@ -47,8 +47,6 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
 
 - A GBA ROM can only hold 32MB, so a handful of original compositions were kept untouched to save space. If memory management improves in the future, some of these songs may eventually be replaced too. The choice of which songs to keep was based on how much they affect the core gameplay experience. The songs that have NOT been modified are:
-  - `01` title screen part 1
-  - `02` title screen part 2
   - `19` game over
   - `24` pitch-dark door
   - `23` successor of fate (Juste Belmont's theme) - variation: comunity feedback
@@ -64,6 +62,8 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 ## Music list / ROM replacements
 | ID | Song | Author |
 |----|------|--------|
+| 01 | title screen part 1 | Erik Hose |
+| 02 | title screen part 2 | Erik Hose |
 | 03 | name entry | The Noble Demon |
 | 04 | prologue (Maxim Kischine's theme, variation) | Tobbeh99 Music |
 | 05 | successor of fate (Juste Belmont's theme) | Jorge Fuentes |
@@ -80,6 +80,7 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 16 | desicive battle (loop pattern B) | Good Knight Productions |
 | 17 | desicive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
+| 19 | game over | Eithereor |
 | 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
 | 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Jorge Fuentes |
@@ -99,6 +100,9 @@ This guide has helped me create music versions that sound like they’re from Ar
 
 ### Rom Patcher
 [March Robledo](https://github.com/marcrobledo/RomPatcher.js)
+
+### Soporte, pruebas y calidad
+-SuXei999-
 
 ### Remastered songs
 Jorge Fuentes
@@ -132,3 +136,6 @@ https://youtu.be/jVrqvykS5HY?si=VNCFAH1rqFuW0lt2
 
 Linqued Music
 https://youtu.be/mh4EBsRaORM?si=95WEfZRRHZe5SP9I
+
+Eithereor
+

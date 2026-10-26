@@ -77,6 +77,8 @@ El script genera sugerencias de gap negativo para ayudar a ajustar el TEMPO. Det
 
 Algunas composiciones quedaron fuera por motivos de espacio: una ROM de GBA solo puede almacenar 32MB. Quedaron fuera las que consideré que menos afectaban a la experiencia de juego principal.
 
+El script mezcla canales a mono, remuestrea a 11.025 Hz, aplica volumen/normalización configurados y convierte a PCM de 8 bits para guardarlo en ROM.
+
 Canciones descartadas:
   01. title screen part 1
   02. title screen part 2
@@ -152,3 +154,25 @@ Conseguí restaurar el audio y poder hacer pruebas en emulador e incluso llegúe
 Sin embargo al llevar la ROM a Advance Collection seguía fallando. Probé quitando la pantalla de créditos inicial de REharmonized, quitando los ajustes para la rutina de pausa pero no hubo manera. Y por último hice un parche que no tocara nada simplementa ampliara el espacio de la ROM de Advance Collection con 0x00 (espacio vacío) hasta los ~30mb para probar si era alguna restricción del emulador de Konami en el recopilatorio. Pues con el tamaño expandido que no alteraba nada de la ROM el juego seguía fallando por lo que finalmente la idea de que REharmonized funcione en Advance Collection fue descartada ya que el tamaño de la ROM aumenta considerablemente al inyectar el parche.
 
 Hize una prueba más y hasta los 16mb rellenados con espacio vacío el emulador de Konami era capaz de ejecutar el juego pero con 20mb ya no era posible.
+
+### 16. El hack chino
+En los foros de facebook se hizo alusión a que alguien había migrado un hack chino que corregía la música a la versión USA. Pensé que hablaban de REharmonized pero no era así.
+https://cdromance.org/gba-roms/castlevania-white-night-concerto-hack
+
+En 2023 lo chinos ya hicieron su propio REharmonized llamado "white nigh concerto". Este hack funciona de forma similar y Carloslmar lo porta a la versión USA con algunos cambios.
+- La versión de Carloslmar sí lo hace silenciándola, en realidad se sigue reproduciendo
+
+Hay otros datos interesante sobre "White night concerto" creado por:
+- 死神紫霞 (Zixia)	Autor, ajustes de jugabilidad y física
+- 風輕 (Feng Qing)	Sustitución de las pistas musicales
+- Abslb绝岚	Modificaciones técnicas y visuales
+- kasa	Corrección de errores
+
+https://www.wlgooo.com/18134.html
+
+https://retrogametalk.com/threads/castlevania-harmony-of-dissonance-usa-music-hack.72014/
+- En la pausa no pausa la música
+- Ahorra espacio usando la misma pista para: 4, 29 y 31; y también para 22 y 30.
+- Consigue tener partes no reproducibles para la pista 5 (12,2s), 6 (6,4s) y 8 (29s). En el juego original hay partes del bucle que no se repiten y el hack chino lo tiene en cuenta. 
+
+Con los datos del hack chino observando sus bucles me doy cuenta de que puedo acortar algunas canciones y así dejar espacio para algunas pistas que quedaron fuera como las intros o el game over.

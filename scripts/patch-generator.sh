@@ -13,7 +13,7 @@
 # SOURCES
 ROM_ORIGINAL_USA="rom-harmony-usa.gba"
 ROM_ORIGINAL_EUROPE="rom-harmony-europe.gba"
-VERSION="1.3.3"
+VERSION="1.4.0"
 ROM_REHARMONIZED_USA="rom-harmony-usa-$VERSION"
 ROM_REHARMONIZED_EUROPE="rom-harmony-europe-$VERSION"
 
