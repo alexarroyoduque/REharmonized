@@ -1,5 +1,48 @@
 # Diario desarrollo
 
+## Introducción una sola vez e inicio de bucle por canción
+
+El comando habitual sigue siendo (desde `scripts/`):
+
+````sh
+python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt
+````
+
+El inyector admite un quinto campo opcional, `LOOP_START_SECONDS`, después
+de la normalización. Por ejemplo, la pista 5 puede usar `1 auto 12.2` tras
+la ruta del WAV: reproduce desde el principio una vez y, al llegar al final,
+vuelve a los 12,2 segundos. Para mantener la normalización predeterminada,
+escribe `auto` como cuarto campo.
+
+- Omitir el quinto campo o usar `0` conserva el bucle anterior y su ajuste por tempo.
+- Un valor positivo activa el bucle PCM nativo de MP2K, sin duplicar muestras
+  ni reiniciar la introducción. En este modo el tempo no ajusta el bucle y
+  no se imprimen sugerencias de tempo/gap.
+- El punto se redondea a la muestra más cercana después del resampleado a
+  11025 Hz; debe quedar dentro del audio. Sin sexto campo no se aplica fundido
+  en el corte: conviene escoger un punto musicalmente adecuado en el WAV.
+- El sexto campo opcional, `CROSSFADE_SECONDS`, suaviza el corte. Por ejemplo,
+  `1 auto 12.4 0.05` conserva la introducción de 12,4 s y mezcla los últimos
+  50 ms con los primeros 50 ms del bucle, antes de cuantizar a PCM de 8 bits.
+  Después salta al tramo siguiente al ya mezclado (aproximadamente 12,45 s).
+  Cada vuelta queda 50 ms más corta, sin duplicar audio ni cambiar su velocidad.
+  La duración se redondea a muestras; a 11025 Hz, 50 ms son 551 muestras.
+  La primera entrada al bucle y el WAV original no se modifican. El fundido
+  es lineal y no aumenta el volumen de señales correlacionadas.
+  Omitirlo o usar `0` desactiva la mezcla. Un valor positivo requiere un quinto
+  campo positivo, al menos dos muestras y como máximo la mitad del bucle.
+- Las pistas con el mismo WAV pero distinto inicio de bucle o crossfade no comparten
+  la entrada de caché. Las que tienen todos los ajustes iguales sí la comparten.
+- La ROM original no se modifica; el wrapper y el inyector rechazan usarla
+  también como salida.
+
+Pruebas desde la raíz del proyecto (las de ROM usan `scripts/rom-harmony-usa.gba`
+y escriben exclusivamente en un directorio temporal):
+
+````sh
+python3 -m unittest discover -s scripts -p 'test_wav_to_harmony_pause_fix.py' -v
+````
+
 ## Herramientas
 - python 3: scripting
 - agbplay (agbplay-gui / agbplay-nc): identificar los IDs de las canciones, escuchar las canciones de reemplazo antes/después de la inyección

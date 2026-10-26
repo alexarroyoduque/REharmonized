@@ -41,6 +41,9 @@ def main() -> None:
     else:
         output_path = Path(f"{rom_path.stem}-{add_credits_screen.VERSION}{rom_path.suffix}")
 
+    if output_path.resolve() == rom_path.resolve():
+        raise SystemExit("Output must differ from the original ROM; refusing to overwrite it")
+
     with tempfile.TemporaryDirectory() as tmp:
         injected_path = Path(tmp) / f"injected{rom_path.suffix}"
 

@@ -19,15 +19,27 @@
 #                    saturated result than the default, or a value above
 #                    0.4 for a louder/more saturated one
 # Example: 4   "../music/04 prologue edit.wav" 100   0.30
+#
+# Optional 5th field: LOOP_START_SECONDS (default 0 = existing whole-song loop).
+# A positive value plays the intro once, then loops from that second to the
+# WAV's end using a native PCM loop, independent of TEMPO. Must be before EOF.
+# Keep field 4 (use auto for default normalization) when adding field 5.
+# Example: 5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1 auto 12.2
+#
+# Optional 6th field: CROSSFADE_SECONDS (default 0 = disabled).
+# Requires a positive field 5. Blends the final seconds with the loop's head
+# and jumps past that blended head; each loop becomes this much shorter.
+# Intro and source WAV stay unchanged. Must span at least 2 resampled samples
+# and not exceed half the loop duration. Example: 12.4 0.05 = 50 ms crossfade.
 
 1   "../music/01 title screen edit.wav" auto
 2   "../music/02 title screen edit.wav" auto
 3   "../music/03 name entry edit.wav" 80
 4   "../music/04 prologue edit.wav" 100 0.2
-5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1
-6   "../music/06 offense and defense - marble corridor edit.wav" 25
+5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" auto auto 12.4 0.18
+6   "../music/06 offense and defense - marble corridor edit.wav" auto auto 6.3 0.18
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
-8   "../music/08 luminous caverns edit.wav" 23 0.35
+8   "../music/08 luminous caverns edit.wav" auto 0.35 29.1 0.25
 9   "../music/09 skeleton den - cave of skeletons edit.wav" 2
 10  "../music/10 chapel of dissonance edit.wav" 79
 11  "../music/11 clock tower casualty edit.wav" 8
