@@ -8,7 +8,7 @@
 - "skeleton den - cave of skeleton" track with shorter lopp
 - "aqueduct of dragons" track with shorter lopp
 - "to the center of the demonic castle - castle treasure" track with shorter lopp
-- Improved tracks: 4, 14, 22 & 29 
+- Improved tracks: 4, 14, 20, 22 & 29 
 
 ## 1.3.3 (2026, october 13)
 

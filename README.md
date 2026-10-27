@@ -81,9 +81,9 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 17 | decisive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
 | 19 | game over (Belmont's Revenge)| Eithereor |
-| 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
+| 20 | incarnation of darkness (Dracula's theme) | VGMuseum midi |
 | 21 | old enemy | WSPursuer |
-| 22 | beloved person (Lydie Erlanger's theme) | Jorge Fuentes |
+| 22 | beloved person (Lydie Erlanger's theme) | Francisco Relaño Peña |
 | 25 | knight head | Francisco Relaño Peña |
 | 26 | VK2K2 - Vampire Killer 2002 | Jorge Fuentes |
 | 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
@@ -139,4 +139,9 @@ https://youtu.be/mh4EBsRaORM?si=95WEfZRRHZe5SP9I
 
 Eithereor
 https://www.vgmuseum.com/mrp/multi/mp3s-eithereor.htm
+
+VGMuseum
+https://www.vgmusic.com/music/console/nintendo/gba/
+https://www.vgmuseum.com/mrp/multi/midis.htm
+https://www.ninsheetmusic.org/browse/series/Castlevania 
 
