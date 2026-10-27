@@ -35,3 +35,4 @@ __pycache__/
 web/desktop/runtime/
 web/dist-desktop/
 web/app/
+web/.firebase/

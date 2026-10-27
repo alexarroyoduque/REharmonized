@@ -258,7 +258,7 @@ Sin embargo al llevar la ROM a Advance Collection seguía fallando. Probé quita
 
 Hize una prueba más y hasta los 16mb rellenados con espacio vacío el emulador de Konami era capaz de ejecutar el juego pero con 20mb ya no era posible.
 
-### 16. El hack chino
+### 16. El hack chino (origen de la versión 1.4.0)
 En los foros de facebook se hizo alusión a que alguien había migrado un hack chino que corregía la música a la versión USA. Pensé que hablaban de REharmonized pero no era así.
 https://cdromance.org/gba-roms/castlevania-white-night-concerto-hack
 
@@ -274,7 +274,7 @@ Hay otros datos interesante sobre "White night concerto" creado por:
 https://www.wlgooo.com/18134.html
 
 https://retrogametalk.com/threads/castlevania-harmony-of-dissonance-usa-music-hack.72014/
-- En la pausa no pausa la música
+- En la pausa no pausa la música (igual que REharmonized)
 - Ahorra espacio usando la misma pista para: 4, 29 y 31; y también para 22 y 30.
 - Consigue tener partes no reproducibles para la pista 5 (12,2s), 6 (6,4s) y 8 (29s). En el juego original hay partes del bucle que no se repiten y el hack chino lo tiene en cuenta. 
 
