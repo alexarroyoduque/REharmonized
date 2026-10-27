@@ -269,7 +269,7 @@ class AppRoot extends LitElement {
   render() {
     return html`
       <header>
-        <h1>REharmonized <span class="version">1.3.3</span></h1>
+        <h1>REharmonized <span class="version">${import.meta.env.VITE_APP_VERSION}</span></h1>
         <p>Inject custom songs into Castlevania: Harmony of Dissonance</p>
       </header>
 

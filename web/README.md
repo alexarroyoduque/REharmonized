@@ -14,7 +14,7 @@ Browser-based tool for applying REharmonized presets or custom music to a **Cast
 - Node.js 24.12 or newer and npm.
 - Python 3 with Pillow for generating the credits assets.
 - `arm-none-eabi-as` and `arm-none-eabi-objcopy` for assembling the credits code.
-- The font configured by `scripts/add_credits_screen.py` (currently macOS Menlo).
+- The font configured by `scripts/modules/credits.py` (currently macOS Menlo).
 
 Vite uses `python3` by default, or the repository's `.venv/bin/python3` if present. Set `CREDITS_PYTHON` to use a different interpreter.
 
@@ -60,7 +60,7 @@ npm run desktop:mac
 
 The first build downloads Electron and the offline Pyodide assets. Later builds reuse the local cache. The build-time Python, Pillow, ARM binutils, and Menlo requirements above still apply when generating credits assets.
 
-The application's release version and installer filenames are read from `VERSION` in `../scripts/add_credits_screen.py` via the generated credits assets, not from the npm package version. Update that Python constant and rebuild to release a new version. The ROM credits retain their `-custom` suffix; the application version does not include that suffix.
+The release version has a single source: `../VERSION` at the repository root. Vite uses it for the web title and generated credits assets; Electron reads the same generated version for app metadata and installer filenames. `scripts/patch-generator.sh` also uses it to name versioned ROMs. Update that file when releasing; the ROM credits retain their `-custom` suffix, while the app version does not.
 
 Outputs are in `app/`: a `.app` under `mac-arm64/` on Apple Silicon (or `mac/` on Intel), plus a DMG installer and ZIP archive. The application icon is generated from `favicon.ico` as an ICNS file for macOS and ICO/PNG files for Windows. The macOS target architecture defaults to the build Mac's architecture; this does not generate a universal binary. `dist-desktop/` and `desktop/runtime/` are separate from the Firebase `dist/` output and are not deployed to Hosting. Runtime assets, `dist-desktop/`, and the entire `app/` output are ignored by Git. Distribute generated files manually, for example through GitHub Releases; no upload is performed by these commands.
 

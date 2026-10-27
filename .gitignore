@@ -17,6 +17,8 @@ scripts/RomPatcher.js
 music/*.aup4
 music/*.aup4-lock
 music/*_data/
+music/*.aup4-shm
+music/*.aup4-wal
 
 # Extracted vanilla ROM audio (copyrighted, not community covers)
 music/original/

@@ -1,14 +1,13 @@
 /**
  * Harmony of Dissonance - Tempo Suggestion (via Pyodide)
  *
- * Executes the original Python suggest_tempos.py logic directly in the browser
+ * Executes the shared Python tempo logic directly in the browser
  * using Pyodide (CPython 3.11 compiled to WebAssembly).
  *
- * No code duplication - single source of truth is suggest_tempos.py
- * and wav_to_harmony_pause-not-resume-music.py
+ * No code duplication - the implementation lives in scripts/modules.
  */
 
-import baseModuleCode from '../../../scripts/wav_to_harmony_pause-not-resume-music.py?raw';
+import { installPythonModules } from './python-modules.js';
 
 let pyodideInstance = null;
 let pyodideLoading = false;
@@ -52,6 +51,9 @@ export async function loadPyodideRuntime() {
       indexURL: pyodideURL,
     });
 
+    installPythonModules(pyodideInstance);
+    await pyodideInstance.runPythonAsync("import sys\nif '/tmp' not in sys.path: sys.path.insert(0, '/tmp')");
+
     console.log("[Pyodide] Runtime loaded");
     return pyodideInstance;
   } catch (error) {
@@ -64,7 +66,7 @@ export async function loadPyodideRuntime() {
 
 /**
  * Main function: process a WAV file and return tempo suggestions
- * using the original Python code from suggest_tempos.py (no code duplication).
+ * using the shared Python modules (no code duplication).
  *
  * @param {File | Blob} wavFile - The WAV file
  * @param {string} songId - Song ID (e.g., "01")
@@ -89,24 +91,11 @@ export async function processWavForTempos(wavFile, songId = "01") {
       `[Pyodide] WAV written (${(wavBytes.length / 1024).toFixed(1)} KB)`
     );
 
-    pyodide.FS.writeFile(
-      "/tmp/wav_to_harmony.py",
-      new TextEncoder().encode(baseModuleCode)
-    );
-
-    // Execute Python code to calculate tempos
-    // This uses suggest_tempos.py's exact logic
     const pythonCode = `
 import json
 import sys
 from pathlib import Path
-
-# Dynamically load the base module (same as suggest_tempos.py does)
-import importlib.util
-base_path = Path('/tmp/wav_to_harmony.py')
-spec = importlib.util.spec_from_file_location('wav_to_harmony_base', base_path)
-base = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(base)
+from modules import base
 
 # Read WAV using the original function
 wav_path = Path('${wavPath}')
@@ -122,7 +111,6 @@ duration_s = len(resampled) / base.DEFAULT_SAMPLE_RATE
 tempo, holds, hold_s = base.pick_tempo_and_holds(duration_s, None)
 suggestions = base.suggest_tempos(duration_s, base.DEFAULT_SUGGEST_GAPS)
 
-# Format output (same as suggest_tempos.py)
 result = json.dumps({
     'song_id': '${songId}',
     'wav_path': '${wavFile.name}',

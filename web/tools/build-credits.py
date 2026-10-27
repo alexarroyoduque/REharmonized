@@ -1,17 +1,18 @@
 import base64
-import importlib.util
 import io
 import json
 import struct
+import sys
 import tempfile
 from pathlib import Path
 
+scripts = Path(__file__).resolve().parents[2] / "scripts"
+sys.path.insert(0, str(scripts))
+from modules import credits
+
 
 def main():
-    script = Path(__file__).resolve().parents[2] / "scripts/add_credits_screen.py"
-    spec = importlib.util.spec_from_file_location("credits", script)
-    credits = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(credits)
+    script = Path(credits.__file__).resolve()
     version = credits.VERSION
     credits.VERSION = f"{credits.VERSION}-custom"
 

@@ -11,9 +11,14 @@
 # ============================================================
 
 # SOURCES
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 ROM_ORIGINAL_USA="rom-harmony-usa.gba"
 ROM_ORIGINAL_EUROPE="rom-harmony-europe.gba"
-VERSION="1.4.0"
+VERSION="$(tr -d '[:space:]' < "$SCRIPT_DIR/../VERSION")"
+if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "Error: Invalid version in $SCRIPT_DIR/../VERSION: $VERSION" >&2
+    exit 1
+fi
 ROM_REHARMONIZED_USA="rom-harmony-usa-$VERSION"
 ROM_REHARMONIZED_EUROPE="rom-harmony-europe-$VERSION"
 

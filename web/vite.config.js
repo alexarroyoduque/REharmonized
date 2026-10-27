@@ -3,6 +3,11 @@ import { spawnSync } from 'node:child_process';
 import { createReadStream, existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+const appVersion = readFileSync(fileURLToPath(new URL('../VERSION', import.meta.url)), 'utf8').trim();
+if (!/^\d+\.\d+\.\d+$/.test(appVersion)) {
+  throw new Error(`Invalid semantic version in ../VERSION: ${appVersion}`);
+}
+
 function presetAssets() {
   let assets;
   function generate() {
@@ -82,6 +87,7 @@ function creditsAssets() {
 export default defineConfig(({ mode }) => ({
   define: {
     'import.meta.env.VITE_DESKTOP': JSON.stringify(mode === 'desktop'),
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(appVersion),
   },
   publicDir: mode === 'desktop' ? 'desktop/runtime' : 'public',
   plugins: [creditsAssets(), presetAssets()],

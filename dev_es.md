@@ -1,5 +1,63 @@
 # Diario desarrollo
 
+## Versión de publicación
+
+La única versión editable está en `VERSION`, en la raíz del repositorio.
+`modules.version` la lee para los créditos y el nombre de ROM; Vite la inyecta
+en el título web y en los recursos de créditos que usa Electron; y
+`scripts/patch-generator.sh` la usa para nombrar las ROM al generar los BPS.
+Para publicar una versión nueva, cambia solo ese archivo y vuelve a generar
+los parches y builds que vayas a distribuir. El smoke test compara la versión
+mostrada por la app con la metadata de Electron.
+
+## Organización de los módulos
+
+El único comando necesario sigue siendo el mismo, desde `scripts/`:
+
+```sh
+python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt [output.gba]
+```
+
+`[output.gba]` es opcional, no se escribe literalmente. Sin ese argumento,
+el nombre incluye la versión definida en `modules/credits.py`.
+
+La implementación está en `scripts/modules/`:
+
+| Módulo | Responsabilidad |
+| --- | --- |
+| `pipeline.py` | Coordinar etapas y publicar la salida solo al completarlas |
+| `config.py` | Leer y validar el TXT, incluidas las columnas opcionales |
+| `audio.py` | Leer WAV, mezclar a mono, remuestrear y codificar PCM |
+| `normalization.py` | Ajustar RMS y limitar picos |
+| `tempo.py` | Calcular tempo, esperas y sugerencias de gap |
+| `loops.py` | Fundido entre final e inicio del bucle, conservando la intro |
+| `songs.py` | Construir secuencias MP2K, instrumentos y bucles PCM nativos |
+| `injection.py` | Añadir canciones, recolocar punteros y reutilizar muestras |
+| `pause_patch.py` | Validar y aplicar el parche de pausa/reanudación |
+| `credits.py` | Imagen, stub ARM y aplicación de créditos |
+| `rom.py` | Constantes, validación de ROM y acceso binario |
+| `base.py` | Exportaciones compartidas para inyección y sugerencias de tempo |
+
+El flujo es: configuración y validación de ROM; conversión de audio;
+normalización; intro/crossfade; codificación PCM; cálculo de tempo;
+construcción e inyección; parche de pausa; créditos; publicación final.
+Si una etapa falla, el pipeline limpia sus temporales y conserva la salida
+anterior. La ROM original nunca se usa como salida.
+
+Los adaptadores antiguos y las utilidades de portado que no participan en
+este flujo se han eliminado. El único script de entrada es `wav_to_harmony.py`;
+la web y las pruebas importan `modules` directamente. No se necesita la
+importación dinámica del archivo con guiones.
+La web y el escritorio empaquetan los mismos módulos en Pyodide; el
+empaquetador de presets reutiliza el parser del TXT, incluida intro/crossfade.
+La adaptación de créditos de Pyodide actúa sobre `modules.credits`.
+
+La refactorización se verificó comparando byte por byte una ROM completa
+antes y después (mismo SHA-256), manteniendo intacta la ROM USA original.
+Las pruebas importan los módulos directamente y también cubren fallos y
+publicación atómica del pipeline. El nombre histórico del archivo de pruebas
+se conserva para mantener el comando de ejecución.
+
 ## Introducción una sola vez e inicio de bucle por canción
 
 El comando habitual sigue siendo (desde `scripts/`):
@@ -40,7 +98,7 @@ Pruebas desde la raíz del proyecto (las de ROM usan `scripts/rom-harmony-usa.gb
 y escriben exclusivamente en un directorio temporal):
 
 ````sh
-python3 -m unittest discover -s scripts -p 'test_wav_to_harmony_pause_fix.py' -v
+python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
 ````
 
 ## Herramientas
@@ -50,10 +108,10 @@ python3 -m unittest discover -s scripts -p 'test_wav_to_harmony_pause_fix.py' -v
 - gdb: se conecta al servidor GDB de mGBA (`target remote localhost:2345`) para encontrar/validar los puntos de parcheo (p. ej. la rutina de pausa, la resolución del ID de canción) antes de aplicar un fix definitivo en un script
 - Audacity: recortar/ajustar los puntos de bucle de los WAV antes de pasarlos a los scripts de inyección
 - Homebrew: instalar las herramientas de abajo (`brew install arm-none-eabi-binutils arm-none-eabi-gcc`)
-- arm-none-eabi-as / arm-none-eabi-objcopy: ensamblan el stub ARM de arranque usado por `add_credits_screen.py` (`brew install arm-none-eabi-binutils`)
+- arm-none-eabi-as / arm-none-eabi-objcopy: ensamblan el stub ARM de arranque usado por `modules/credits.py` (`brew install arm-none-eabi-binutils`)
 
 ### Dependencias
-- Pillow (`pip install pillow`): única dependencia de terceros usada en el proyecto (renderizado de imágenes + conversión a bitmap Modo 3 en `add_credits_screen.py`). Todo lo demás en los scripts es librería estándar de Python 3 (`argparse`, `struct`, `wave`, `subprocess`, `pathlib`, etc.).
+- Pillow (`pip install pillow`): única dependencia de terceros usada en el proyecto (renderizado de imágenes + conversión a bitmap Modo 3 en `modules/credits.py`). Todo lo demás en los scripts es librería estándar de Python 3 (`argparse`, `struct`, `wave`, `subprocess`, `pathlib`, etc.).
 - Instálala una vez para el `python3` que uses para ejecutar los scripts (no hace falta venv, aunque también funciona dentro de uno):
   ```sh
   python3 -m pip install --user --break-system-packages pillow
@@ -62,6 +120,8 @@ python3 -m unittest discover -s scripts -p 'test_wav_to_harmony_pause_fix.py' -v
 ## Proceso de desarrollo
 
 Todo el código de los scripts ha sido escrito por una IA bajo mi supervisión.
+Las secciones siguientes son un diario histórico: los scripts de portado y
+adaptadores antiguos que menciona ya no forman parte del proyecto actual.
 
 ### 1. Objetivo
 Sustituir las canciones de Harmony of Dissonance por melodías que suenen mejor.

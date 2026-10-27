@@ -1,14 +1,12 @@
 /**
  * Harmony of Dissonance - ROM Injector (Phase 5)
  *
- * Executes wav_to_harmony_pause_fix.py via Pyodide to inject custom songs
+ * Executes modules.injection via Pyodide to inject custom songs
  * into the ROM based on user selections.
  */
 
 import { loadPyodideRuntime } from './pyodide-wrapper.js';
 import creditsPipeline from './credits-pipeline.py?raw';
-import baseModuleCode from '../../../scripts/wav_to_harmony_pause-not-resume-music.py?raw';
-import injectorCode from '../../../scripts/wav_to_harmony_pause_fix.py?raw';
 
 let reharmonizedPresetsPromise = null;
 
@@ -99,7 +97,7 @@ export async function injectSongsToRom(
         const wavPath = `/tmp/song_${songId}_${Date.now()}.wav`;
         pyodide.FS.writeFile(wavPath, wavBytes);
 
-        configLines.push(`${songId}\t${wavPath}\t${preset.tempo}\t${preset.volume}`);
+        configLines.push(`${songId}\t${wavPath}\t${preset.tempo}\t${preset.volume}\t${preset.loopStart ?? 0}\t${preset.crossfade ?? 0}`);
         console.log(
           `[Injector] Song ${songId}: REharmonized preset (${preset.wavPath}, tempo ${preset.tempo})`
         );
@@ -130,20 +128,6 @@ export async function injectSongsToRom(
     }
 
     const creditsAssets = await creditsScriptResp.json();
-    const creditsCode = creditsAssets.source;
-
-    pyodide.FS.writeFile(
-      '/tmp/wav_to_harmony_pause-not-resume-music.py',
-      new TextEncoder().encode(baseModuleCode)
-    );
-    pyodide.FS.writeFile(
-      '/tmp/wav_to_harmony_pause_fix.py',
-      new TextEncoder().encode(injectorCode)
-    );
-    pyodide.FS.writeFile(
-      '/tmp/add_credits_screen.py',
-      new TextEncoder().encode(creditsCode)
-    );
 
     onProgress("[5/5] Loading credits dependencies...", 65);
     await pyodide.loadPackage('pillow');

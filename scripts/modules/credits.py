@@ -3,7 +3,7 @@
 Harmony of Dissonance - REharmonized boot credits screen
 
 Standalone, independent patch: takes an already-built REharmonized ROM
-(output of wav_to_harmony_pause_fix.py) and prepends a simple splash screen
+(output of modules.injection) and prepends a simple splash screen
 that shows the patch/music credits before the game boots, requiring a
 START press to continue into the normal game.
 
@@ -22,7 +22,7 @@ How it works:
      Nintendo logo at 0x04-0x9F) to jump to the new stub instead.
 
 Usage:
-    python3 add_credits_screen.py rom-reharmonized-testN.gba [rom-final.gba]
+    python3 -m modules.credits rom-reharmonized-testN.gba [rom-final.gba]
 
 If the output path is omitted, it defaults to the input filename with
 "-credits" appended before the extension (e.g. rom-testN.gba -> rom-testN-credits.gba).
@@ -38,14 +38,11 @@ import tempfile
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+from .version import VERSION
 
 GBA_ROM_BASE = 0x08000000
 SCREEN_W, SCREEN_H = 240, 160
 MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
-
-# Single source of truth for the version shown on the credits screen - bump
-# import and reuse it.
-VERSION = "1.4.0"
 
 FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
@@ -201,17 +198,22 @@ def main(render_fn=render_credits_image) -> None:
     if len(sys.argv) not in (2, 3):
         raise SystemExit(f"Usage: {sys.argv[0]} input.gba [output.gba]")
 
+    input_path = Path(sys.argv[1])
+    if len(sys.argv) == 3:
+        output_path = Path(sys.argv[2])
+    else:
+        output_path = input_path.with_name(f"{input_path.stem}-credits{input_path.suffix}")
+    add_credits(input_path, output_path, render_fn=render_fn)
+
+
+def add_credits(input_path: Path, output_path: Path, *, render_fn=render_credits_image) -> None:
+    """Append the credits bitmap/stub and redirect the initial ARM branch."""
     if shutil.which("arm-none-eabi-as") is None or shutil.which("arm-none-eabi-objcopy") is None:
         raise SystemExit(
             "arm-none-eabi-as / arm-none-eabi-objcopy not found in PATH.\n"
             "Install with: brew install arm-none-eabi-binutils"
         )
 
-    input_path = Path(sys.argv[1])
-    if len(sys.argv) == 3:
-        output_path = Path(sys.argv[2])
-    else:
-        output_path = input_path.with_name(f"{input_path.stem}-credits{input_path.suffix}")
     rom = bytearray(input_path.read_bytes())
 
     original_target = decode_entry_branch(bytes(rom))

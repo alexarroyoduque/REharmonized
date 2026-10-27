@@ -1,6 +1,6 @@
 [
-  { "id": "01", "name": "title screen part 1", "preset": false },
-  { "id": "02", "name": "title screen part 2", "preset": false },
+  { "id": "01", "name": "title screen part 1", "preset": true },
+  { "id": "02", "name": "title screen part 2", "preset": true },
   { "id": "03", "name": "name entry", "preset": true },
   { "id": "04", "name": "prologue (Maxim Kischine's theme, variation)", "preset": true },
   { "id": "05", "name": "successor of fate (Juste Belmont's theme)", "preset": true },
@@ -17,7 +17,7 @@
   { "id": "16", "name": "decisive battle (loop pattern B)", "preset": true },
   { "id": "17", "name": "decisive battle (loop pattern C)", "preset": true },
   { "id": "18", "name": "epilogue 1", "preset": true },
-  { "id": "19", "name": "game over", "preset": false },
+  { "id": "19", "name": "game over", "preset": true },
   { "id": "20", "name": "incarnation of darkness (Dracula's theme)", "preset": true },
   { "id": "21", "name": "old enemy", "preset": true },
   { "id": "22", "name": "beloved person (Lydie Erlanger's theme)", "preset": true },

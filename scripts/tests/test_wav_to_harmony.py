@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run: python3 -m unittest discover -s scripts -p 'test_wav_to_harmony_pause_fix.py' -v"""
+"""Run: python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v"""
 from __future__ import annotations
 
 import hashlib
@@ -11,10 +11,14 @@ import tempfile
 import unittest
 import wave
 from pathlib import Path
+from unittest.mock import patch
 
-import wav_to_harmony_pause_fix as injector
+SCRIPT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SCRIPT_DIR))
 
-SCRIPT_DIR = Path(__file__).resolve().parent
+from modules import injection as injector
+from modules import pipeline
+from modules.version import VERSION
 
 
 class ConfigTests(unittest.TestCase):
@@ -38,6 +42,10 @@ class ConfigTests(unittest.TestCase):
             (5, Path("a.wav"), 1, None, 12.4, 0.05),
             (6, Path("a.wav"), 1, 0.0, 0.0, 0.0),
         ])
+
+    def test_version_comes_from_repository_file(self):
+        version_file = SCRIPT_DIR.parent / "VERSION"
+        self.assertEqual(VERSION, version_file.read_text(encoding="ascii").strip())
 
     def test_invalid_offsets(self):
         for value in ("-1", "nan", "inf", "-inf", "bad"):
@@ -126,6 +134,56 @@ class BlobTests(unittest.TestCase):
                 injector.build_song_blob(**self.kwargs, loop_start_s=offset)
 
 
+class PipelineTests(unittest.TestCase):
+    def test_failed_credits_preserve_existing_output_and_clean_staging(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "original.gba"
+            output = root / "output.gba"
+            source.write_bytes(b"original")
+            output.write_bytes(b"previous valid output")
+
+            def inject(rom_path, config_path, target):
+                target.write_bytes(b"injected")
+
+            def failed_credits(injected, target):
+                target.write_bytes(b"partial output")
+                raise RuntimeError("Credits failed")
+
+            with patch.object(pipeline, "inject_songs", side_effect=inject), \
+                    patch.object(pipeline.credits, "add_credits", side_effect=failed_credits):
+                with self.assertRaisesRegex(RuntimeError, "Credits failed"):
+                    pipeline.build_rom(source, root / "config.txt", output)
+
+            self.assertEqual(source.read_bytes(), b"original")
+            self.assertEqual(output.read_bytes(), b"previous valid output")
+            self.assertEqual(sorted(path.name for path in root.iterdir()),
+                             ["original.gba", "output.gba"])
+
+    def test_success_publishes_only_completed_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "original.gba"
+            output = root / "output.gba"
+            source.write_bytes(b"original")
+            output.write_bytes(b"previous valid output")
+
+            def inject(rom_path, config_path, target):
+                target.write_bytes(b"injected")
+
+            def credits(injected, target):
+                self.assertEqual(injected.read_bytes(), b"injected")
+                self.assertEqual(output.read_bytes(), b"previous valid output")
+                target.write_bytes(b"complete output")
+
+            with patch.object(pipeline, "inject_songs", side_effect=inject), \
+                    patch.object(pipeline.credits, "add_credits", side_effect=credits):
+                pipeline.build_rom(source, root / "config.txt", output)
+            self.assertEqual(output.read_bytes(), b"complete output")
+            self.assertEqual(source.read_bytes(), b"original")
+            self.assertEqual(len(list(root.iterdir())), 2)
+
+
 @unittest.skipUnless((SCRIPT_DIR / "rom-harmony-usa.gba").is_file(), "Original USA ROM unavailable")
 class RomTests(unittest.TestCase):
     def setUp(self):
@@ -149,9 +207,9 @@ class RomTests(unittest.TestCase):
     def run_injector(self, text, output=None):
         self.config.write_text(text, encoding="utf-8")
         return subprocess.run(
-            [sys.executable, str(SCRIPT_DIR / "wav_to_harmony_pause_fix.py"),
+            [sys.executable, "-m", "modules.injection",
              str(self.rom), str(self.config), str(output or self.directory / "out.gba"),
-             "--suggest-gaps", ""], capture_output=True, text=True,
+             "--suggest-gaps", ""], capture_output=True, text=True, cwd=SCRIPT_DIR,
         )
 
     def test_rom_pointers_cache_and_pause_patch(self):

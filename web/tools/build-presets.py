@@ -1,6 +1,9 @@
 import json
-import shlex
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+from modules.config import parse_config
 
 
 def main():
@@ -10,14 +13,9 @@ def main():
     files = {}
     paths = {}
     presets = {}
-    for line in config.read_text().splitlines():
-        fields = shlex.split(line, comments=True)
-        if not fields:
-            continue
-        if len(fields) not in (3, 4):
-            raise ValueError(f"Invalid preset: {line}")
-        song_id = str(int(fields[0], 0))
-        source = (config.parent / fields[1]).resolve()
+    for identifier, wav_path, tempo, volume, loop_start, crossfade in parse_config(config):
+        song_id = str(identifier)
+        source = (config.parent / wav_path).resolve()
         if not source.is_relative_to(music) or not source.is_file():
             raise ValueError(f"Missing or invalid preset WAV: {source}")
         if source not in paths:
@@ -27,8 +25,10 @@ def main():
             raise ValueError(f"Duplicate preset song ID: {song_id}")
         presets[song_id] = {
             "wavPath": paths[source],
-            "tempo": fields[2],
-            "volume": fields[3] if len(fields) == 4 else "auto",
+            "tempo": "auto" if tempo is None else str(tempo),
+            "volume": "auto" if volume is None else "off" if volume == 0 else str(volume),
+            "loopStart": loop_start,
+            "crossfade": crossfade,
         }
     if not presets:
         raise ValueError("Preset configuration is empty")

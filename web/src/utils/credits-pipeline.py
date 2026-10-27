@@ -11,8 +11,8 @@ from unittest.mock import patch
 
 sys.path.insert(0, "/tmp")
 
-from wav_to_harmony_pause_fix import main as inject_main
-import add_credits_screen as credits
+from modules.injection import main as inject_main
+from modules import credits
 
 job = json.loads(credits_job_json)
 assets = job["assets"]
@@ -49,10 +49,10 @@ def precompiled_image():
     return credits.Image.open(io.BytesIO(base64.b64decode(assets["image"]))).convert("RGB")
 
 
-sys.argv = ["wav_to_harmony_pause_fix.py", job["romPath"], job["configPath"], job["injectedPath"]]
+sys.argv = ["modules.injection", job["romPath"], job["configPath"], job["injectedPath"]]
 with patch.object(audio_base, "read_wav_mono_float", read_wav_compact):
     inject_main()
 
-sys.argv = ["add_credits_screen.py", job["injectedPath"], job["outputPath"]]
+sys.argv = ["modules.credits", job["injectedPath"], job["outputPath"]]
 with patch.object(credits, "assemble_stub", precompiled_stub), patch.object(credits.shutil, "which", return_value="precompiled"):
     credits.main(render_fn=precompiled_image)

@@ -48,6 +48,18 @@ class SongList extends LitElement {
       font-size: 0.9rem;
     }
 
+    .songs-header a {
+      color: var(--text-highlight);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.15em;
+    }
+
+    .songs-header a:hover {
+      color: #ffffff;
+    }
+
     .bulk-options {
       display: flex;
       flex-wrap: wrap;

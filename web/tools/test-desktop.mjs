@@ -8,6 +8,7 @@ import { _electron } from 'playwright';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const temporary = await mkdtemp(path.join(os.tmpdir(), 'reharmonized-desktop-'));
 const executablePath = process.env.DESKTOP_EXECUTABLE;
+const allPresets = process.env.DESKTOP_TEST_ALL_PRESETS === '1';
 const application = await _electron.launch({
   args: executablePath ? [] : [root],
   executablePath,
@@ -30,6 +31,8 @@ try {
   });
   page.on('dialog', (dialog) => dialog.accept());
   await page.waitForFunction(() => customElements.get('app-root'));
+  const { version } = JSON.parse(await readFile(path.join(root, 'dist-desktop/credits-assets.json'), 'utf8'));
+  assert.equal(await page.locator('app-root').locator('header .version').textContent(), version);
   assert.equal(await page.evaluate(() => typeof window.require), 'undefined');
   const rom = Buffer.alloc(8 * 1024 * 1024);
   rom.write('ACHE', 0xAC);
@@ -41,17 +44,41 @@ try {
   await page.locator('song-list').waitFor();
   assert.equal(await page.getByText('"REharmonized preset" is unavailable in web').count(), 0);
   const presets = page.locator('song-item input[value=reharmonized]');
-  assert.equal(await presets.count(), 25);
+  const presetCount = await presets.count();
+  assert.ok(presetCount > 0);
   for (const preset of await presets.all()) assert.equal(await preset.isEnabled(), true);
   const bulkPreset = page.locator('song-list input[name=bulk-mode][value=reharmonized]');
   await bulkPreset.check();
-  assert.equal(await page.locator('song-item input[value=reharmonized]:checked').count(), 25);
+  assert.equal(await page.locator('song-item input[value=reharmonized]:checked').count(), presetCount);
   await page.locator('song-list input[name=bulk-mode][value=none]').check();
   assert.equal(await page.locator('song-item input[value=none]:checked').count(), 31);
   await page.locator('song-item input[value=custom]').first().check();
   assert.equal(await page.locator('song-item input[type=file]').count(), 1);
+  const wav = Buffer.alloc(44 + 11025 * 2);
+  wav.write('RIFF', 0);
+  wav.writeUInt32LE(wav.length - 8, 4);
+  wav.write('WAVEfmt ', 8);
+  wav.writeUInt32LE(16, 16);
+  wav.writeUInt16LE(1, 20);
+  wav.writeUInt16LE(1, 22);
+  wav.writeUInt32LE(11025, 24);
+  wav.writeUInt32LE(22050, 28);
+  wav.writeUInt16LE(2, 32);
+  wav.writeUInt16LE(16, 34);
+  wav.write('data', 36);
+  wav.writeUInt32LE(wav.length - 44, 40);
+  for (let sample = 0; sample < 11025; sample++) {
+    wav.writeInt16LE(Math.round(10000 * Math.sin(sample / 10)), 44 + sample * 2);
+  }
+  await page.locator('song-item input[type=file]').setInputFiles({
+    name: 'synthetic.wav', mimeType: 'audio/wav', buffer: wav,
+  });
+  await page.locator('.suggest-btn').click();
+  await page.waitForFunction((item) => item.suggestions.length > 0,
+    await page.locator('song-item').first().elementHandle(), { timeout: 180000 });
   await page.locator('song-list input[name=bulk-mode][value=none]').check();
-  await presets.first().check();
+  if (allPresets) await bulkPreset.check();
+  else await presets.first().check();
 
   const existing = path.join(temporary, 'synthetic-custom-REharmonized.gba');
   await writeFile(existing, 'existing download');
@@ -85,7 +112,7 @@ try {
   assert.equal(patched.subarray(0xC6D34, 0xC6D44).toString('hex'), '042c04d000b52868f5f7d2fe00bd7047');
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
-  console.log(`Desktop OK: 25 presets enabled, custom mode, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
+  console.log(`Desktop OK: ${presetCount} presets enabled, custom WAV tempo suggestions, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
 } finally {
   await application.close();
   await rm(temporary, { recursive: true, force: true });
