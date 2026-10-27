@@ -76,11 +76,11 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 12 | aqueduct of dragons | Jorge Fuentes |
 | 13 | to the center of the demonic castle - castle treasure | Jorge Fuentes |
 | 14 | dark covenant (Death's theme) | Jorge Fuentes |
-| 15 | desicive battle (loop pattern A) | Good Knight Productions |
-| 16 | desicive battle (loop pattern B) | Good Knight Productions |
-| 17 | desicive battle (loop pattern C) | Good Knight Productions |
+| 15 | decisive battle (loop pattern A) | Good Knight Productions |
+| 16 | decisive battle (loop pattern B) | Good Knight Productions |
+| 17 | decisive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
-| 19 | game over | Eithereor |
+| 19 | game over (Belmont's Revenge)| Eithereor |
 | 20 | incarnation of darkness (Dracula's theme) | Erik Hose |
 | 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Jorge Fuentes |
@@ -138,4 +138,5 @@ Linqued Music
 https://youtu.be/mh4EBsRaORM?si=95WEfZRRHZe5SP9I
 
 Eithereor
+https://www.vgmuseum.com/mrp/multi/mp3s-eithereor.htm
 

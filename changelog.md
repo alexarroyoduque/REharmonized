@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.0 (2026, october 26)
+## 1.4.0 (2026, october 28)
 - Remove intro-loop from tracks 5, 6 & 8
 - "title part 1" track added
 - "title part 2" track added
@@ -8,6 +8,7 @@
 - "skeleton den - cave of skeleton" track with shorter lopp
 - "aqueduct of dragons" track with shorter lopp
 - "to the center of the demonic castle - castle treasure" track with shorter lopp
+- Improved tracks: 4, 14, 22 & 29 
 
 ## 1.3.3 (2026, october 13)
 
