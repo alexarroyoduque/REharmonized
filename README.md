@@ -37,7 +37,7 @@ File/ROM CRC32: 88C1B562
 
 The patch does not work with Advance Collection. REharmonized increases the ROM size by approximately 30 MB. In testing, a ROM padded with empty space up to 16 MB still works in Advance Collection, but a 20 MB one no longer works.
 
-### Compatibility with visual patchs
+### Compatibility with visual patches
 
 1. Apply REharmonized patch first.
 2. Apply your visual patch to the result of STEP 1. For example
