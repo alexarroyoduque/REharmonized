@@ -39,7 +39,7 @@ The patch does not work with Advance Collection. REharmonized increases the ROM 
 
 ### Compatibility with visual patches
 
-1. Apply REharmonized patch first.
+1. Apply REharmonized patch first
 2. Apply your visual patch to the result of STEP 1. For example
 "Visual Improvement patch (Pemburu Vampir)" or "Recolor by JonataGuitar and sorrow"
 
