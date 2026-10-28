@@ -36,13 +36,11 @@ File/ROM CRC32: 88C1B562
 
 The patch does not work with Advance Collection. REharmonized increases the ROM size by approximately 30 MB. In testing, a ROM padded with empty space up to 16 MB still works in Advance Collection, but a 20 MB one no longer works.
 
-### Compatibility with other patchs
+### Compatibility with visual patchs
 
 1. Apply REharmonized patch first.
-2. Apply your secondary patch to the result of STEP 1. For example
-[Visual Improvement patch](https://www.romhacking.net/hacks/9086/) (Pemburu Vampir). 
-
-The REharmonized patch doesn't change text or graphics, so applying it first allows you to apply other patches later, but sometimes it won't work 100%.
+2. Apply your visual patch to the result of STEP 1. For example
+"Visual Improvement patch"(Pemburu Vampir) or "Recolor by JonataGuitar and sorrow"
 
 ## Patch changes
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
@@ -95,11 +93,11 @@ AlexArroyoDuque
 Rexius55 https://www.romhacking.net/documents/927
 This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
 
+### Special thanks
+Franco Carovano -SuXei999-
+
 ### Rom Patcher
 [March Robledo](https://github.com/marcrobledo/RomPatcher.js)
-
-### Soporte, pruebas y calidad
--SuXei999-
 
 ### Remastered songs
 Jorge Fuentes
