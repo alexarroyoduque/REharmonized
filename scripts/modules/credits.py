@@ -49,7 +49,7 @@ FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 MUSIC_CREDITS = (
     "Jorge Fuentes, The Noble Demon, Tobbeh99 Music, Erik Hose, "
     "Francisco Relano, TheWanderingNight, Nostalgames_XP, "
-    "WSPursuer, Good Knight Productions, Linqued, Eithereor"
+    "WSPursuer, Good Knight Productions, Linqued, Eithereor, Patricio Herrera"
 )
 
 

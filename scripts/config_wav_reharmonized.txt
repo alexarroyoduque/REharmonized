@@ -1,36 +1,16 @@
-# Harmony of Dissonance - REharmonized custom .wav music replacement configuration
+# REharmonized — configuración de canciones
+# Uso desde scripts/:
+# python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt [output.gba]
 #
-# python3 wav_to_harmony.py harmony.gba config_wav_reharmonized.txt [output.gba]
-#
-# Format:
-#   HARMONY_SONG_ID   WAV_PATH  TEMPO TARGET_RMS   LOOP_START_SECONDS   CROSSFADE_SECONDS
-#
-# HARMONY_SONG_ID can be decimal or hexadecimal (0x..). WAV_PATH is resolved
-# relative to the current directory; quote it if it contains spaces. TEMPO
-# is either "auto" (auto-pick) or a forced BB tempo byte (decimal or hex,
-# 1-255) - use a forced value if a song's loop point clicks/pops or has a
-# silence gap when tested in agbplay/mGBA.
-#
-# Optional 4th field:
-#   HARMONY_SONG_ID   WAV_PATH   auto|TEMPO   auto|off|TARGET_RMS
-#     auto        -> current default behavior (default audio normalization 0.4 RMS)
-#     off         -> no gain applied, use the .wav at its own volume
-#     TARGET_RMS  -> a number 0-1 (e.g. 0.30) to force a quieter/less
-#                    saturated result than the default, or a value above
-#                    0.4 for a louder/more saturated one
-# Example: 4   "../music/04 prologue edit.wav" 100   0.30
-#
-# Optional 5th field: LOOP_START_SECONDS (default 0 = existing whole-song loop).
-# A positive value plays the intro once, then loops from that second to the
-# WAV's end using a native PCM loop, independent of TEMPO. Must be before EOF.
-# Keep field 4 (use auto for default normalization) when adding field 5.
-# Example: 5   "../music/05 successor of fate (Juste Belmont's theme) edit.wav" 1 auto 12.2
-#
-# Optional 6th field: CROSSFADE_SECONDS (default 0 = disabled).
-# Requires a positive field 5. Blends the final seconds with the loop's head
-# and jumps past that blended head; each loop becomes this much shorter.
-# Intro and source WAV stay unchanged. Must span at least 2 resampled samples
-# and not exceed half the loop duration. Example: 12.4 0.05 = 50 ms crossfade.
+# ID "WAV" TEMPO [RMS] [INICIO_BUCLE] [CROSSFADE]
+# ID: decimal o hexadecimal. WAV: ruta relativa al directorio de ejecución.
+# TEMPO: auto o 1–255; ajusta el reinicio cuando no hay INICIO_BUCLE positivo.
+# RMS: auto (0.4), off (sin normalizar) o valor objetivo entre 0 y 1.
+# INICIO_BUCLE: segundos de intro que suenan una vez; omitido o 0 = bucle por tempo.
+# CROSSFADE: segundos de solapamiento (0 = sin fundido); requiere INICIO_BUCLE > 0.
+# El fundido acorta cada vuelta en ese tiempo, sin recorte acumulativo.
+# Campos opcionales posicionales: incluye los anteriores; usa auto para el RMS predeterminado.
+# Detalles y ejemplos: ../dev_es.md, «Explicación config_wav_reharmonized.txt».
 
 1   "../music/01 title screen edit.wav" auto 0.3 11
 2   "../music/02 title screen edit.wav" auto 0.3 11
@@ -43,7 +23,7 @@
 9   "../music/09 skeleton den - cave of skeletons edit.wav" 61
 10  "../music/10 chapel of dissonance edit.wav" 79
 11  "../music/11 clock tower casualty edit.wav" 8
-12  "../music/12 aqueduct of dragons edit.wav" 2
+12  "../music/12 aqueduct of dragons edit.wav" 55
 13  "../music/13 to the center of the demonic castle - castle treasure edit.wav" 11
 14  "../music/14 dark covenant (Death's theme) edit.wav" 87 0.3
 15  "../music/15 16 17 decisive battle edit.wav" 43
@@ -54,6 +34,7 @@
 20  "../music/20 incarnation of darkness (Dracula's theme) edit.wav" 43
 21  "../music/21 old enemy edit.wav" 29 0.3
 22  "../music/22 beloved person (Lydie Erlanger's theme) edit.wav" 73 0.3
+24  "../music/24 pitch-dark door edit.wav" 29 0.3
 25  "../music/25 knight head edit.wav" 50 0.25
 26  "../music/26 VK2K2 - Vampire Killer 2002 edit.wav" 31
 27  "../music/27 game over Simon edit.wav" auto 0.25 2

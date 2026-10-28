@@ -49,11 +49,6 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 
 - Pausing mutes the background music while it continues advancing silently. 
 
-- A GBA ROM can only hold 32MB, so a handful of original compositions were kept untouched to save space. The songs that have NOT been modified are:
-  - `24` pitch-dark door
-  - `23` successor of fate (Juste Belmont's theme) - variation: comunity feedback
-
-
 ## Developer notes
 
 [Developer notes (Spanish)](./dev_es.md)
@@ -83,10 +78,12 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 20 | incarnation of darkness (Dracula's theme) | VGMuseum midi |
 | 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Francisco Relaño Peña |
+| 23 | successor of fate (Juste Belmont's theme) - variation | Original |
+| 24 | pitch-black door | Patricio Herrera |
 | 25 | knight head | Francisco Relaño Peña |
 | 26 | VK2K2 - Vampire Killer 2002 | Jorge Fuentes |
-| 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
 | 27 | game over Simon | Castlevania III: Dracula's Curse - VRC6 |
+| 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
 | 29 | Maxim Kischine's theme | Jorge Fuentes |
 | 30 | epilogue 2 (Lydie Erlanger's theme, variation) | TheWanderingNight |
 | 31 | the item collection room | Nostalgames_XP (Forro tribute) |
@@ -136,6 +133,9 @@ https://youtu.be/jVrqvykS5HY?si=VNCFAH1rqFuW0lt2
 
 Linqued Music
 https://youtu.be/mh4EBsRaORM?si=95WEfZRRHZe5SP9I
+
+Patricio Herrera
+https://youtu.be/f178Y09LFgA?si=QMfWgk_VDlm_WhvP
 
 Eithereor
 https://www.vgmuseum.com/mrp/multi/mp3s-eithereor.htm

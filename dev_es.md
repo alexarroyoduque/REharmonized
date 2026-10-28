@@ -52,6 +52,38 @@ La adaptación de créditos de Pyodide actúa sobre `modules.credits`.
 
 ## Explicación config_wav_reharmonized.txt
 
+Cada línea activa configura una canción. Las líneas vacías y las que empiezan
+por `#` se ignoran.
+
+```text
+ID "RUTA_WAV" TEMPO [NORMALIZACIÓN] [INICIO_BUCLE] [CROSSFADE]
+```
+
+| Parámetro | Función |
+| --- | --- |
+| `ID` | Canción del juego que se sustituye, en decimal o hexadecimal. |
+| `RUTA_WAV` | Ruta del WAV relativa al directorio de ejecución. Usa comillas si contiene espacios. |
+| `TEMPO` | `auto` para calcularlo o un valor entre `1` y `255` para fijarlo. Ajusta el reinicio de canciones sin bucle PCM nativo; no cambia la velocidad del audio. |
+| `NORMALIZACIÓN` | Opcional: `auto` aplica el RMS predeterminado (`0.4`), `off` desactiva la normalización y un número fija el RMS objetivo. |
+| `INICIO_BUCLE` | Opcional, en segundos. La parte anterior suena una sola vez; después se repite desde ese punto hasta el final. Omitido o `0`, conserva el comportamiento basado en tempo. |
+| `CROSSFADE` | Opcional, en segundos. Mezcla el final con el inicio del bucle para suavizar la transición. Omitido o `0`, se desactiva. Requiere un inicio de bucle positivo. |
+
+Los campos son posicionales: para indicar uno, deben incluirse los anteriores.
+Usa `auto` como normalización si quieres conservar el valor predeterminado.
+
+```text
+5 "../music/05 successor of fate (Juste Belmont's theme) edit.wav" auto auto 12.4 0.05
+```
+
+Este ejemplo reproduce una introducción de **12,4 segundos** y repite el resto
+con un fundido de **50 ms**. Con este bucle nativo, el tempo no determina
+cuándo vuelve a empezar.
+
+El fundido acorta cada vuelta 50 ms, siempre lo mismo: no recorta audio
+progresivamente. La introducción y el WAV original no se modifican.
+El inicio debe quedar antes del final del WAV y el crossfade no puede superar
+la mitad del tramo repetible.
+
 Pruebas desde la raíz del proyecto (las de ROM usan `scripts/rom-harmony-usa.gba`
 y escriben exclusivamente en un directorio temporal):
 
