@@ -52,6 +52,8 @@ MUSIC_CREDITS = (
     "WSPursuer, Good Knight Productions, Linqued, Eithereor, Patricio Herrera"
 )
 
+SPECIAL_THANKS = "Special thanks: Franco Carovano (SuXei999)"
+
 
 def wrap_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
     words = text.split(" ")
@@ -76,6 +78,7 @@ def render_credits_image() -> Image.Image:
 
     title_font = ImageFont.truetype(FONT_PATH, 16)
     header_font = ImageFont.truetype(FONT_PATH, 12)
+    sub_header_font = ImageFont.truetype(FONT_PATH, 10)
     body_font = ImageFont.truetype(FONT_PATH, 8)
 
     y = 6
@@ -91,17 +94,21 @@ def render_credits_image() -> Image.Image:
     draw.text((SCREEN_W // 2, y), "AlexArroyoDuque", font=header_font, fill=(255, 255, 255), anchor="ma")
     y += 18
 
-    for line in wrap_text(draw, "Aria of Sorrow Streamed Audio", header_font, SCREEN_W - 12):
-        draw.text((SCREEN_W // 2, y), line, font=header_font, fill=(120, 200, 255), anchor="ma")
+    for line in wrap_text(draw, "Aria of Sorrow Streamed Audio", sub_header_font, SCREEN_W - 12):
+        draw.text((SCREEN_W // 2, y), line, font=sub_header_font, fill=(120, 200, 255), anchor="ma")
         y += 14
     draw.text((SCREEN_W // 2, y), "Rexius55", font=body_font, fill=(220, 220, 220), anchor="ma")
     y += 14
 
-    draw.text((SCREEN_W // 2, y), "Music", font=header_font, fill=(120, 200, 255), anchor="ma")
+    draw.text((SCREEN_W // 2, y), "Music", font=sub_header_font, fill=(120, 200, 255), anchor="ma")
     y += 14
 
     for line in wrap_text(draw, MUSIC_CREDITS, body_font, SCREEN_W - 12):
         draw.text((SCREEN_W // 2, y), line, font=body_font, fill=(220, 220, 220), anchor="ma")
+        y += 10
+
+    for line in wrap_text(draw, SPECIAL_THANKS, body_font, SCREEN_W - 12):
+        draw.text((SCREEN_W // 2, y), line, font=body_font, fill=(120, 220, 130), anchor="ma")
         y += 10
 
     y = SCREEN_H - 12
