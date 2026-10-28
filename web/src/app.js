@@ -3,6 +3,7 @@ if (!import.meta.env.VITE_DESKTOP) import('./firebase.js');
 import './components/rom-uploader.js';
 import './components/song-list.js';
 import { injectSongsToRom, downloadRom } from './utils/rom-injector.js';
+import { ORIGINAL_ROM_MESSAGE } from './utils/rom-validation.js';
 import headerArtwork from '../../images/REharmonized_Juste.jpg';
 
 class AppRoot extends LitElement {
@@ -376,6 +377,10 @@ class AppRoot extends LitElement {
 
   _getInjectionErrorMessage(error) {
     const message = String(error?.message || error);
+    if (error?.code === 'INVALID_ORIGINAL_ROM') return message;
+    if (/Harmony ROM must be exactly 8 MiB|Pause-patch site .*unexpected bytes/.test(message)) {
+      return ORIGINAL_ROM_MESSAGE;
+    }
     const sizeMatch = message.match(/Output ROM would exceed (\d+) bytes \((\d+) bytes\)/);
     if (sizeMatch) {
       const limit = Number(sizeMatch[1]) / (1024 * 1024);

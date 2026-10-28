@@ -7,6 +7,7 @@
 
 import { loadPyodideRuntime } from './pyodide-wrapper.js';
 import creditsPipeline from './credits-pipeline.py?raw';
+import { validateOriginalRom } from './rom-validation.js';
 
 let reharmonizedPresetsPromise = null;
 
@@ -44,6 +45,7 @@ export async function injectSongsToRom(
   selections,
   onProgress = () => {}
 ) {
+  await validateOriginalRom(romFile);
   try {
     onProgress("[1/5] Loading Python runtime...", 10);
     console.log("[Injector] Loading Pyodide...");

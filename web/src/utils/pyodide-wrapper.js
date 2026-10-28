@@ -84,12 +84,18 @@ export async function processWavForTempos(wavFile, songId = "01") {
     const wavBytes = new Uint8Array(arrayBuffer);
 
     // Write WAV to Pyodide's virtual filesystem
-    const wavPath = `/tmp/${wavFile.name}`;
+    const wavPath = `/tmp/tempo-${crypto.randomUUID()}.wav`;
     pyodide.FS.writeFile(wavPath, wavBytes);
 
     console.log(
       `[Pyodide] WAV written (${(wavBytes.length / 1024).toFixed(1)} KB)`
     );
+
+    pyodide.globals.set('tempo_job_json', JSON.stringify({
+      wavPath,
+      fileName: wavFile.name || 'audio.wav',
+      songId: String(songId),
+    }));
 
     const pythonCode = `
 import json
@@ -97,8 +103,10 @@ import sys
 from pathlib import Path
 from modules import base
 
+job = json.loads(tempo_job_json)
+
 # Read WAV using the original function
-wav_path = Path('${wavPath}')
+wav_path = Path(job['wavPath'])
 mono, src_rate = base.read_wav_mono_float(wav_path)
 
 # Resample using the original function
@@ -112,8 +120,8 @@ tempo, holds, hold_s = base.pick_tempo_and_holds(duration_s, None)
 suggestions = base.suggest_tempos(duration_s, base.DEFAULT_SUGGEST_GAPS)
 
 result = json.dumps({
-    'song_id': '${songId}',
-    'wav_path': '${wavFile.name}',
+    'song_id': job['songId'],
+    'wav_path': job['fileName'],
     'source_sample_rate': src_rate,
     'resampled_rate': base.DEFAULT_SAMPLE_RATE,
     'duration_s': round(duration_s, 6),

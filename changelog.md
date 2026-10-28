@@ -5,7 +5,6 @@
 - Remove intro-loop from tracks 5, 6 & 8
 - Tracks added: Title part 1 & 2, game over, game over Simon & pitch-black door
 - Tracks with shorter lopp: "9 skeleton den - cave of skeleton",  "12 aqueduct of dragons" & "13 to the center of the demonic castle - castle treasure" 
--  track with shorter lopp
 - Improved tracks: 4, 14, 20, 22 & 29 
 
 ## 1.3.3 (2026, october 13)

@@ -9,6 +9,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const temporary = await mkdtemp(path.join(os.tmpdir(), 'reharmonized-desktop-'));
 const executablePath = process.env.DESKTOP_EXECUTABLE;
 const allPresets = process.env.DESKTOP_TEST_ALL_PRESETS === '1';
+const customWav = process.env.DESKTOP_TEST_CUSTOM_WAV === '1';
 const application = await _electron.launch({
   args: executablePath ? [] : [root],
   executablePath,
@@ -43,6 +44,23 @@ try {
   Buffer.from('c04f0003d021000307000000005000030024000302000000', 'hex').copy(rom, 0x1A6B2C);
   rom.writeUInt32LE(0x030021A8, 0xBB414);
   rom.writeUInt32LE(0x030021A8, 0xBB42C);
+  const uploader = page.locator('rom-uploader');
+  const romInput = uploader.locator('input[type=file]');
+  const modifiedRom = Buffer.from(rom);
+  modifiedRom[0xBC458] ^= 1;
+  for (const invalid of [Buffer.concat([rom, Buffer.alloc(4)]), modifiedRom]) {
+    await romInput.setInputFiles({
+      name: 'already-REharmonized.gba', mimeType: 'application/octet-stream', buffer: invalid,
+    });
+    await page.waitForFunction((element) => element.validationState === 'invalid',
+      await uploader.elementHandle());
+    const invalidMessage = uploader.locator('.validation-message.invalid');
+    await invalidMessage.waitFor({ state: 'visible' });
+    assert.match(await invalidMessage.innerText(), /compatible Harmony of Dissonance ROM/);
+    assert.match(await invalidMessage.innerText(), /Compatible visual patches are allowed/);
+    assert.match(await invalidMessage.innerText(), /already patched with REharmonized cannot be processed again/);
+    assert.equal(await page.locator('song-list').count(), 0);
+  }
   await page.locator('rom-uploader input[type=file]').setInputFiles({
     name: 'synthetic.gba', mimeType: 'application/octet-stream', buffer: rom,
   });
@@ -76,14 +94,16 @@ try {
     wav.writeInt16LE(Math.round(10000 * Math.sin(sample / 10)), 44 + sample * 2);
   }
   await page.locator('song-item input[type=file]').setInputFiles({
-    name: 'synthetic.wav', mimeType: 'audio/wav', buffer: wav,
+    name: "20 incarnation of darkness (Dracula's theme) edit.wav", mimeType: 'audio/wav', buffer: wav,
   });
   await page.locator('.suggest-btn').click();
   await page.waitForFunction((item) => item.suggestions.length > 0,
     await page.locator('song-item').first().elementHandle(), { timeout: 180000 });
-  await page.locator('song-list input[name=bulk-mode][value=none]').check();
-  if (allPresets) await bulkPreset.check();
-  else await presets.first().check();
+  if (!customWav) {
+    await page.locator('song-list input[name=bulk-mode][value=none]').check();
+    if (allPresets) await bulkPreset.check();
+    else await presets.first().check();
+  }
 
   const existing = path.join(temporary, 'synthetic-custom-REharmonized.gba');
   await writeFile(existing, 'existing download');
@@ -124,7 +144,7 @@ try {
   assert.equal(patched.subarray(pauseOffset, pauseOffset + 6).toString('hex'), '00b5042c03d1');
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
-  console.log(`Desktop OK: ${presetCount} presets enabled, custom WAV tempo suggestions, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
+  console.log(`Desktop OK: patched ROM rejected, ${presetCount} presets enabled, apostrophe WAV tempo suggestions, ${customWav ? 'custom WAV' : 'preset'} injection, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
 } finally {
   await application.close();
   await rm(temporary, { recursive: true, force: true });

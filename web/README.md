@@ -4,10 +4,15 @@ Browser-based tool for applying REharmonized presets or custom music to a **Cast
 
 ## Features
 
-- Validates European (`ACHP`) and US (`ACHE`) ROMs.
+- Validates compatible European (`ACHP`) and US (`ACHE`) ROMs of exactly 8 MiB. ROMs already patched with REharmonized or with incompatible audio engines are rejected before processing.
 - Keep or customize each of 31 tracks. REharmonized presets are disabled on the hosted web version and enabled in the desktop build.
 - Upload custom WAV files, set tempo and volume, and request tempo suggestions.
 - Download the patched ROM, with a `-custom` version suffix on its credits screen.
+
+Use a ROM without REharmonized already applied. Compatible visual patches
+are allowed if they preserve the 8 MiB ROM size and audio engine; compatibility
+with arbitrary patches is not guaranteed. Custom WAV names may contain apostrophes or quotes; names
+are passed to Python as data rather than inserted into executable code.
 
 ## Requirements
 
@@ -77,7 +82,7 @@ Run the Electron smoke test after building:
 npm run desktop:test
 ```
 
-It uses a synthetic ROM, selects a real bundled preset, runs Python and Pillow locally, checks the injected pause patch and credits entry point, verifies the ROM download, and rejects external HTTP(S) requests. It also checks bulk selection and the custom-mode controls. No commercial ROM is required. To test a packaged Apple Silicon app:
+It rejects expanded/already-patched synthetic ROMs with a visible message, analyzes tempos for a custom WAV whose name contains an apostrophe, selects a real bundled preset, runs Python and Pillow locally, checks the injected pause patch and credits entry point, verifies the ROM download, and rejects external HTTP(S) requests. It also checks bulk selection and the custom-mode controls. No commercial ROM is required. To generate from the apostrophe-named custom WAV instead of a preset, run `DESKTOP_TEST_CUSTOM_WAV=1 npm run desktop:test`. To test a packaged Apple Silicon app:
 
 ```sh
 DESKTOP_EXECUTABLE="$PWD/app/mac-arm64/REharmonized.app/Contents/MacOS/REharmonized" npm run desktop:test

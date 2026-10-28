@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { validateOriginalRom } from '../utils/rom-validation.js';
 
 class RomUploader extends LitElement {
   static properties = {
@@ -223,27 +224,19 @@ class RomUploader extends LitElement {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const header = await file.slice(0xAC, 0xB0).arrayBuffer();
-      const gameCode = new TextDecoder().decode(header);
-
-      const validCodes = ['ACHP', 'ACHE']; // Europe (ACHP), USA (ACHE)
-      if (validCodes.includes(gameCode)) {
-        this.validationState = 'success';
-        this.dispatchEvent(
-          new CustomEvent('rom-loaded', {
-            detail: { file, name: file.name, gameCode },
-            bubbles: true,
-            composed: true,
-          })
-        );
-      } else {
-        this.validationState = 'invalid';
-        this.errorMessage = `Invalid ROM: expected Harmony of Dissonance (ACHP/ACHE), got "${gameCode}"`;
-        this.romFile = null;
-      }
+      const gameCode = await validateOriginalRom(file);
+      this.validationState = 'success';
+      this.dispatchEvent(
+        new CustomEvent('rom-loaded', {
+          detail: { file, name: file.name, gameCode },
+          bubbles: true,
+          composed: true,
+        })
+      );
     } catch (error) {
       this.validationState = 'invalid';
-      this.errorMessage = `Error reading ROM: ${error.message}`;
+      this.errorMessage = error.code === 'INVALID_ORIGINAL_ROM'
+        ? error.message : `Error reading ROM: ${error.message}`;
       this.romFile = null;
     }
   }
