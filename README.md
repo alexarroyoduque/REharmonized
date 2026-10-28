@@ -10,7 +10,7 @@ Using techniques developed by the romhacking community, **this patch brings high
 
 [Custom REharmonized online](https://reharmonized-custom.web.app)
 
-[REharmonized desktop app (Windows & Mac](https://github.com/alexarroyoduque/REharmonized/releases)
+[REharmonized desktop app (Windows & Mac)](https://github.com/alexarroyoduque/REharmonized/releases)
 
 
 Get Castlevania: Harmony of Dissonance ROM.
