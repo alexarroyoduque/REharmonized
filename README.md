@@ -44,9 +44,9 @@ The patch does not work with Advance Collection. REharmonized increases the ROM 
 "Visual Improvement patch (Pemburu Vampir)" or "Recolor by JonataGuitar and sorrow"
 
 ## Patch changes
-- Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
+- Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits)
 
-- Pausing mutes the background music while it continues advancing silently. 
+- Pausing mutes the background music while it continues advancing silently 
 
 ## Developer notes
 
