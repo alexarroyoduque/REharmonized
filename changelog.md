@@ -2,7 +2,7 @@
 
 ## 1.4.0 (2026, october 28)
 - Pause silent music
-- Remove intro-loop from tracks 5, 6 & 8
+- Remove intro-loop from tracks: "5 Successor of Fate", "6 Offense and Defense / Marble Corridor" & "8 Luminous Caverns"
 - Tracks added: Title part 1 & 2, game over, game over Simon & pitch-black door
 - Tracks with shorter lopp: "9 skeleton den - cave of skeleton",  "12 aqueduct of dragons" & "13 to the center of the demonic castle - castle treasure" 
 - Improved tracks: 4, 14, 20, 22 & 29 
