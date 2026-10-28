@@ -40,7 +40,7 @@
 6   "../music/06 offense and defense - marble corridor edit.wav" auto auto 6.3 0.18
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
 8   "../music/08 luminous caverns edit.wav" auto 0.35 29.1 0.25
-9   "../music/09 skeleton den - cave of skeletons edit.wav" 2
+9   "../music/09 skeleton den - cave of skeletons edit.wav" 61
 10  "../music/10 chapel of dissonance edit.wav" 79
 11  "../music/11 clock tower casualty edit.wav" 8
 12  "../music/12 aqueduct of dragons edit.wav" 2
@@ -56,6 +56,7 @@
 22  "../music/22 beloved person (Lydie Erlanger's theme) edit.wav" 73 0.3
 25  "../music/25 knight head edit.wav" 50 0.25
 26  "../music/26 VK2K2 - Vampire Killer 2002 edit.wav" 31
+27  "../music/27 game over Simon edit.wav" auto 0.25 2
 28  "../music/28 I'll sell at my place (Mechant's theme) edit.wav" 90 0.3
 29  "../music/29 Maxim Kischine's theme edit.wav" 17 0.35
 30  "../music/30 epilogue 2 edit.wav" 43 0.25

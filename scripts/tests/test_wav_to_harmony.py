@@ -238,7 +238,12 @@ class RomTests(unittest.TestCase):
         patch_off = injector.PATCH_ADDR - base.GBA_ROM_BASE
         cave_off = injector.CAVE_ADDR - base.GBA_ROM_BASE
         self.assertEqual(rom[patch_off:patch_off + len(injector.PATCH_BYTES)], injector.PATCH_BYTES)
-        self.assertEqual(rom[cave_off:cave_off + len(injector.CAVE_BYTES)], injector.CAVE_BYTES)
+        self.assertEqual(rom[cave_off:cave_off + 4], injector.VENEER_PREFIX)
+        payload_addr = base.u32(rom, cave_off + 4) & ~1
+        payload_off = payload_addr - base.GBA_ROM_BASE
+        self.assertEqual(rom[payload_off:payload_off + len(injector.STUB_BYTES)], injector.STUB_BYTES)
+        self.assertEqual(base.u32(rom, cave_off + 12),
+                 (payload_addr + injector.RESUME_STUB_OFFSET) | 1)
 
     def test_end_offset_rejected_without_output(self):
         result = self.run_injector(f'1 "{self.wav}" auto auto 1\n')

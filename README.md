@@ -8,7 +8,8 @@ Using techniques developed by the romhacking community, **this patch brings high
 
 ## How to use
 
-[Webapp to create your custom REharmonized](https://reharmonized-custom.web.app)
+[Custom REharmonized online](https://reharmonized-custom.web.app)
+[REharmonized desktop app (windows/mac[apple])](https://github.com/alexarroyoduque/REharmonized/releases)
 
 
 Get Castlevania: Harmony of Dissonance ROM.
@@ -46,13 +47,11 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 ## Patch changes
 - Most of Harmony of Dissonance's songs have been replaced with higher-quality versions based on covers made by the community (see Credits).
 
-- A GBA ROM can only hold 32MB, so a handful of original compositions were kept untouched to save space. If memory management improves in the future, some of these songs may eventually be replaced too. The choice of which songs to keep was based on how much they affect the core gameplay experience. The songs that have NOT been modified are:
-  - `19` game over
+- Pausing mutes the background music while it continues advancing silently. 
+
+- A GBA ROM can only hold 32MB, so a handful of original compositions were kept untouched to save space. The songs that have NOT been modified are:
   - `24` pitch-dark door
   - `23` successor of fate (Juste Belmont's theme) - variation: comunity feedback
-  - `27` game over Simon
-
-- In the original game, pausing mutes the music. Due to technical limitations, the music has been kept playing while the game is paused.
 
 
 ## Developer notes
@@ -80,13 +79,14 @@ The REharmonized patch doesn't change text or graphics, so applying it first all
 | 16 | decisive battle (loop pattern B) | Good Knight Productions |
 | 17 | decisive battle (loop pattern C) | Good Knight Productions |
 | 18 | epilogue 1 | TheWanderingNight |
-| 19 | game over (Belmont's Revenge)| Eithereor |
+| 19 | game over | Eithereor (The Adventure)|
 | 20 | incarnation of darkness (Dracula's theme) | VGMuseum midi |
 | 21 | old enemy | WSPursuer |
 | 22 | beloved person (Lydie Erlanger's theme) | Francisco Relaño Peña |
 | 25 | knight head | Francisco Relaño Peña |
 | 26 | VK2K2 - Vampire Killer 2002 | Jorge Fuentes |
 | 28 | I'll sell at my place (Mechant's theme) | WSPursuer |
+| 27 | game over Simon | Castlevania III: Dracula's Curse - VRC6 |
 | 29 | Maxim Kischine's theme | Jorge Fuentes |
 | 30 | epilogue 2 (Lydie Erlanger's theme, variation) | TheWanderingNight |
 | 31 | the item collection room | Nostalgames_XP (Forro tribute) |
@@ -144,4 +144,3 @@ VGMuseum
 https://www.vgmusic.com/music/console/nintendo/gba/
 https://www.vgmuseum.com/mrp/multi/midis.htm
 https://www.ninsheetmusic.org/browse/series/Castlevania 
-

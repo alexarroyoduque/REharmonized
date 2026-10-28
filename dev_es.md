@@ -44,55 +44,13 @@ construcción e inyección; parche de pausa; créditos; publicación final.
 Si una etapa falla, el pipeline limpia sus temporales y conserva la salida
 anterior. La ROM original nunca se usa como salida.
 
-Los adaptadores antiguos y las utilidades de portado que no participan en
-este flujo se han eliminado. El único script de entrada es `wav_to_harmony.py`;
-la web y las pruebas importan `modules` directamente. No se necesita la
+La web y las pruebas importan `modules` directamente. No se necesita la
 importación dinámica del archivo con guiones.
 La web y el escritorio empaquetan los mismos módulos en Pyodide; el
 empaquetador de presets reutiliza el parser del TXT, incluida intro/crossfade.
 La adaptación de créditos de Pyodide actúa sobre `modules.credits`.
 
-La refactorización se verificó comparando byte por byte una ROM completa
-antes y después (mismo SHA-256), manteniendo intacta la ROM USA original.
-Las pruebas importan los módulos directamente y también cubren fallos y
-publicación atómica del pipeline. El nombre histórico del archivo de pruebas
-se conserva para mantener el comando de ejecución.
-
-## Introducción una sola vez e inicio de bucle por canción
-
-El comando habitual sigue siendo (desde `scripts/`):
-
-````sh
-python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt
-````
-
-El inyector admite un quinto campo opcional, `LOOP_START_SECONDS`, después
-de la normalización. Por ejemplo, la pista 5 puede usar `1 auto 12.2` tras
-la ruta del WAV: reproduce desde el principio una vez y, al llegar al final,
-vuelve a los 12,2 segundos. Para mantener la normalización predeterminada,
-escribe `auto` como cuarto campo.
-
-- Omitir el quinto campo o usar `0` conserva el bucle anterior y su ajuste por tempo.
-- Un valor positivo activa el bucle PCM nativo de MP2K, sin duplicar muestras
-  ni reiniciar la introducción. En este modo el tempo no ajusta el bucle y
-  no se imprimen sugerencias de tempo/gap.
-- El punto se redondea a la muestra más cercana después del resampleado a
-  11025 Hz; debe quedar dentro del audio. Sin sexto campo no se aplica fundido
-  en el corte: conviene escoger un punto musicalmente adecuado en el WAV.
-- El sexto campo opcional, `CROSSFADE_SECONDS`, suaviza el corte. Por ejemplo,
-  `1 auto 12.4 0.05` conserva la introducción de 12,4 s y mezcla los últimos
-  50 ms con los primeros 50 ms del bucle, antes de cuantizar a PCM de 8 bits.
-  Después salta al tramo siguiente al ya mezclado (aproximadamente 12,45 s).
-  Cada vuelta queda 50 ms más corta, sin duplicar audio ni cambiar su velocidad.
-  La duración se redondea a muestras; a 11025 Hz, 50 ms son 551 muestras.
-  La primera entrada al bucle y el WAV original no se modifican. El fundido
-  es lineal y no aumenta el volumen de señales correlacionadas.
-  Omitirlo o usar `0` desactiva la mezcla. Un valor positivo requiere un quinto
-  campo positivo, al menos dos muestras y como máximo la mitad del bucle.
-- Las pistas con el mismo WAV pero distinto inicio de bucle o crossfade no comparten
-  la entrada de caché. Las que tienen todos los ajustes iguales sí la comparten.
-- La ROM original no se modifica; el wrapper y el inyector rechazan usarla
-  también como salida.
+## Explicación config_wav_reharmonized.txt
 
 Pruebas desde la raíz del proyecto (las de ROM usan `scripts/rom-harmony-usa.gba`
 y escriben exclusivamente en un directorio temporal):
@@ -191,7 +149,7 @@ Canciones descartadas:
   26. VK2K2 - Vampire Killer 2002
   27. game over Simon
 
-### 6. Problemas con la pausa
+### 6. Problemas con la pausa (histórico)
 En el juego original, al pausar el juego la música se silencia. Pero al aplicar el parche REharmonized la música sigue sonando.
 
 Este cambio fue intencionado por el siguiente motivo: las canciones modificadas suenan en un único hilo. El juego original apaga el audio y, al quitar la pausa, sigue sonando desde donde se quedó, porque en el original hay varios "instrumentos" en diferentes hilos de ejecución sonando a la vez. En el script original que hice, al pausar el juego la música dejaba de sonar, pero al quitar la pausa no se escuchaba de nuevo hasta que terminaba su propio bucle.
@@ -200,6 +158,37 @@ Finalmente, con ayuda de la IA y el depurador conectado al emulador mGBA, encont
 ```sh
 python3 wav_to_harmony_pause_fix.py rom-harmony.gba wav_config.txt rom-output.gba
 ```
+
+#### Comportamiento actual: música continua pero silenciada
+
+El pipeline aplica automáticamente `modules/pause_patch.py`. Al entrar en
+el menú de pausa, la música sigue avanzando, pero su salida queda a volumen
+cero. Al salir, recupera la ganancia calculada para ese momento sin volver
+al principio ni repetir la intro. No se modifican los ajustes RMS ni el
+volumen de las pistas; los sonidos del menú conservan su funcionamiento.
+
+El parche usa el estado de pausa original en `0x030021A8`, conserva la
+excepción de no detener BGM y fuerza una actualización de volumen en sus
+pistas al pausar y reanudar. Solo anula las ganancias finales de los canales
+pertenecientes a las pistas BGM (`0x030021D0` a `0x03002400`); los otros
+reproductores mantienen las funciones originales de parada y continuación.
+No reserva RAM ni cambia la posición PCM o el contador de la canción.
+
+`modules/pause_mute.s` contiene el stub Thumb ARM7TDMI. Sus 144 bytes se
+incluyen preensamblados en `pause_patch.py`, por lo que Python/Pyodide no
+necesitan herramientas ARM adicionales en ejecución. Dos trampolines de
+8 bytes usan el hueco verificado en `0x080C6D34`; el payload se añade tras
+el audio con alineación de 4 bytes. Se validan antes de escribir las firmas
+de pausa, continuación, ganancia, tabla de reproductores, estado de pausa,
+padding y límite de 32 MiB. Una ROM incompatible se rechaza sin modificarla.
+
+La suite comprueba las firmas, reubicación y el binario contra el ensamblador.
+Si están instalados `unicorn` y la ROM USA original, también ejecuta las
+rutinas ARM para verificar silencio/restauración, registros, pila y efectos.
+Estas pruebas ARM son opcionales; sin Unicorn se indican como omitidas.
+La comprobación final de oído debe realizarse en mGBA o una GBA real.
+Para probar el cambio hay que regenerar desde una ROM original y arrancar
+la nueva ROM, sin cargar un savestate creado con el parche anterior.
 
 ### 7. Normalización del audio
 Las pistas modificadas sonaban con poco volumen, así que el script se encarga de normalizarlas para que suenen más altas.

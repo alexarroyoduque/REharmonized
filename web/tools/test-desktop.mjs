@@ -38,6 +38,11 @@ try {
   rom.write('ACHE', 0xAC);
   rom.writeUInt32LE(0xEA00002E, 0);
   Buffer.from('286800f043fb', 'hex').copy(rom, 0xBC458);
+  Buffer.from('2868fff7dffe', 'hex').copy(rom, 0xBC490);
+  Buffer.from('a17c142022568023', 'hex').copy(rom, 0xBBF2C);
+  Buffer.from('c04f0003d021000307000000005000030024000302000000', 'hex').copy(rom, 0x1A6B2C);
+  rom.writeUInt32LE(0x030021A8, 0xBB414);
+  rom.writeUInt32LE(0x030021A8, 0xBB42C);
   await page.locator('rom-uploader input[type=file]').setInputFiles({
     name: 'synthetic.gba', mimeType: 'application/octet-stream', buffer: rom,
   });
@@ -109,7 +114,14 @@ try {
   assert.ok(patched.length > rom.length && patched.length <= 32 * 1024 * 1024);
   assert.notEqual(patched.readUInt32LE(0), rom.readUInt32LE(0));
   assert.equal(patched.subarray(0xBC458, 0xBC45E).toString('hex'), '0af06cfc0000');
-  assert.equal(patched.subarray(0xC6D34, 0xC6D44).toString('hex'), '042c04d000b52868f5f7d2fe00bd7047');
+  assert.equal(patched.subarray(0xC6D34, 0xC6D38).toString('hex'), '004b1847');
+  assert.equal(patched.subarray(0xC6D3C, 0xC6D40).toString('hex'), '004b1847');
+  const pausePayload = patched.readUInt32LE(0xC6D38) & ~1;
+  assert.equal(patched.readUInt32LE(0xC6D40), (pausePayload + 0x16) | 1);
+  assert.equal(patched.subarray(0xBBF2C, 0xBBF30).toString('hex'), '004b1847');
+  assert.equal(patched.readUInt32LE(0xBBF30), (pausePayload + 0x48) | 1);
+  const pauseOffset = pausePayload - 0x08000000;
+  assert.equal(patched.subarray(pauseOffset, pauseOffset + 6).toString('hex'), '00b5042c03d1');
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
   console.log(`Desktop OK: ${presetCount} presets enabled, custom WAV tempo suggestions, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
