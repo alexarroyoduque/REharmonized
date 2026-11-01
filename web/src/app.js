@@ -362,7 +362,7 @@ class AppRoot extends LitElement {
 
       this.injectionInProgress = false;
       alert(
-        `✓ REharmonized ROM created successfully!\n\nDownloading: ${this.romFileName.replace(/\.gba$/i, '')}-custom-REharmonized.gba`
+        `✓ REharmonized ROM created successfully!\n\nDownloading: ${this.romFileName.replace(/\.(gba|bin)$/i, '')}-custom-REharmonized${/\.bin$/i.test(this.romFileName) ? '.bin' : '.gba'}`
       );
     } catch (error) {
       console.error('[App] Injection error:', error);

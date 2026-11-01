@@ -1,6 +1,7 @@
 """ROM constants, binary access and original-ROM validation."""
 from __future__ import annotations
 
+import hashlib
 import struct
 from pathlib import Path
 
@@ -17,6 +18,20 @@ HOD_GAME_CODES = (b"ACHP", b"ACHE")  # Europe, USA - verified byte-identical
 
 
 HOD_SONG_TABLE = 0x001A6B5C
+
+COLLECTION_ENGINE_START = 0x0BB655
+COLLECTION_ENGINE_END = 0x0BD739
+COLLECTION_ENGINE_SHA256 = "8b65a0b54dc6912460f9bbead4180be0f0079949a0b2366da26fd289dd35b68f"
+
+
+def is_advance_collection(rom: bytes | bytearray) -> bool:
+    """Identify the verified M2 USA engine, never the filename or extension."""
+    return (
+        len(rom) >= SOURCE_ROM_SIZE
+        and game_code(rom) == b"ACHE"
+        and hashlib.sha256(rom[COLLECTION_ENGINE_START:COLLECTION_ENGINE_END]).hexdigest()
+        == COLLECTION_ENGINE_SHA256
+    )
 
 
 def u32(buf: bytes | bytearray, off: int) -> int:

@@ -19,6 +19,8 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from modules import injection as injector
 from modules import pipeline
 from modules.version import VERSION
+from modules.advance_collection import pad_output
+from modules.rom import is_advance_collection
 
 
 class ConfigTests(unittest.TestCase):
@@ -64,6 +66,46 @@ class ConfigTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "positive loop start"):
             self.parse("1 a.wav auto auto 0 0.05")
 
+
+class AdvanceCollectionTests(unittest.TestCase):
+    COLLECTION_ROM = SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin"
+
+    def test_collection_detection_uses_engine_signature(self):
+        self.assertTrue(is_advance_collection(self.COLLECTION_ROM.read_bytes()))
+        self.assertFalse(is_advance_collection((SCRIPT_DIR / "rom-harmony-usa.gba").read_bytes()))
+
+    def test_pad_to_exact_32_mib_with_ff_without_changing_content(self):
+        source = b"collection payload"
+        result = pad_output(source)
+        self.assertEqual(len(result), 32 * 1024 * 1024)
+        self.assertEqual(result[:len(source)], source)
+        self.assertEqual(result[len(source):], b"\xff" * (32 * 1024 * 1024 - len(source)))
+
+    def test_collection_pause_patch_preserves_m2_svc_and_entry(self):
+        rom = bytearray(self.COLLECTION_ROM.read_bytes())
+        original_entry = bytes(rom[:4])
+        original_stop_svc = bytes(rom[0xBCAE4:0xBCAE8])
+        original_continue_svc = bytes(rom[0xBC480:0xBC484])
+        original_resume_call = bytes(rom[0xBB424:0xBB428])
+
+        injector.apply_pause_patch(rom)
+
+        self.assertEqual(rom[:4], original_entry)
+        self.assertEqual(rom[0xBB40C:0xBB410], bytes.fromhex("02f0f8f8"))
+        self.assertEqual(rom[0xBD600:0xBD600 + 28], bytes.fromhex(
+            "30b5054d03242868fff76cfa0c35013cf9d130bc01bc0047386b1a08"
+        ))
+        self.assertEqual(rom[0xBCAE4:0xBCAE8], original_stop_svc)
+        self.assertEqual(rom[0xBC480:0xBC484], original_continue_svc)
+        self.assertEqual(rom[0xBB424:0xBB428], original_resume_call)
+
+    def test_collection_signature_mismatch_refuses_patch_without_mutation(self):
+        rom = bytearray(self.COLLECTION_ROM.read_bytes())
+        rom[0xBD600] = 1
+        before = bytes(rom)
+        with self.assertRaisesRegex(SystemExit, "unexpected bytes"):
+            injector.apply_pause_patch(rom)
+        self.assertEqual(rom, before)
 
 class CrossfadeTests(unittest.TestCase):
     def test_zero_leaves_audio_and_offset_unchanged(self):
@@ -135,6 +177,29 @@ class BlobTests(unittest.TestCase):
 
 
 class PipelineTests(unittest.TestCase):
+    @unittest.skipUnless((SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin").is_file(),
+                         "Advance Collection USA ROM unavailable")
+    def test_collection_pipeline_skips_mode3_credits_and_pads_32_mib(self):
+        source = SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin"
+        original = source.read_bytes()
+        original_entry = original[:4]
+        original_stop = original[0xBCAE4:0xBCAE8]
+        original_continue = original[0xBC480:0xBC484]
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory) / "config.txt"
+            output = Path(directory) / "collection.bin"
+            wav = SCRIPT_DIR.parent / "music/10 chapel of dissonance edit.wav"
+            config.write_text(f'3 "{wav}" 79\n', encoding="utf-8")
+            pipeline.build_rom(source, config, output)
+            result = output.read_bytes()
+        self.assertEqual(len(result), 32 * 1024 * 1024)
+        self.assertEqual(result[:4], original_entry)
+        self.assertEqual(result[0xBB40C:0xBB410], bytes.fromhex("02f0f8f8"))
+        self.assertEqual(result[0xBCAE4:0xBCAE8], original_stop)
+        self.assertEqual(result[0xBC480:0xBC484], original_continue)
+        self.assertEqual(result[-4096:], b"\xFF" * 4096)
+        self.assertEqual(source.read_bytes(), original)
+
     def test_failed_credits_preserve_existing_output_and_clean_staging(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

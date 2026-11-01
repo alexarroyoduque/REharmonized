@@ -12,10 +12,12 @@ from unittest.mock import patch
 sys.path.insert(0, "/tmp")
 
 from modules.injection import main as inject_main
-from modules import credits
+from modules.rom import is_advance_collection
+from modules.advance_collection import pad_output
 
 job = json.loads(credits_job_json)
 assets = job["assets"]
+is_collection = is_advance_collection(Path(job["romPath"]).read_bytes())
 audio_base = inject_main.__globals__["base"]
 original_read_wav = audio_base.read_wav_mono_float
 
@@ -53,6 +55,11 @@ sys.argv = ["modules.injection", job["romPath"], job["configPath"], job["injecte
 with patch.object(audio_base, "read_wav_mono_float", read_wav_compact):
     inject_main()
 
-sys.argv = ["modules.credits", job["injectedPath"], job["outputPath"]]
-with patch.object(credits, "assemble_stub", precompiled_stub), patch.object(credits.shutil, "which", return_value="precompiled"):
-    credits.main(render_fn=precompiled_image)
+if is_collection:
+    Path(job["outputPath"]).write_bytes(pad_output(Path(job["injectedPath"]).read_bytes()))
+else:
+    from modules import credits
+
+    sys.argv = ["modules.credits", job["injectedPath"], job["outputPath"]]
+    with patch.object(credits, "assemble_stub", precompiled_stub), patch.object(credits.shutil, "which", return_value="precompiled"):
+        credits.main(render_fn=precompiled_image)

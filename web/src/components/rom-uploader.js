@@ -150,14 +150,14 @@ class RomUploader extends LitElement {
         <span class="upload-icon"></span>
         <div class="upload-text">
           <h3>Upload Harmony of Dissonance ROM</h3>
-          <p>You can use the USA or EUR version</p>
+          <p>Use a compatible USA/EUR ROM or the supported Advance Collection USA ROM</p>
         </div>
 
         <div class="file-input-wrapper">
           <input
             type="file"
             id="rom-input"
-            accept=".gba"
+            accept=".gba,.bin"
             @change=${this._handleFileSelect}
             @dragover=${this._handleDragOver}
             @dragleave=${this._handleDragLeave}
@@ -208,11 +208,11 @@ class RomUploader extends LitElement {
     this.uploadSection?.classList.remove('dragging');
 
     const file = e.dataTransfer?.files?.[0];
-    if (file && file.name.toLowerCase().endsWith('.gba')) {
+    if (file && /\.(gba|bin)$/i.test(file.name)) {
       this._validateRom(file);
     } else {
       this.validationState = 'invalid';
-      this.errorMessage = 'Please select a .gba ROM file';
+      this.errorMessage = 'Please select a .gba or .bin ROM file';
     }
   }
 
@@ -224,11 +224,11 @@ class RomUploader extends LitElement {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const gameCode = await validateOriginalRom(file);
+      const romInfo = await validateOriginalRom(file);
       this.validationState = 'success';
       this.dispatchEvent(
         new CustomEvent('rom-loaded', {
-          detail: { file, name: file.name, gameCode },
+          detail: { file, name: file.name, ...romInfo },
           bubbles: true,
           composed: true,
         })

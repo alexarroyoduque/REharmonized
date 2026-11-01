@@ -13,18 +13,18 @@
 # SOURCES
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 ROM_ORIGINAL_USA="rom-harmony-usa.gba"
-ROM_ORIGINAL_EUROPE="rom-harmony-europe.gba"
+ROM_ORIGINAL_ADVANCE_COLLECTION="02_Byakuya_US.patch_210520m.bin"
 VERSION="$(tr -d '[:space:]' < "$SCRIPT_DIR/../VERSION")"
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "Error: Invalid version in $SCRIPT_DIR/../VERSION: $VERSION" >&2
     exit 1
 fi
 ROM_REHARMONIZED_USA="rom-harmony-usa-$VERSION"
-ROM_REHARMONIZED_EUROPE="rom-harmony-europe-$VERSION"
+ROM_REHARMONIZED_ADVANCE_COLLECTION="02_Byakuya_US.patch_210520m-$VERSION"
 
 # RESULTS
-PATCH_USA="REharmonized-usa.bps"
-PATCH_EUROPE="REharmonized-europe.bps"
+PATCH_USA="REharmonized.bps"
+PATCH_ADVANCE_COLLECTION="REharmonized-AdvanceCollection.bps"
 
 # ============================================================
 # WAIT-FILE FUNCTION
@@ -48,7 +48,7 @@ wait_file() {
 # ============================================================
 # PREVIOUS CLEANUP
 # ============================================================
-rm -f "$PATCH_USA" "$PATCH_EUROPE"
+rm -f "$PATCH_USA" "$PATCH_ADVANCE_COLLECTION"
 
 echo ""
 echo "========================================"
@@ -66,18 +66,18 @@ else
     exit 1
 fi
 
-if node ./RomPatcher.js/index.js create --format bps "$ROM_ORIGINAL_EUROPE" "$ROM_REHARMONIZED_EUROPE".gba; then
-    echo "OK: REharmonized Europe patch generated"
-    mv "$ROM_REHARMONIZED_EUROPE".bps "$PATCH_EUROPE"
-    echo "$PATCH_EUROPE"
+if node ./RomPatcher.js/index.js create --format bps "$ROM_ORIGINAL_ADVANCE_COLLECTION" "$ROM_REHARMONIZED_ADVANCE_COLLECTION".bin; then
+    echo "OK: REharmonized Advance Collection patch generated"
+    mv "$ROM_REHARMONIZED_ADVANCE_COLLECTION".bps "$PATCH_ADVANCE_COLLECTION"
+    echo "$PATCH_ADVANCE_COLLECTION"
     echo ""
 else
-    echo "Error: REharmonized Europe" >&2
+    echo "Error: REharmonized Advance Collection" >&2
     exit 1
 fi
 
 echo "Move patches to parent directory"
-mv -f "$PATCH_EUROPE" "$PATCH_USA" "../"
+mv -f "$PATCH_ADVANCE_COLLECTION" "$PATCH_USA" "../"
 
 echo "Process completed."
 echo ""

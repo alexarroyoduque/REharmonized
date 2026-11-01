@@ -264,6 +264,7 @@ Algunas composiciones suenan un poco saturadas con la normalización automática
 ```
 
 ### 15. Advance Collection
+
 Varias peticiones de jugadores solicitaban que el parche funcionara en Advance Collection.
 Es posible extrar las roms, aplicar parches y volver a empaquetar el recopilatorio.
 
@@ -300,3 +301,56 @@ https://retrogametalk.com/threads/castlevania-harmony-of-dissonance-usa-music-ha
 - Consigue tener partes no reproducibles para la pista 5 (12,2s), 6 (6,4s) y 8 (29s). En el juego original hay partes del bucle que no se repiten y el hack chino lo tiene en cuenta. 
 
 Con los datos del hack chino observando sus bucles me doy cuenta de que puedo acortar algunas canciones y así dejar espacio para algunas pistas que quedaron fuera como las intros o el game over.
+
+### 17. Compatibilidad con Advance Collection conseguida - 1.4.1
+
+La compatibilidad se resolvió gracias al análisis de KuonJ. Su comentario
+identificó tres diferencias importantes con una ROM GBA normal:
+
+- **Tamaño:** el emulador solo acepta ROMs con tamaño potencia de dos. Rellenar
+  el resultado con `0xFF` hasta 32 MiB permite que arranque y reproduzca música.
+  - Esta es la clave de todo
+- **Pausa:** Advance Collection sustituye el motor de audio por llamadas `SVC`,
+  así que los hooks GBA normales no se ejecutan. El juego llama a
+  `m4aMPlayAllStop` en `0x080BB40C`; redirigir esa llamada a `0x080BD600` detiene
+  los efectos, pero deja avanzar la música del jugador 0.
+    - Este punto lo había resuelto en mi análisis anterior en el punto 15
+- **Créditos:** el emulador no muestra correctamente la imagen Mode 3. Por eso
+  el perfil omite esa pantalla y conserva el entrypoint original.
+    - Esto lo sospechaba por lo que hice pruebas eliminando la pantalla de créditos en el punto 15
+
+El builder detecta la revisión M2 USA por su firma, no por el nombre del archivo.
+Aplica el hook de pausa, genera un `.bin` de 32 MiB y deja intacta la ROM de
+entrada. La ROM resultante aún debe reempaquetarse en el contenedor de Advance
+Collection.
+
+Comentario original de KuonJ:
+
+---
+Hi, thanks for REharmonized! I read the Advance Collection part of dev_es.md, dug into it a bit, and I think I found why it failed.
+
+The collection's emulator only accepts ROM sizes that are a power of two (up to 32 MiB). I found the check in the Switch version's `main` (GBA core init, around `0x44300`). That's why 16 MB worked but 20 MB and ~30 MB didn't. If you pad the patched ROM to exactly 32 MiB (I used `0xFF`), it boots and the new music plays. 32 MiB is handled fine, since the emulator maps the second 16 MiB bank too.
+
+I applied `REharmonized-usa.bps` 1.4.0 to the collection's own USA ROM (`02_Byakuya_US.patch_210520m.bin`) and repacked it into `patchdata`.
+
+Two more things came up.
+
+**Pause:**
+In the collection ROM, M2 wiped the sound engine (`0x0BB655`–`0x0BD739`) and replaced each function entry with an `svc` call that the emulator handles.
+Because of that, the hooks from pause_patch.py never run, and after unpausing the BGM stays silent until the song restarts.
+What worked for me was patching the caller instead. The game's pause handler calls `m4aMPlayAllStop` at `0x080BB40C`. I pointed that call to a small routine in the wiped area (`0x080BD600`) that only stops players 1–3 and leaves player 0 (BGM) alone:
+```
+0x080BB40C: 02 F0 F8 F8   (bl 0x080BD600)
+0x080BD600: 30B5054D03242868FFF76CFA0C35013CF9D130BC01BC0047386B1A08
+```
+
+**Credits screen:**
+In the collection the Mode 3 image doesn't show up (just a dark blue screen), but it still waits for START.
+For reference, the original entry branch at 0x0 is 2E 00 00 EA.
+
+Hope this helps, and thanks again!
+
+---
+
+### 18. Adiós al soporte a la ROM europea - 1.4.1
+Por inercia al ser español siempre selecciono la versión europea al jugar. Pero visto el recorrido de Harmony of Dissonance en la comunidad prácticamente todos los parches se centran en la versión USA.

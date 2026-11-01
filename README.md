@@ -5,28 +5,14 @@
 Using techniques developed by the romhacking community, **this patch brings high-quality community arrangements of the original soundtrack** into the game, taking advantage of Aria of Sorrow's improved sound.
 
 [Demo.](https://youtu.be/MyGVkGNWQx0)
+[Custom REharmonized online](https://reharmonized-custom.web.app)
+[REharmonized desktop app (Windows & Mac)](https://github.com/alexarroyoduque/REharmonized/releases)
 
 ## How to use
 
-[Custom REharmonized online](https://reharmonized-custom.web.app)
-
-[REharmonized desktop app (Windows & Mac)](https://github.com/alexarroyoduque/REharmonized/releases)
-
-
-Get Castlevania: Harmony of Dissonance ROM.
-
-Europe version: [download REharmonized-europe](./REharmonized-europe.bps)
-
-USA version: [download REharmonized-usa](./REharmonized-usa.bps). 
-
+USA version: [download REharmonized](./REharmonized.bps). 
+Advance Collection USA version (02_Byakuya_US.patch_210520m.bin): [download REharmonized-AdvanceCollection](./REharmonized-AdvanceCollection.bps). 
 Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js).
-
-```
-Database match: Castlevania - Harmony of Dissonance (Europe)
-Database: No-Intro: Game Boy Advance (v. 20210227-023848)
-File/ROM SHA-1: 58034ADF2CF788ED308286090987CA73F807A54F
-File/ROM CRC32: 521B3091
-```
 
 ```
 Database match: Castlevania - Harmony of Dissonance (USA)
@@ -34,8 +20,6 @@ Database: No-Intro: Game Boy Advance (v. 20210227-023848)
 File/ROM SHA-1: B90DA0D9BE0B3A0893CD9E2C399056BCF9579E21
 File/ROM CRC32: 88C1B562
 ```
-
-The patch does not work with Advance Collection. REharmonized increases the ROM size by approximately 30 MB. In testing, a ROM padded with empty space up to 16 MB still works in Advance Collection, but a 20 MB one no longer works.
 
 ### Compatibility with visual patches
 
@@ -96,6 +80,7 @@ This guide has helped me create music versions that sound like they’re from Ar
 
 ### Special thanks
 Franco Carovano -SuXei999-
+KuonJ - Advance Collection
 
 ### Rom Patcher
 [March Robledo](https://github.com/marcrobledo/RomPatcher.js)

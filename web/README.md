@@ -4,14 +4,18 @@ Browser-based tool for applying REharmonized presets or custom music to a **Cast
 
 ## Features
 
-- Validates compatible European (`ACHP`) and US (`ACHE`) ROMs of exactly 8 MiB. ROMs already patched with REharmonized or with incompatible audio engines are rejected before processing.
+- Validates compatible European (`ACHP`) and US (`ACHE`) ROMs, plus the verified Advance Collection USA M2 ROM. Already-patched and incompatible ROMs are rejected before processing.
 - Keep or customize each of 31 tracks. REharmonized presets are disabled on the hosted web version and enabled in the desktop build.
 - Upload custom WAV files, set tempo and volume, and request tempo suggestions.
 - Download the patched ROM, with a `-custom` version suffix on its credits screen.
 
 Use a ROM without REharmonized already applied. Compatible visual patches
-are allowed if they preserve the 8 MiB ROM size and audio engine; compatibility
-with arbitrary patches is not guaranteed. Custom WAV names may contain apostrophes or quotes; names
+are allowed if they preserve the expected ROM format and audio-engine signature;
+compatibility with arbitrary patches is not guaranteed. For Advance Collection,
+select the extracted USA `.bin`; the supported M2 revision is detected by its
+audio-engine signature. Its output remains `.bin`, padded to exactly 32 MiB with
+`0xFF`, and omits the incompatible Mode 3 credits screen. Repack the result into
+the Collection container separately. Custom WAV names may contain apostrophes or quotes; names
 are passed to Python as data rather than inserted into executable code.
 
 ## Requirements
@@ -19,7 +23,7 @@ are passed to Python as data rather than inserted into executable code.
 - Node.js 24.12 or newer and npm.
 - Python 3 with Pillow for generating the credits assets.
 - `arm-none-eabi-as` and `arm-none-eabi-objcopy` for assembling the credits code.
-- The font configured by `scripts/modules/credits.py` (currently macOS Menlo).
+- Noto Sans font and license bundled in `scripts/modules/assets/` for the credits screen.
 
 Vite uses `python3` by default, or the repository's `.venv/bin/python3` if present. Set `CREDITS_PYTHON` to use a different interpreter.
 
@@ -63,7 +67,7 @@ npm ci
 npm run desktop:mac
 ```
 
-The first build downloads Electron and the offline Pyodide assets. Later builds reuse the local cache. The build-time Python, Pillow, ARM binutils, and Menlo requirements above still apply when generating credits assets.
+The first build downloads Electron and the offline Pyodide assets. Later builds reuse the local cache. The build-time Python, Pillow, and ARM binutils requirements above still apply when generating credits assets.
 
 The release version has a single source: `../VERSION` at the repository root. Vite uses it for the web title and generated credits assets; Electron reads the same generated version for app metadata and installer filenames. `scripts/patch-generator.sh` also uses it to name versioned ROMs. Update that file when releasing; the ROM credits retain their `-custom` suffix, while the app version does not.
 
@@ -82,7 +86,7 @@ Run the Electron smoke test after building:
 npm run desktop:test
 ```
 
-It rejects expanded/already-patched synthetic ROMs with a visible message, analyzes tempos for a custom WAV whose name contains an apostrophe, selects a real bundled preset, runs Python and Pillow locally, checks the injected pause patch and credits entry point, verifies the ROM download, and rejects external HTTP(S) requests. It also checks bulk selection and the custom-mode controls. No commercial ROM is required. To generate from the apostrophe-named custom WAV instead of a preset, run `DESKTOP_TEST_CUSTOM_WAV=1 npm run desktop:test`. To test a packaged Apple Silicon app:
+It rejects expanded/already-patched synthetic ROMs with a visible message, analyzes tempos for a custom WAV whose name contains an apostrophe, selects a real bundled preset, runs Python and Pillow locally, checks the injected pause patch and credits entry point, verifies the ROM download, and rejects external HTTP(S) requests. It also checks bulk selection and the custom-mode controls. No commercial ROM is required. To generate from the apostrophe-named custom WAV instead of a preset, run `DESKTOP_TEST_CUSTOM_WAV=1 npm run desktop:test`. To test Advance Collection M2, place the extracted supported ROM at `../scripts/02_Byakuya_US.patch_210520m.bin` and run `DESKTOP_TEST_ADVANCE_COLLECTION=1 npm run desktop:test`. To test a packaged Apple Silicon app:
 
 ```sh
 DESKTOP_EXECUTABLE="$PWD/app/mac-arm64/REharmonized.app/Contents/MacOS/REharmonized" npm run desktop:test

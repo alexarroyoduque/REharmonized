@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 (2026, november 1)
+- Advance Collection USA compatibility
+- Europe compatibility deprecated
+
 ## 1.4.0 (2026, october 28)
 - The pause silences the music
 - Remove intro-loop from tracks: "5 Successor of Fate", "6 Offense and Defense / Marble Corridor" & "8 Luminous Caverns"

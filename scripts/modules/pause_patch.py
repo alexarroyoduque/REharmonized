@@ -65,6 +65,11 @@ def _veneer(target: int) -> bytes:
 
 def apply_pause_patch(rom: bytearray) -> None:
     """Verify every assumption before modifying any byte of the ROM."""
+    from .rom import is_advance_collection
+    if is_advance_collection(rom):
+        from .advance_collection import apply_pause_patch as apply_collection_pause
+        apply_collection_pause(rom)
+        return
     signatures = (
         (PATCH_ADDR, ORIGINAL_PATCH_BYTES),
         (RESUME_ADDR, ORIGINAL_RESUME_BYTES),

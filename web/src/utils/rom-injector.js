@@ -45,7 +45,8 @@ export async function injectSongsToRom(
   selections,
   onProgress = () => {}
 ) {
-  await validateOriginalRom(romFile);
+  const romInfo = await validateOriginalRom(romFile);
+  const isAdvanceCollection = romInfo.advanceCollection;
   try {
     onProgress("[1/5] Loading Python runtime...", 10);
     console.log("[Injector] Loading Pyodide...");
@@ -121,18 +122,19 @@ export async function injectSongsToRom(
     // Fetch injection scripts and dependencies
     onProgress("[4/5] Fetching injection scripts...", 50);
 
-    const creditsScriptUrl = `${import.meta.env.BASE_URL}credits-assets.json`;
+    let creditsAssets = {};
+    if (!isAdvanceCollection) {
+      const creditsScriptUrl = `${import.meta.env.BASE_URL}credits-assets.json`;
+      const creditsScriptResp = await fetch(creditsScriptUrl);
 
-    const creditsScriptResp = await fetch(creditsScriptUrl);
-
-    if (!creditsScriptResp.ok) {
-      throw new Error('Could not load packaged credits assets');
+      if (!creditsScriptResp.ok) {
+        throw new Error('Could not load packaged credits assets');
+      }
+      creditsAssets = await creditsScriptResp.json();
     }
 
-    const creditsAssets = await creditsScriptResp.json();
-
     onProgress("[5/5] Loading credits dependencies...", 65);
-    await pyodide.loadPackage('pillow');
+    if (!isAdvanceCollection) await pyodide.loadPackage('pillow');
 
     // Execute injection + credits screen
     onProgress("[5/5] Processing songs and credits...", 70);
@@ -148,7 +150,9 @@ export async function injectSongsToRom(
       outputPath,
     }));
     await pyodide.runPythonAsync(creditsPipeline);
-    console.log(`[Injector] Injection and credits screen completed`);
+    console.log(isAdvanceCollection
+      ? '[Injector] Advance Collection M2 injection completed (credits skipped; output padded to 32 MiB)'
+      : '[Injector] Injection and credits screen completed');
 
     // Verify output ROM was created
     if (!pyodide.FS.analyzePath(outputPath).exists) {
@@ -159,9 +163,7 @@ export async function injectSongsToRom(
     onProgress("[Done] Reading injected ROM...", 90);
 
     const injectedRomBytes = pyodide.FS.readFile(outputPath);
-    const injectedRomBlob = new Blob([injectedRomBytes], {
-      type: 'application/octet-stream',
-    });
+    const injectedRomBlob = new Blob([injectedRomBytes], { type: 'application/octet-stream' });
 
     onProgress("✓ ROM injection complete!", 100);
 
@@ -179,8 +181,9 @@ export async function injectSongsToRom(
  * @param {string} originalName - Original ROM filename (used to generate output name)
  */
 export function downloadRom(romBlob, originalName) {
-  const name = originalName.replace(/\.gba$/i, '');
-  const outputName = `${name}-custom-REharmonized.gba`;
+  const extension = /\.bin$/i.test(originalName) ? '.bin' : '.gba';
+  const name = originalName.replace(/\.(gba|bin)$/i, '');
+  const outputName = `${name}-custom-REharmonized${extension}`;
 
   const url = URL.createObjectURL(romBlob);
   const link = document.createElement('a');

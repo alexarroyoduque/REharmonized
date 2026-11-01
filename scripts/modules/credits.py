@@ -44,7 +44,7 @@ GBA_ROM_BASE = 0x08000000
 SCREEN_W, SCREEN_H = 240, 160
 MAX_GBA_ROM_SIZE = 32 * 1024 * 1024
 
-FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
+FONT_PATH = str(Path(__file__).with_name("assets") / "NotoSans-Credits-Regular.ttf")
 
 MUSIC_CREDITS = (
     "Jorge Fuentes, The Noble Demon, Tobbeh99 Music, Erik Hose, "
@@ -79,7 +79,7 @@ def render_credits_image() -> Image.Image:
     title_font = ImageFont.truetype(FONT_PATH, 16)
     header_font = ImageFont.truetype(FONT_PATH, 12)
     sub_header_font = ImageFont.truetype(FONT_PATH, 10)
-    body_font = ImageFont.truetype(FONT_PATH, 8)
+    body_font = ImageFont.truetype(FONT_PATH, 10)
 
     y = 6
     title_text = "REharmonized"

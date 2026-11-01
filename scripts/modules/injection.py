@@ -183,7 +183,10 @@ def inject_songs(
     rom = bytearray(output_path.read_bytes())
     apply_pause_patch(rom)
     output_path.write_bytes(rom)
-    print(f"OK  patched pause routine (cave @0x{CAVE_ADDR:08X}, call site @0x{PATCH_ADDR:08X})")
+    if base.is_advance_collection(harmony):
+        print("OK  Advance Collection caller-side pause patch (M2 SVC sound engine preserved)")
+    else:
+        print(f"OK  patched pause routine (cave @0x{CAVE_ADDR:08X}, call site @0x{PATCH_ADDR:08X})")
 
 
 if __name__ == "__main__":

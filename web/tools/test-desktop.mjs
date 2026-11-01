@@ -10,6 +10,7 @@ const temporary = await mkdtemp(path.join(os.tmpdir(), 'reharmonized-desktop-'))
 const executablePath = process.env.DESKTOP_EXECUTABLE;
 const allPresets = process.env.DESKTOP_TEST_ALL_PRESETS === '1';
 const customWav = process.env.DESKTOP_TEST_CUSTOM_WAV === '1';
+const advanceCollection = process.env.DESKTOP_TEST_ADVANCE_COLLECTION === '1';
 const application = await _electron.launch({
   args: executablePath ? [] : [root],
   executablePath,
@@ -35,34 +36,39 @@ try {
   const { version } = JSON.parse(await readFile(path.join(root, 'dist-desktop/credits-assets.json'), 'utf8'));
   assert.equal(await page.locator('app-root').locator('header .version').textContent(), version);
   assert.equal(await page.evaluate(() => typeof window.require), 'undefined');
-  const rom = Buffer.alloc(8 * 1024 * 1024);
-  rom.write('ACHE', 0xAC);
-  rom.writeUInt32LE(0xEA00002E, 0);
-  Buffer.from('286800f043fb', 'hex').copy(rom, 0xBC458);
-  Buffer.from('2868fff7dffe', 'hex').copy(rom, 0xBC490);
-  Buffer.from('a17c142022568023', 'hex').copy(rom, 0xBBF2C);
-  Buffer.from('c04f0003d021000307000000005000030024000302000000', 'hex').copy(rom, 0x1A6B2C);
-  rom.writeUInt32LE(0x030021A8, 0xBB414);
-  rom.writeUInt32LE(0x030021A8, 0xBB42C);
+  const romName = advanceCollection ? '02_Byakuya_US.patch_210520m.bin' : 'synthetic.gba';
+  const rom = advanceCollection
+    ? await readFile(path.join(root, '../scripts/02_Byakuya_US.patch_210520m.bin'))
+    : Buffer.alloc(8 * 1024 * 1024);
+  if (!advanceCollection) {
+    rom.write('ACHE', 0xAC);
+    rom.writeUInt32LE(0xEA00002E, 0);
+    Buffer.from('286800f043fb', 'hex').copy(rom, 0xBC458);
+    Buffer.from('2868fff7dffe', 'hex').copy(rom, 0xBC490);
+    Buffer.from('a17c142022568023', 'hex').copy(rom, 0xBBF2C);
+    Buffer.from('c04f0003d021000307000000005000030024000302000000', 'hex').copy(rom, 0x1A6B2C);
+    rom.writeUInt32LE(0x030021A8, 0xBB414);
+    rom.writeUInt32LE(0x030021A8, 0xBB42C);
+  }
   const uploader = page.locator('rom-uploader');
   const romInput = uploader.locator('input[type=file]');
   const modifiedRom = Buffer.from(rom);
-  modifiedRom[0xBC458] ^= 1;
-  for (const invalid of [Buffer.concat([rom, Buffer.alloc(4)]), modifiedRom]) {
+  modifiedRom[advanceCollection ? 0xBB655 : 0xBC458] ^= 1;
+  for (const [invalidIndex, invalid] of [Buffer.concat([rom, Buffer.alloc(4)]), modifiedRom].entries()) {
     await romInput.setInputFiles({
-      name: 'already-REharmonized.gba', mimeType: 'application/octet-stream', buffer: invalid,
+      name: `already-REharmonized-${invalidIndex}.gba`, mimeType: 'application/octet-stream', buffer: invalid,
     });
     await page.waitForFunction((element) => element.validationState === 'invalid',
       await uploader.elementHandle());
     const invalidMessage = uploader.locator('.validation-message.invalid');
     await invalidMessage.waitFor({ state: 'visible' });
-    assert.match(await invalidMessage.innerText(), /compatible Harmony of Dissonance ROM/);
+    assert.match(await invalidMessage.innerText(), /compatible 8 MiB Harmony of Dissonance ROM/);
     assert.match(await invalidMessage.innerText(), /Compatible visual patches are allowed/);
-    assert.match(await invalidMessage.innerText(), /already patched with REharmonized cannot be processed again/);
+    assert.match(await invalidMessage.innerText(), /Do not select a ROM with REharmonized already applied/);
     assert.equal(await page.locator('song-list').count(), 0);
   }
   await page.locator('rom-uploader input[type=file]').setInputFiles({
-    name: 'synthetic.gba', mimeType: 'application/octet-stream', buffer: rom,
+    name: romName, mimeType: 'application/octet-stream', buffer: rom,
   });
   await page.locator('song-list').waitFor();
   assert.equal(await page.getByText('"REharmonized preset" is unavailable in web').count(), 0);
@@ -105,9 +111,12 @@ try {
     else await presets.first().check();
   }
 
-  const existing = path.join(temporary, 'synthetic-custom-REharmonized.gba');
+  const outputBase = romName.replace(/\.(gba|bin)$/i, '');
+  const outputExtension = advanceCollection ? '.bin' : '.gba';
+  const outputName = `${outputBase}-custom-REharmonized${outputExtension}`;
+  const existing = path.join(temporary, outputName);
   await writeFile(existing, 'existing download');
-  const destination = path.join(temporary, 'synthetic-custom-REharmonized (1).gba');
+  const destination = path.join(temporary, `${outputBase}-custom-REharmonized (1)${outputExtension}`);
   await application.evaluate(({ app, session }, directory) => {
     app.setPath('downloads', directory);
     globalThis.desktopDownload = new Promise((resolve, reject) => {
@@ -126,25 +135,35 @@ try {
   }, null, { timeout: 180000 });
   assert.equal(await page.evaluate(() => document.querySelector('app-root').injectionError), '');
   const download = await application.evaluate(() => globalThis.desktopDownload);
-  assert.equal(download.filename, 'synthetic-custom-REharmonized.gba');
+  assert.equal(download.filename, outputName);
   assert.equal(download.savePath, destination);
   assert.equal(await readFile(existing, 'utf8'), 'existing download');
   assert.deepEqual((await readdir(temporary)).sort(), [path.basename(existing), path.basename(destination)].sort());
   const patched = await readFile(destination);
-  assert.ok(patched.length > rom.length && patched.length <= 32 * 1024 * 1024);
-  assert.notEqual(patched.readUInt32LE(0), rom.readUInt32LE(0));
-  assert.equal(patched.subarray(0xBC458, 0xBC45E).toString('hex'), '0af06cfc0000');
-  assert.equal(patched.subarray(0xC6D34, 0xC6D38).toString('hex'), '004b1847');
-  assert.equal(patched.subarray(0xC6D3C, 0xC6D40).toString('hex'), '004b1847');
-  const pausePayload = patched.readUInt32LE(0xC6D38) & ~1;
-  assert.equal(patched.readUInt32LE(0xC6D40), (pausePayload + 0x16) | 1);
-  assert.equal(patched.subarray(0xBBF2C, 0xBBF30).toString('hex'), '004b1847');
-  assert.equal(patched.readUInt32LE(0xBBF30), (pausePayload + 0x48) | 1);
-  const pauseOffset = pausePayload - 0x08000000;
-  assert.equal(patched.subarray(pauseOffset, pauseOffset + 6).toString('hex'), '00b5042c03d1');
+  if (advanceCollection) {
+    assert.equal(patched.length, 32 * 1024 * 1024);
+    assert.equal(patched.subarray(0, 4).toString('hex'), rom.subarray(0, 4).toString('hex'));
+    assert.equal(patched.subarray(0xBB40C, 0xBB410).toString('hex'), '02f0f8f8');
+    assert.equal(patched.subarray(0xBD600, 0xBD61C).toString('hex'), '30b5054d03242868fff76cfa0c35013cf9d130bc01bc0047386b1a08');
+    assert.equal(patched.subarray(0xBCAE4, 0xBCAE8).toString('hex'), rom.subarray(0xBCAE4, 0xBCAE8).toString('hex'));
+    assert.equal(patched.subarray(0xBC480, 0xBC484).toString('hex'), rom.subarray(0xBC480, 0xBC484).toString('hex'));
+    assert.equal(patched.subarray(-4096).every((byte) => byte === 0xFF), true);
+  } else {
+    assert.ok(patched.length > rom.length && patched.length <= 32 * 1024 * 1024);
+    assert.notEqual(patched.readUInt32LE(0), rom.readUInt32LE(0));
+    assert.equal(patched.subarray(0xBC458, 0xBC45E).toString('hex'), '0af06cfc0000');
+    assert.equal(patched.subarray(0xC6D34, 0xC6D38).toString('hex'), '004b1847');
+    assert.equal(patched.subarray(0xC6D3C, 0xC6D40).toString('hex'), '004b1847');
+    const pausePayload = patched.readUInt32LE(0xC6D38) & ~1;
+    assert.equal(patched.readUInt32LE(0xC6D40), (pausePayload + 0x16) | 1);
+    assert.equal(patched.subarray(0xBBF2C, 0xBBF30).toString('hex'), '004b1847');
+    assert.equal(patched.readUInt32LE(0xBBF30), (pausePayload + 0x48) | 1);
+    const pauseOffset = pausePayload - 0x08000000;
+    assert.equal(patched.subarray(pauseOffset, pauseOffset + 6).toString('hex'), '00b5042c03d1');
+  }
   assert.deepEqual(errors, []);
   assert.deepEqual(externalRequests, []);
-  console.log(`Desktop OK: patched ROM rejected, ${presetCount} presets enabled, apostrophe WAV tempo suggestions, ${customWav ? 'custom WAV' : 'preset'} injection, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
+  console.log(`Desktop OK: patched ROM rejected, ${presetCount} presets enabled, apostrophe WAV tempo suggestions, ${advanceCollection ? 'Advance Collection M2' : customWav ? 'custom WAV' : 'preset'} injection, offline Python/Pillow, patched ROM (${patched.length} bytes), download, no external requests.`);
 } finally {
   await application.close();
   await rm(temporary, { recursive: true, force: true });
