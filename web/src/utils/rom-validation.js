@@ -1,4 +1,4 @@
-export const ORIGINAL_ROM_MESSAGE = 'Select a compatible 8 MiB Harmony of Dissonance ROM: USA or Europe, or the supported Advance Collection USA ROM. Compatible visual patches are allowed if they preserve the required format and audio-engine signature. Do not select a ROM with REharmonized already applied. Your file has not been changed.';
+export const ORIGINAL_ROM_MESSAGE = 'Select a compatible 8 MiB Harmony of Dissonance ROM: USA or Europe, or the supported Advance Collection USA ROM (02_Byakuya_US.patch_210520m.bin). Compatible visual patches are allowed if they preserve the required format and audio-engine signature. Do not select a ROM with REharmonized already applied. Your file has not been changed.';
 
 const COLLECTION_ENGINE_START = 0x0bb655;
 const COLLECTION_ENGINE_END = 0x0bd739;

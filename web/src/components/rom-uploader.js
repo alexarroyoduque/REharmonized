@@ -150,7 +150,7 @@ class RomUploader extends LitElement {
         <span class="upload-icon"></span>
         <div class="upload-text">
           <h3>Upload Harmony of Dissonance ROM</h3>
-          <p>Use a compatible USA/EUR ROM or the supported Advance Collection USA ROM</p>
+          <p>Use a compatible USA/EUR ROM or Advance Collection USA ROM (02_Byakuya_US.patch_210520m.bin)</p>
         </div>
 
         <div class="file-input-wrapper">

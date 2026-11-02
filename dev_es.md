@@ -20,12 +20,14 @@ python3 wav_to_harmony.py rom-harmony-usa.gba config_wav_reharmonized.txt [outpu
 
 `[output.gba]` es opcional, no se escribe literalmente. Sin ese argumento,
 el nombre incluye la versión definida en `modules/credits.py`.
+Para Advance Collection USA se usa la ROM extraída `.bin` con el mismo comando;
+sin una salida explícita, se conserva esa extensión en el nombre generado.
 
 La implementación está en `scripts/modules/`:
 
 | Módulo | Responsabilidad |
 | --- | --- |
-| `pipeline.py` | Coordinar etapas y publicar la salida solo al completarlas |
+| `pipeline.py` | Coordinar etapas según el perfil de ROM y publicar la salida solo al completarlas; en Collection omitir créditos y rellenar hasta 32 MiB |
 | `config.py` | Leer y validar el TXT, incluidas las columnas opcionales |
 | `audio.py` | Leer WAV, mezclar a mono, remuestrear y codificar PCM |
 | `normalization.py` | Ajustar RMS y limitar picos |
@@ -33,14 +35,18 @@ La implementación está en `scripts/modules/`:
 | `loops.py` | Fundido entre final e inicio del bucle, conservando la intro |
 | `songs.py` | Construir secuencias MP2K, instrumentos y bucles PCM nativos |
 | `injection.py` | Añadir canciones, recolocar punteros y reutilizar muestras |
-| `pause_patch.py` | Validar y aplicar el parche de pausa/reanudación |
+| `pause_patch.py` | Seleccionar, validar y aplicar el parche de pausa/reanudación GBA o M2 |
+| `advance_collection.py` | Validar y aplicar el hook M2 de volumen mediante SVC `0x93`, conservar el motor original y rellenar la salida con `0xFF` hasta 32 MiB |
+| `collection_pause.s` | Fuente ensamblador Thumb del payload M2 preensamblado en `advance_collection.py`; silenciar BGM sin detenerlo y restaurar volumen al reanudar |
 | `credits.py` | Imagen, stub ARM y aplicación de créditos |
-| `rom.py` | Constantes, validación de ROM y acceso binario |
+| `rom.py` | Constantes, validación de ROM, detección del motor Advance Collection USA M2 por firma SHA-256 y acceso binario |
 | `base.py` | Exportaciones compartidas para inyección y sugerencias de tempo |
 
 El flujo es: configuración y validación de ROM; conversión de audio;
 normalización; intro/crossfade; codificación PCM; cálculo de tempo;
-construcción e inyección; parche de pausa; créditos; publicación final.
+construcción e inyección; parche de pausa según el perfil; créditos en GBA
+normal o, en Advance Collection USA M2, omisión de créditos Mode 3 y relleno
+con `0xFF` hasta exactamente 32 MiB; publicación final.
 Si una etapa falla, el pipeline limpia sus temporales y conserva la salida
 anterior. La ROM original nunca se usa como salida.
 
@@ -191,37 +197,6 @@ Finalmente, con ayuda de la IA y el depurador conectado al emulador mGBA, encont
 python3 wav_to_harmony_pause_fix.py rom-harmony.gba wav_config.txt rom-output.gba
 ```
 
-#### Comportamiento actual: música continua pero silenciada
-
-El pipeline aplica automáticamente `modules/pause_patch.py`. Al entrar en
-el menú de pausa, la música sigue avanzando, pero su salida queda a volumen
-cero. Al salir, recupera la ganancia calculada para ese momento sin volver
-al principio ni repetir la intro. No se modifican los ajustes RMS ni el
-volumen de las pistas; los sonidos del menú conservan su funcionamiento.
-
-El parche usa el estado de pausa original en `0x030021A8`, conserva la
-excepción de no detener BGM y fuerza una actualización de volumen en sus
-pistas al pausar y reanudar. Solo anula las ganancias finales de los canales
-pertenecientes a las pistas BGM (`0x030021D0` a `0x03002400`); los otros
-reproductores mantienen las funciones originales de parada y continuación.
-No reserva RAM ni cambia la posición PCM o el contador de la canción.
-
-`modules/pause_mute.s` contiene el stub Thumb ARM7TDMI. Sus 144 bytes se
-incluyen preensamblados en `pause_patch.py`, por lo que Python/Pyodide no
-necesitan herramientas ARM adicionales en ejecución. Dos trampolines de
-8 bytes usan el hueco verificado en `0x080C6D34`; el payload se añade tras
-el audio con alineación de 4 bytes. Se validan antes de escribir las firmas
-de pausa, continuación, ganancia, tabla de reproductores, estado de pausa,
-padding y límite de 32 MiB. Una ROM incompatible se rechaza sin modificarla.
-
-La suite comprueba las firmas, reubicación y el binario contra el ensamblador.
-Si están instalados `unicorn` y la ROM USA original, también ejecuta las
-rutinas ARM para verificar silencio/restauración, registros, pila y efectos.
-Estas pruebas ARM son opcionales; sin Unicorn se indican como omitidas.
-La comprobación final de oído debe realizarse en mGBA o una GBA real.
-Para probar el cambio hay que regenerar desde una ROM original y arrancar
-la nueva ROM, sin cargar un savestate creado con el parche anterior.
-
 ### 7. Normalización del audio
 Las pistas modificadas sonaban con poco volumen, así que el script se encarga de normalizarlas para que suenen más altas.
 
@@ -280,7 +255,7 @@ Sin embargo al llevar la ROM a Advance Collection seguía fallando. Probé quita
 
 Hize una prueba más y hasta los 16mb rellenados con espacio vacío el emulador de Konami era capaz de ejecutar el juego pero con 20mb ya no era posible.
 
-### 16. El hack chino (origen de la versión 1.4.0)
+### 16. El hack chino
 En los foros de facebook se hizo alusión a que alguien había migrado un hack chino que corregía la música a la versión USA. Pensé que hablaban de REharmonized pero no era así.
 https://cdromance.org/gba-roms/castlevania-white-night-concerto-hack
 
@@ -288,10 +263,10 @@ En 2023 lo chinos ya hicieron su propio REharmonized llamado "white nigh concert
 - La versión de Carloslmar sí lo hace silenciándola, en realidad se sigue reproduciendo
 
 Hay otros datos interesante sobre "White night concerto" creado por:
-- 死神紫霞 (Zixia)	Autor, ajustes de jugabilidad y física
-- 風輕 (Feng Qing)	Sustitución de las pistas musicales
+- 死神紫霞 (Zixia) Autor, ajustes de jugabilidad y física
+- 風輕 (Feng Qing) Sustitución de las pistas musicales
 - Abslb绝岚	Modificaciones técnicas y visuales
-- kasa	Corrección de errores
+- kasa Corrección de errores
 
 https://www.wlgooo.com/18134.html
 
@@ -302,7 +277,42 @@ https://retrogametalk.com/threads/castlevania-harmony-of-dissonance-usa-music-ha
 
 Con los datos del hack chino observando sus bucles me doy cuenta de que puedo acortar algunas canciones y así dejar espacio para algunas pistas que quedaron fuera como las intros o el game over.
 
-### 17. Compatibilidad con Advance Collection conseguida - 1.4.1
+### 17. Versión 1.4.1
+- El juego silencia la música durante la pausa aunque en realidad se sigue reproduciendo. Pero así se parece más al comportamiento original del juego.
+- Algunas canciones no repiten la intro al hacer el bucle, esto se aplica a las canciones: 5, 6 y 8; como en el jueog original
+
+#### Música continua pero silenciada durante la pausa
+
+El pipeline aplica automáticamente `modules/pause_patch.py`. Al entrar en
+el menú de pausa, la música sigue avanzando, pero su salida queda a volumen
+cero. Al salir, recupera la ganancia calculada para ese momento sin volver
+al principio ni repetir la intro. No se modifican los ajustes RMS ni el
+volumen de las pistas; los sonidos del menú conservan su funcionamiento.
+
+El parche usa el estado de pausa original en `0x030021A8`, conserva la
+excepción de no detener BGM y fuerza una actualización de volumen en sus
+pistas al pausar y reanudar. Solo anula las ganancias finales de los canales
+pertenecientes a las pistas BGM (`0x030021D0` a `0x03002400`); los otros
+reproductores mantienen las funciones originales de parada y continuación.
+No reserva RAM ni cambia la posición PCM o el contador de la canción.
+
+`modules/pause_mute.s` contiene el stub Thumb ARM7TDMI. Sus 144 bytes se
+incluyen preensamblados en `pause_patch.py`, por lo que Python/Pyodide no
+necesitan herramientas ARM adicionales en ejecución. Dos trampolines de
+8 bytes usan el hueco verificado en `0x080C6D34`; el payload se añade tras
+el audio con alineación de 4 bytes. Se validan antes de escribir las firmas
+de pausa, continuación, ganancia, tabla de reproductores, estado de pausa,
+padding y límite de 32 MiB. Una ROM incompatible se rechaza sin modificarla.
+
+La suite comprueba las firmas, reubicación y el binario contra el ensamblador.
+Si están instalados `unicorn` y la ROM USA original, también ejecuta las
+rutinas ARM para verificar silencio/restauración, registros, pila y efectos.
+Estas pruebas ARM son opcionales; sin Unicorn se indican como omitidas.
+La comprobación final de oído debe realizarse en mGBA o una GBA real.
+Para probar el cambio hay que regenerar desde una ROM original y arrancar
+la nueva ROM, sin cargar un savestate creado con el parche anterior.
+
+### 18. Compatibilidad con Advance Collection conseguida - 1.4.1
 
 La compatibilidad se resolvió gracias al análisis de KuonJ. Su comentario
 identificó tres diferencias importantes con una ROM GBA normal:

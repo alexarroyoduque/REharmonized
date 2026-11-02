@@ -5,15 +5,21 @@
 Using techniques developed by the romhacking community, **this patch brings high-quality community arrangements of the original soundtrack** into the game, taking advantage of Aria of Sorrow's improved sound.
 
 [Demo.](https://youtu.be/HunjOuSqto0?si=cIZ5U7uOiHacRfaW)
+
 [Custom REharmonized online](https://reharmonized-custom.web.app)
+
 [REharmonized desktop app (Windows & Mac)](https://github.com/alexarroyoduque/REharmonized/releases)
 
 ## How to use
 
+For the USA ROM, apply patch [REharmonized.bps](./REharmonized.bps).
 
-USA version: [download REharmonized](./REharmonized.bps). 
-Advance Collection USA version (02_Byakuya_US.patch_210520m.bin): [download REharmonized-AdvanceCollection](./REharmonized-AdvanceCollection.bps). 
-Apply the patch with a [patching tool](https://www.marcrobledo.com/RomPatcher.js).
+For the Advance Collection ROM *02_Byakuya_US.patch_210520m.bin*, apply patch [REharmonized-AdvanceCollection.bps](./REharmonized-AdvanceCollection.bps).
+
+*Use this guide to apply patches to Advance Collection: [tutorial](https://youtu.be/azQY-fIwizY?si=xMH3yyXOZVmGgIOT)*.
+
+
+You can apply the patch using [RomPatcher.js online](https://www.marcrobledo.com/RomPatcher.js).
 
 ```
 Database match: Castlevania - Harmony of Dissonance (USA)
@@ -83,12 +89,11 @@ File/ROM CRC32: 53F44649
 AlexArroyoDuque
 
 ### Using Streamed Audio in Castlevania: Aria of Sorrow
-Rexius55 https://www.romhacking.net/documents/927
-This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
+Rexius55 https://www.romhacking.net/documents/927. This guide has helped me create music versions that sound like they’re from Aria of Sorrow, and then I ported them over to Harmony of Dissonance.
 
 ### Special thanks
-Franco Carovano -SuXei999-
-[KuonJ](https://github.com/KuonJ) - Advance Collection compatibility
+- Franco Carovano -SuXei999-
+- [KuonJ](https://github.com/KuonJ) - Advance Collection compatibility
 
 ### Rom Patcher
 [March Robledo](https://github.com/marcrobledo/RomPatcher.js)
