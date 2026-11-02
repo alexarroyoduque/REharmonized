@@ -4,11 +4,12 @@
 
 Using techniques developed by the romhacking community, **this patch brings high-quality community arrangements of the original soundtrack** into the game, taking advantage of Aria of Sorrow's improved sound.
 
-[Demo.](https://youtu.be/MyGVkGNWQx0)
+[Demo.](https://youtu.be/HunjOuSqto0?si=cIZ5U7uOiHacRfaW)
 [Custom REharmonized online](https://reharmonized-custom.web.app)
 [REharmonized desktop app (Windows & Mac)](https://github.com/alexarroyoduque/REharmonized/releases)
 
 ## How to use
+
 
 USA version: [download REharmonized](./REharmonized.bps). 
 Advance Collection USA version (02_Byakuya_US.patch_210520m.bin): [download REharmonized-AdvanceCollection](./REharmonized-AdvanceCollection.bps). 
@@ -19,6 +20,13 @@ Database match: Castlevania - Harmony of Dissonance (USA)
 Database: No-Intro: Game Boy Advance (v. 20210227-023848)
 File/ROM SHA-1: B90DA0D9BE0B3A0893CD9E2C399056BCF9579E21
 File/ROM CRC32: 88C1B562
+```
+
+```
+Advance Collection - 02_Byakuya_US.patch_210520m.bin
+Database: No-Intro: Game Boy Advance (v. 20210227-023848)
+File/ROM SHA-1: D4F8736805BFBFFDD127CCBEEB530FC6F15F3E61
+File/ROM CRC32: 53F44649
 ```
 
 ### Compatibility with visual patches
@@ -80,7 +88,7 @@ This guide has helped me create music versions that sound like they’re from Ar
 
 ### Special thanks
 Franco Carovano -SuXei999-
-KuonJ - Advance Collection
+[KuonJ](https://github.com/KuonJ) - Advance Collection compatibility
 
 ### Rom Patcher
 [March Robledo](https://github.com/marcrobledo/RomPatcher.js)

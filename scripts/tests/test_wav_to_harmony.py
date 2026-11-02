@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import math
+import shutil
 import struct
 import subprocess
 import sys
@@ -19,6 +20,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from modules import injection as injector
 from modules import pipeline
 from modules.version import VERSION
+from modules import advance_collection
 from modules.advance_collection import pad_output
 from modules.rom import is_advance_collection
 
@@ -86,18 +88,39 @@ class AdvanceCollectionTests(unittest.TestCase):
         original_entry = bytes(rom[:4])
         original_stop_svc = bytes(rom[0xBCAE4:0xBCAE8])
         original_continue_svc = bytes(rom[0xBC480:0xBC484])
-        original_resume_call = bytes(rom[0xBB424:0xBB428])
+        original_fade_svc = bytes(rom[0xBC4AC:0xBC4B0])
+        original_volume_svc = bytes(rom[0xBD274:0xBD278])
 
         injector.apply_pause_patch(rom)
 
         self.assertEqual(rom[:4], original_entry)
         self.assertEqual(rom[0xBB40C:0xBB410], bytes.fromhex("02f0f8f8"))
-        self.assertEqual(rom[0xBD600:0xBD600 + 28], bytes.fromhex(
-            "30b5054d03242868fff76cfa0c35013cf9d130bc01bc0047386b1a08"
+        self.assertEqual(rom[0xBB424:0xBB428], advance_collection._thumb_bl(
+            advance_collection.RESUME_CALL_ADDR, advance_collection.RESUME_STUB_ADDR
         ))
+        self.assertEqual(advance_collection.RESUME_STUB_OFFSET, 0x1E)
+        self.assertEqual(rom[0xBD600:0xBD600 + len(advance_collection.PAUSE_RESUME_STUB_BYTES)],
+                         advance_collection.PAUSE_RESUME_STUB_BYTES)
         self.assertEqual(rom[0xBCAE4:0xBCAE8], original_stop_svc)
         self.assertEqual(rom[0xBC480:0xBC484], original_continue_svc)
-        self.assertEqual(rom[0xBB424:0xBB428], original_resume_call)
+        self.assertEqual(rom[0xBC4AC:0xBC4B0], original_fade_svc)
+        self.assertEqual(rom[0xBD274:0xBD278], original_volume_svc)
+        self.assertEqual(original_volume_svc, bytes.fromhex("93df7047"))
+        self.assertIn(bytes.fromhex("09487f210022fff72cfe"), advance_collection.PAUSE_RESUME_STUB_BYTES)
+        self.assertIn(bytes.fromhex("05487f2101221202fff724fe03bcfef727ff"), advance_collection.PAUSE_RESUME_STUB_BYTES)
+
+    @unittest.skipUnless(all(shutil.which(f"arm-none-eabi-{tool}") for tool in ("as", "ld", "objcopy")),
+                         "ARM binutils unavailable")
+    def test_collection_pause_stub_matches_assembly_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            obj, elf, binary = root / "stub.o", root / "stub.elf", root / "stub.bin"
+            subprocess.run(["arm-none-eabi-as", "-mcpu=arm7tdmi", "-o", str(obj),
+                            str(SCRIPT_DIR / "modules/collection_pause.s")], check=True)
+            subprocess.run(["arm-none-eabi-ld", "-Ttext=0x080BD600", "-e", "collection_pause_stub",
+                            "-o", str(elf), str(obj)], check=True)
+            subprocess.run(["arm-none-eabi-objcopy", "-O", "binary", str(elf), str(binary)], check=True)
+            self.assertEqual(binary.read_bytes(), advance_collection.PAUSE_RESUME_STUB_BYTES)
 
     def test_collection_signature_mismatch_refuses_patch_without_mutation(self):
         rom = bytearray(self.COLLECTION_ROM.read_bytes())
@@ -195,6 +218,15 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(result), 32 * 1024 * 1024)
         self.assertEqual(result[:4], original_entry)
         self.assertEqual(result[0xBB40C:0xBB410], bytes.fromhex("02f0f8f8"))
+        self.assertEqual(result[0xBB424:0xBB428], advance_collection._thumb_bl(
+            advance_collection.RESUME_CALL_ADDR, advance_collection.RESUME_STUB_ADDR
+        ))
+        self.assertEqual(result[0xBD600:0xBD600 + len(advance_collection.PAUSE_RESUME_STUB_BYTES)],
+                         advance_collection.PAUSE_RESUME_STUB_BYTES)
+        self.assertEqual(result[0xBC4AC:0xBC4B0], bytes.fromhex("8fdf7047"))
+        self.assertEqual(result[0xBD274:0xBD278], bytes.fromhex("93df7047"))
+        self.assertIn(bytes.fromhex("09487f210022fff72cfe"), result[0xBD600:0xBD600 + len(advance_collection.PAUSE_RESUME_STUB_BYTES)])
+        self.assertIn(bytes.fromhex("05487f2101221202fff724fe03bcfef727ff"), result[0xBD600:0xBD600 + len(advance_collection.PAUSE_RESUME_STUB_BYTES)])
         self.assertEqual(result[0xBCAE4:0xBCAE8], original_stop)
         self.assertEqual(result[0xBC480:0xBC484], original_continue)
         self.assertEqual(result[-4096:], b"\xFF" * 4096)

@@ -313,7 +313,10 @@ identificó tres diferencias importantes con una ROM GBA normal:
 - **Pausa:** Advance Collection sustituye el motor de audio por llamadas `SVC`,
   así que los hooks GBA normales no se ejecutan. El juego llama a
   `m4aMPlayAllStop` en `0x080BB40C`; redirigir esa llamada a `0x080BD600` detiene
-  los efectos, pero deja avanzar la música del jugador 0.
+  los efectos, pero deja avanzar la música del jugador 0. Para silenciarla, el
+  hook usa `m4aMPlayVolumeControl` vía SVC `0x93`, con máscara BGM `0x7F`: fija
+  volumen `0` al pausar y `0x100` al reanudar. Así la música sigue avanzando en
+  silencio y vuelve a oírse desde su posición actual.
     - Este punto lo había resuelto en mi análisis anterior en el punto 15
 - **Créditos:** el emulador no muestra correctamente la imagen Mode 3. Por eso
   el perfil omite esa pantalla y conserva el entrypoint original.

@@ -26,7 +26,7 @@ def build_rom(rom_path: Path, config_path: Path, output_path: Path) -> None:
         print()
         if collection:
             print("[2/2] Advance Collection USA (M2): skip Mode 3 credits; pad to exactly 32 MiB (0xFF)")
-            print("M2 pause keeps BGM advancing and audible; the standard GBA mute hook is not applied.")
+            print("M2 pause mutes BGM via its volume SVC; resume restores volume without restarting the song.")
             final_path.write_bytes(pad_output(injected_path.read_bytes()))
         else:
             print(f"[2/2] Adding credits screen -> {output_path}")

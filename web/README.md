@@ -14,7 +14,8 @@ are allowed if they preserve the expected ROM format and audio-engine signature;
 compatibility with arbitrary patches is not guaranteed. For Advance Collection,
 select the extracted USA `.bin`; the supported M2 revision is detected by its
 audio-engine signature. Its output remains `.bin`, padded to exactly 32 MiB with
-`0xFF`, and omits the incompatible Mode 3 credits screen. Repack the result into
+`0xFF`; pause mutes BGM while it keeps advancing, and resume restores its volume.
+The build omits the incompatible Mode 3 credits screen. Repack the result into
 the Collection container separately. Custom WAV names may contain apostrophes or quotes; names
 are passed to Python as data rather than inserted into executable code.
 

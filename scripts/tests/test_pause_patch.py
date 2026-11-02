@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import shutil
 import struct
 import subprocess
@@ -13,6 +14,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPT_DIR))
 from modules import pause_patch as patch
+from modules import advance_collection as collection_patch
 
 
 def original_fixture():
@@ -185,6 +187,63 @@ class PauseArmTests(unittest.TestCase):
                     self.assertEqual(self.gain(track, 0, velocity, pan), normal)
         for track in self.tracks[1:]:
             self.assertEqual(self.gain(track, 1), self.gain(track, 0))
+
+
+@unittest.skipUnless(importlib.util.find_spec("unicorn") and
+                     (SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin").is_file() and
+                     os.environ.get("REHARMONIZED_RUN_M2_SVC_TEST") == "1",
+                     "Set REHARMONIZED_RUN_M2_SVC_TEST=1 to emulate M2 SVC hooks")
+class CollectionPauseArmTests(unittest.TestCase):
+    def setUp(self):
+        from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_INTR
+        from unicorn import arm_const
+        self.reg = arm_const
+        self.uc = Uc(UC_ARCH_ARM, UC_MODE_THUMB)
+        self.uc.mem_map(0x08000000, 32 * 1024 * 1024)
+        self.uc.mem_map(0x03000000, 0x8000)
+        rom = bytearray((SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin").read_bytes())
+        collection_patch.apply_pause_patch(rom)
+        self.uc.mem_write(0x08000000, bytes(rom))
+        self.svc_calls = []
+
+        def handle_svc(uc, interrupt_number, _user_data):
+            pc = uc.reg_read(arm_const.UC_ARM_REG_PC)
+            immediate = None
+            for address in (pc - 2, pc, pc + 2):
+                if 0x08000000 <= address < 0x0A000000:
+                    instruction = struct.unpack("<H", uc.mem_read(address, 2))[0]
+                    if instruction & 0xFF00 == 0xDF00:
+                        immediate = instruction & 0xFF
+                        break
+            self.svc_calls.append((immediate, uc.reg_read(arm_const.UC_ARM_REG_R0),
+                                   uc.reg_read(arm_const.UC_ARM_REG_R1)))
+
+        self.uc.hook_add(UC_HOOK_INTR, handle_svc)
+
+    def call(self, address):
+        stack = 0x03007F00
+        self.uc.reg_write(self.reg.UC_ARM_REG_SP, stack)
+        self.uc.emu_start(address | 1, address + 4, count=1000)
+        self.assertEqual(self.uc.reg_read(self.reg.UC_ARM_REG_SP), stack)
+
+    def test_pause_mutes_bgm_and_resume_restores_then_continues(self):
+        self.call(collection_patch.PAUSE_CALL_ADDR)
+        expected_effect_players = [
+            struct.unpack_from("<I", (SCRIPT_DIR / "02_Byakuya_US.patch_210520m.bin").read_bytes(),
+                               0x1A6B38 + index * 12)[0]
+            for index in range(3)
+        ]
+        self.assertEqual(self.svc_calls, [
+            *((0x8D, player, 0) for player in expected_effect_players),
+            (0x8F, 0x03004FC0, 0),
+        ])
+
+        self.svc_calls.clear()
+        self.call(collection_patch.RESUME_CALL_ADDR)
+        self.assertEqual(self.svc_calls, [
+            (0x8F, 0x03004FC0, 0x100),
+            (0x91, 4, 0x081A6B2C),
+        ])
 
 
 if __name__ == "__main__":

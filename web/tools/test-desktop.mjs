@@ -144,9 +144,13 @@ try {
     assert.equal(patched.length, 32 * 1024 * 1024);
     assert.equal(patched.subarray(0, 4).toString('hex'), rom.subarray(0, 4).toString('hex'));
     assert.equal(patched.subarray(0xBB40C, 0xBB410).toString('hex'), '02f0f8f8');
-    assert.equal(patched.subarray(0xBD600, 0xBD61C).toString('hex'), '30b5054d03242868fff76cfa0c35013cf9d130bc01bc0047386b1a08');
+    assert.equal(patched.subarray(0xBB424, 0xBB428).toString('hex'), '02f0fbf8');
+    assert.equal(patched.subarray(0xBD600, 0xBD63C).toString('hex'), '30b50c4d03242868fff76cfa0c35013cf9d109487f210022fff72cfe30bd13b505487f2101221202fff724fe03bcfef727ff10bd386b1a08c04f0003');
     assert.equal(patched.subarray(0xBCAE4, 0xBCAE8).toString('hex'), rom.subarray(0xBCAE4, 0xBCAE8).toString('hex'));
-    assert.equal(patched.subarray(0xBC480, 0xBC484).toString('hex'), rom.subarray(0xBC480, 0xBC484).toString('hex'));
+    assert.equal(patched.subarray(0xBC4AC, 0xBC4B0).toString('hex'), rom.subarray(0xBC4AC, 0xBC4B0).toString('hex'));
+    assert.equal(patched.subarray(0xBD274, 0xBD278).toString('hex'), '93df7047');
+    assert.ok(patched.subarray(0xBD600, 0xBD63C).includes(Buffer.from('09487f210022fff72cfe', 'hex')));
+    assert.ok(patched.subarray(0xBD600, 0xBD63C).includes(Buffer.from('05487f2101221202fff724fe03bcfef727ff', 'hex')));
     assert.equal(patched.subarray(-4096).every((byte) => byte === 0xFF), true);
   } else {
     assert.ok(patched.length > rom.length && patched.length <= 32 * 1024 * 1024);

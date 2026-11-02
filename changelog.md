@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.4.1 (2026, november 1)
-- Advance Collection USA compatibility
+- Advance Collection USA compatibility (special thanks: [KuonJ](https://github.com/KuonJ))
 - Europe compatibility deprecated
 
 ## 1.4.0 (2026, october 28)
