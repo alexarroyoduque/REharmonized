@@ -81,7 +81,7 @@ def render_credits_image() -> Image.Image:
     sub_header_font = ImageFont.truetype(FONT_PATH, 10)
     body_font = ImageFont.truetype(FONT_PATH, 10)
 
-    y = 6
+    y = 2
     title_text = "REharmonized"
     version_text = VERSION
     title_w = draw.textlength(title_text, font=title_font)
@@ -89,30 +89,30 @@ def render_credits_image() -> Image.Image:
     gap = 4
     start_x = (SCREEN_W - (title_w + gap + version_w)) / 2
     draw.text((start_x, y), title_text, font=title_font, fill=(255, 210, 60), anchor="la")
-    draw.text((start_x + title_w + gap, y + 9), version_text, font=body_font, fill=(255, 210, 60), anchor="la")
+    draw.text((start_x + title_w + gap, y + 7), version_text, font=body_font, fill=(255, 210, 60), anchor="la")
     y += 20
     draw.text((SCREEN_W // 2, y), "AlexArroyoDuque", font=header_font, fill=(255, 255, 255), anchor="ma")
     y += 18
 
     for line in wrap_text(draw, "Aria of Sorrow Streamed Audio", sub_header_font, SCREEN_W - 12):
         draw.text((SCREEN_W // 2, y), line, font=sub_header_font, fill=(120, 200, 255), anchor="ma")
-        y += 14
+        y += 12
     draw.text((SCREEN_W // 2, y), "Rexius55", font=body_font, fill=(220, 220, 220), anchor="ma")
     y += 14
 
     draw.text((SCREEN_W // 2, y), "Music", font=sub_header_font, fill=(120, 200, 255), anchor="ma")
-    y += 14
+    y += 12
 
     for line in wrap_text(draw, MUSIC_CREDITS, body_font, SCREEN_W - 12):
         draw.text((SCREEN_W // 2, y), line, font=body_font, fill=(220, 220, 220), anchor="ma")
         y += 10
 
     for line in wrap_text(draw, SPECIAL_THANKS, body_font, SCREEN_W - 12):
-        draw.text((SCREEN_W // 2, y), line, font=body_font, fill=(120, 220, 130), anchor="ma")
+        draw.text((SCREEN_W // 2, y + 2), line, font=body_font, fill=(120, 220, 130), anchor="ma")
         y += 10
 
     y = SCREEN_H - 12
-    draw.text((SCREEN_W // 2, y), "PRESS START", font=body_font, fill=(160, 160, 160), anchor="ma")
+    draw.text((SCREEN_W // 2, y), ">> PRESS START <<", font=body_font, fill=(255, 255, 255), anchor="ma")
 
     return img
 
