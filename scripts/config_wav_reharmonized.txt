@@ -25,7 +25,7 @@
 11  "../music/11 clock tower casualty edit.wav" 8
 12  "../music/12 aqueduct of dragons edit.wav" 55
 13  "../music/13 to the center of the demonic castle - castle treasure edit.wav" 11
-14  "../music/14 dark covenant (Death's theme) edit.wav" 139 0.3
+14  "../music/14 dark covenant (Death's theme) edit.wav" 55 0.3
 15  "../music/15 decisive battle A edit.wav" 75
 16  "../music/16 decisive battle B edit.wav" 88
 17  "../music/17 decisive battle C edit.wav" 88
