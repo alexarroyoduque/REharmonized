@@ -20,7 +20,7 @@
 6   "../music/06 offense and defense - marble corridor edit.wav" auto auto 6.3 0.18
 7   "../music/07 approach of despair - shrine of the apostates edit.wav" 11
 8   "../music/08 luminous caverns edit.wav" auto 0.35 29.1 0.25
-9   "../music/09 skeleton den - cave of skeletons edit.wav" auto 0.3
+9   "../music/09 skeleton den - cave of skeletons edit.wav" 187 0.3
 10  "../music/10 chapel of dissonance edit.wav" 157 0.35
 11  "../music/11 clock tower casualty edit.wav" 8
 12  "../music/12 aqueduct of dragons edit.wav" 55
