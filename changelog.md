@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.2 (2026, november 16)
+- Miscellaneous fixes: loops, volume, credits page.
+
 ## 1.4.1 (2026, november 2)
 - Added compatibility with the USA version of Advance Collection (special thanks to [KuonJ](https://github.com/KuonJ)).
 - Deprecated compatibility with the European version.
