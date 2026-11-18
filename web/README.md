@@ -68,6 +68,12 @@ npm ci
 npm run desktop:mac
 ```
 
+With this error: self-signed certificate in certificate chain
+```sh
+nvm use 24
+NODE_OPTIONS=--use-system-ca npm run desktop:mac
+```
+
 The first build downloads Electron and the offline Pyodide assets. Later builds reuse the local cache. The build-time Python, Pillow, and ARM binutils requirements above still apply when generating credits assets.
 
 The release version has a single source: `../VERSION` at the repository root. Vite uses it for the web title and generated credits assets; Electron reads the same generated version for app metadata and installer filenames. `scripts/patch-generator.sh` also uses it to name versioned ROMs. Update that file when releasing; the ROM credits retain their `-custom` suffix, while the app version does not.
@@ -101,6 +107,11 @@ Cross-build a Windows x64 portable executable from macOS:
 
 ```sh
 npm run desktop:win
+```
+With this error: self-signed certificate in certificate chain
+```sh
+nvm use 24
+NODE_OPTIONS=--use-system-ca npm run desktop:win
 ```
 
 The distributable is `app/REharmonized-<version>-windows-x64.exe`. Share that single file, not the intermediate `app/win-unpacked/` folder or its inner executable alone. The portable launcher extracts the bundled application into a temporary folder when opened; it does not require installation, Node.js, Python, or network access for ROM processing. Presets are enabled just as in the macOS desktop build. ROMs are saved to the Windows user's Downloads folder with the same naming and collision handling described above.

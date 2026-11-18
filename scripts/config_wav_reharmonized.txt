@@ -40,5 +40,5 @@
 27  "../music/27 game over Simon edit.wav" auto 0.3 2
 28  "../music/28 I'll sell at my place (Mechant's theme) edit.wav" 90 0.3
 29  "../music/29 Maxim Kischine's theme edit.wav" 17 0.45
-30  "../music/30 epilogue 2 edit.wav" 43 0.25
+30  "../music/30 epilogue 2 edit.wav" 43 0.5
 31  "../music/31 the item collection room edit.wav" 54 0.35

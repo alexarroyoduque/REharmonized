@@ -4,7 +4,7 @@
 
 Using techniques developed by the romhacking community, **this patch brings high-quality community arrangements of the original soundtrack** into the game, taking advantage of Aria of Sorrow's improved sound.
 
-[Demo.](https://youtu.be/HunjOuSqto0?si=cIZ5U7uOiHacRfaW)
+[Demo.](https://youtu.be/h2Z1EFTbEUQ)
 
 [Custom REharmonized online](https://reharmonized-custom.web.app)
 

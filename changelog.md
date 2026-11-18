@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.2 (2026, november 16)
+## 1.4.2 (2026, november 18)
 - Miscellaneous fixes: loops, volume, credits page.
 
 ## 1.4.1 (2026, november 2)
